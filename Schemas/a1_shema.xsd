@@ -27,14 +27,8 @@
     </xs:element>
     <xs:complexType abstract="true" name="TPodnosilac">
         <xs:sequence>
-            <xs:element name="Telefon" type="xs:positiveInteger"/>
-            <xs:element name="Email">
-                <xs:simpleType>
-                    <xs:restriction base="xs:string">
-                        <xs:pattern value="[^@]+@[^\.]+\..+"/>
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
+            <xs:element name="Telefon" type="a1:TBrojTelefona"/>
+            <xs:element name="Email" type="a1:TEmail"> </xs:element>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="TFizicki_Podnosilac">
@@ -61,13 +55,7 @@
         <xs:complexContent>
             <xs:extension base="a1:TDrzavljanstvo">
                 <xs:sequence>
-                    <xs:element name="Broj_Pasosa">
-                        <xs:simpleType>
-                            <xs:restriction base="xs:string">
-                                <xs:pattern value="[a-zA-Z0-9]{3,20}"/>
-                            </xs:restriction>
-                        </xs:simpleType>
-                    </xs:element>
+                    <xs:element name="Broj_Pasosa" type="a1:TBroj_Pasosa"> </xs:element>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -76,14 +64,7 @@
         <xs:complexContent>
             <xs:extension base="a1:TDrzavljanstvo">
                 <xs:sequence>
-                    <xs:element name="Jmbg">
-                        <xs:simpleType>
-                            <xs:restriction base="xs:positiveInteger">
-                                <xs:totalDigits value="13"/>
-                                <xs:pattern value="\d{13}"/>
-                            </xs:restriction>
-                        </xs:simpleType>
-                    </xs:element>
+                    <xs:element name="Jmbg" type="a1:TJmbg"> </xs:element>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -107,14 +88,7 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="Mjesto" type="xs:string"/>
-                <xs:element name="Postanski_Broj">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:int">
-                            <xs:minInclusive value="1000"/>
-                            <xs:maxInclusive value="200000"/>
-                        </xs:restriction>
-                    </xs:simpleType>
-                </xs:element>
+                <xs:element name="Postanski_Broj" type="a1:TPostanski_Broj"> </xs:element>
                 <xs:element name="Ulica" type="xs:string"/>
                 <xs:element name="Broj" type="xs:positiveInteger"/>
             </xs:sequence>
@@ -150,27 +124,6 @@
             </xs:element>
         </xs:sequence>
     </xs:complexType>
-    <xs:simpleType name="Vrsta_Djela">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="Pisano"/>
-            <xs:enumeration value="Scensko"/>
-            <xs:enumeration value="Likovno"/>
-            <xs:enumeration value="Primjenjeno"/>
-            <xs:enumeration value="Patent"/>
-            <xs:enumeration value="Informacione Tehnologije"/>
-            <xs:enumeration value="Naucna Teorija"/>
-            <xs:enumeration value="Naucna Djelatnost"/>
-        </xs:restriction>
-    </xs:simpleType>
-    <xs:simpleType name="Forma_Zapisa">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="Pisana"/>
-            <xs:enumeration value="Audio"/>
-            <xs:enumeration value="Vizuelna"/>
-            <xs:enumeration value="AudioVizuelna"/>
-            <xs:enumeration value="Opticki Disk"/>
-        </xs:restriction>
-    </xs:simpleType>
     <xs:complexType abstract="true" name="TAutor"/>
     <xs:complexType name="TZivi_Autor">
         <xs:complexContent>
@@ -192,4 +145,51 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
+    <xs:simpleType name="Vrsta_Djela">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Pisano"/>
+            <xs:enumeration value="Scensko"/>
+            <xs:enumeration value="Likovno"/>
+            <xs:enumeration value="Primjenjeno"/>
+            <xs:enumeration value="Patent"/>
+            <xs:enumeration value="Informacione Tehnologije"/>
+            <xs:enumeration value="Naucna Teorija"/>
+            <xs:enumeration value="Naucna Djelatnost"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Forma_Zapisa">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Pisana"/>
+            <xs:enumeration value="Audio"/>
+            <xs:enumeration value="Vizuelna"/>
+            <xs:enumeration value="AudioVizuelna"/>
+            <xs:enumeration value="Opticki Disk"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="TJmbg">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9]{13}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="TBroj_Pasosa">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-zA-Z0-9]{3,20}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="TEmail">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[^@]+@[^\.]+\..+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="TBrojTelefona">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[+]?[0-9]{8,13}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="TPostanski_Broj">
+        <xs:restriction base="xs:positiveInteger">
+            <xs:minInclusive value="1000"/>
+            <xs:maxInclusive value="100000"/>
+        </xs:restriction>
+    </xs:simpleType>
 </xs:schema>
