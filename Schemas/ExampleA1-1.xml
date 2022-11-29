@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<obrazacA1 xmlns="http://euprava.rs/a1"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://euprava.rs/a1 file:/C:/Users/draga/OneDrive/Dokumenti/4.%20Godina/XML%20i%20Web%20Servisi/Projekat/xml-veb-servisi/Schemas/a1_shema.xsd">
+    <id>1</id>
+    <Podnosilac xsi:type="TFizicki_Podnosilac">
+        <Telefon>132132132</Telefon>
+        <Email>gage2323@gmail.s</Email>
+        <Osoba>
+            <Ime>Dragan</Ime>
+            <Prezime>Mirkovic</Prezime>
+            <Adresa>
+                <Mjesto>Brcko</Mjesto>
+                <Postanski_Broj>2000</Postanski_Broj>
+                <Ulica>Pavlova 666</Ulica>
+                <Broj>24</Broj>
+            </Adresa>
+            <Drzavljanstvo xsi:type="TStrano_Drzavljanstvo">
+                <Broj_Pasosa>aaa2Rdszdsdsdsdsdskk</Broj_Pasosa>            
+            </Drzavljanstvo>
+        </Osoba>
+    </Podnosilac>
+    <Djelo>
+        <Naslov>Gage Perez</Naslov>
+        <Vrsta_Djela>Informacione Tehnologije</Vrsta_Djela>
+        <Forma_Zapisa>Audio</Forma_Zapisa>
+        <Podaci_Autor>
+            <Poznati_Autor xsi:type="TZivi_Autor">
+                <Osoba>
+                    <Ime>Jovan</Ime>
+                    <Prezime>Jovanovic</Prezime>
+                    <Adresa>
+                        <Mjesto>Kikinda</Mjesto>
+                        <Postanski_Broj>2444</Postanski_Broj>
+                        <Ulica>Neznana</Ulica>
+                        <Broj>54</Broj>
+                    </Adresa>
+                    <Drzavljanstvo xsi:type="TDomace_Drzavljanstvo">
+                        <Jmbg>1234567890123</Jmbg>
+                    </Drzavljanstvo>
+                </Osoba>                
+            </Poznati_Autor>
+        </Podaci_Autor>
+        <Stvoreno_U_Radnom_Odnosu>true</Stvoreno_U_Radnom_Odnosu>        
+        <Nacin_koriscenja>Laganica</Nacin_koriscenja>
+        <Podaci_Originalno_Djelo>
+            <Naslov_Originalnog_Djela>Pero</Naslov_Originalnog_Djela>
+            <Poznati_Originalni_Autor xsi:type="TPreminuli_Autor">
+                <Ime>Jovan</Ime>
+                <Prezime>Jovic</Prezime>
+                <Datum_Smrti>2000-11-11</Datum_Smrti>
+            </Poznati_Originalni_Autor>
+        </Podaci_Originalno_Djelo>
+    </Djelo>
+    <Potpis>gageleza</Potpis>
+    <Sifra_Opisa>23232</Sifra_Opisa>
+    <Sifra_Primjera>gagege</Sifra_Primjera>
+    <Broj_Prijave>233</Broj_Prijave>
+    <Datum_Podnosenja>2022-11-29</Datum_Podnosenja>
+</obrazacA1>
