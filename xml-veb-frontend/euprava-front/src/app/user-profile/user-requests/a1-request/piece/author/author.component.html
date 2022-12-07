@@ -1,0 +1,27 @@
+<div>
+  <div *ngIf="isUnknown">
+    <label>Nepoznati autor</label>
+  </div>
+  <div *ngIf="!isUnknown && isAlive">
+
+    <div>
+      <euprava-person [person]="aliveAuthor.author"></euprava-person>
+    </div>
+    <div *ngIf="aliveAuthor.authorSign !== null">
+      <label>Potpis: {{aliveAuthor.authorSign}}</label>
+    </div>
+  </div>
+
+  <div *ngIf="!isUnknown && !isAlive">
+
+    <div>
+      <label>{{deadAuthor.firstName}} {{deadAuthor.lastName}}</label>
+    </div>
+    <div *ngIf="deadAuthor.authorSign !== null">
+      <label>Potpis: {{deadAuthor.authorSign}}</label>
+    </div>
+    <div>
+      <label >Datum smrti: {{deadAuthor.dod | date : "dd.MM.yyyy."}}</label>
+    </div>
+  </div>
+</div>

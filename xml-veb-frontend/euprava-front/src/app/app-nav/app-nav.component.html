@@ -1,7 +1,18 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      <span>EUprava</span>
+      <div style="margin-left: 2%; font-size: 25px;">
+        <img src="favicon.ico" style="height: 50px; width: 60px; margin-right:2%" />
+        <span>EUprava</span>
+      </div>
+      <span class="example-spacer"></span>
+      <div>
+        <button mat-button [matMenuTriggerFor]="menu">Ime Prezime</button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item routerLink="user-requests">Moji Zahtevi</button>
+          <button mat-menu-item>Odjava</button>
+        </mat-menu>
+      </div>
     </mat-toolbar>
     <!-- Add Content Here -->
     <router-outlet></router-outlet>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import {FormControl, Validators} from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'euprava-login',
@@ -11,19 +12,27 @@ export class LoginComponent implements OnInit {
 
   email = new FormControl('', [Validators.required, Validators.email]);
 
-  constructor() { }
+  password = new FormControl('',[Validators.required]);
+
+  hide: boolean = true;
+
+  constructor(private route: Router) { }
 
   ngOnInit(): void {
   }
 
   login(){
-    console.log("Prijava")
+    this.route.navigate(['/userProfile']);
   }
 
-  getErrorMessage() {
-    return this.email.hasError('required') ? 'You must enter a value' :
-        this.email.hasError('email') ? 'Not a valid email' :
+  getEmailErrorMessage() {
+    return this.email.hasError('required') ? 'Molimo vas unesite vasu email adresu' :
+        this.email.hasError('email') ? 'Neispravna email adresa' :
             '';
+  }
+
+  getPasswordErrorMessage() {
+    return this.password.hasError('required') ? 'Molimo vas unesite vasu lozinku': '';
   }
 
 }

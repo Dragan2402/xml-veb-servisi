@@ -1,0 +1,52 @@
+<div class="request-div">
+
+  <mat-card  style="background-color: #3F51B5;">
+    <mat-card >
+      <mat-card-title>A1 Zahtjev</mat-card-title>
+
+
+      <mat-card-content style="margin-top: 1%;">ID zahtjeva: {{a1request.id}}</mat-card-content>
+      <mat-card-content>
+        <mat-card-subtitle>Podnosilac</mat-card-subtitle>
+        <euprava-submitter [submitter]="a1request.submitter"></euprava-submitter>
+      </mat-card-content>
+
+      <div *ngIf="a1request.attorney !== undefined">
+        <mat-card-content>
+          <mat-card-subtitle>Punomocnik</mat-card-subtitle>
+          <euprava-person [person]="a1request.attorney"></euprava-person>
+        </mat-card-content>
+      </div>
+
+      <mat-card-content>
+        <mat-card-subtitle>Djelo</mat-card-subtitle>
+        <euprava-piece [piece]="a1request.piece"></euprava-piece>
+      </mat-card-content>
+
+      <mat-card-content>
+        <div *ngIf="a1request.descriptionId !== undefined">
+          <label>Sifra opisa: {{a1request.descriptionId}}</label>
+        </div>
+        <div *ngIf="a1request.exampleId !== undefined">
+          <label>Sifra primjera: {{a1request.exampleId}}</label>
+        </div>
+      </mat-card-content>
+
+      <mat-card-content>
+        <mat-card-subtitle>Podaci o prijavi</mat-card-subtitle>
+        <div>
+          <label>Broj prijave: {{a1request.submissionNumber}}</label>
+        </div>
+        <div>
+          <label>Datum prijave {{a1request.submissionDate | date : "dd.MM.yyyy."}}</label>
+        </div>
+        <div style="margin-bottom: 2%;text-decoration: underline ;">
+          <label style="font-family: Brush Script MT, Brush Script Std, cursive; font-size: 35px;margin-left: 85%;">{{a1request.signature}}</label>
+        </div>
+      </mat-card-content>
+
+    </mat-card>
+
+
+  </mat-card>
+</div>

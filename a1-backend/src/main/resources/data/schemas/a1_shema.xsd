@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-           targetNamespace="http://euprava.rs/a1" xmlns:a1="http://euprava.rs/a1">
+    targetNamespace="http://euprava.rs/a1" xmlns:a1="http://euprava.rs/a1">
 
     <xs:element name="obrazacA1">
         <xs:complexType>
@@ -13,8 +13,6 @@
                     </xs:simpleType>
                 </xs:element>
                 <xs:element name="Podnosilac" type="a1:TPodnosilac"/>
-                <xs:element maxOccurs="1" minOccurs="0" name="Pseudonim_Znak_Autora"
-                            type="xs:string"/>
                 <xs:element minOccurs="0" name="Punomocnik" type="a1:TOsoba"/>
                 <xs:element name="Djelo" type="a1:TDjelo"/>
                 <xs:element name="Potpis" type="xs:string"/>
@@ -28,7 +26,7 @@
     <xs:complexType abstract="true" name="TPodnosilac">
         <xs:sequence>
             <xs:element name="Telefon" type="a1:TBrojTelefona"/>
-            <xs:element name="Email" type="a1:TEmail"></xs:element>
+            <xs:element name="Email" type="a1:TEmail"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="TFizicki_Podnosilac">
@@ -44,7 +42,7 @@
         <xs:complexContent>
             <xs:extension base="a1:TPodnosilac">
                 <xs:sequence>
-                    <xs:element name="Poslovno_Ime"/>
+                    <xs:element name="Poslovno_Ime" type="xs:string"/>
                     <xs:element ref="a1:Adresa"/>
                 </xs:sequence>
             </xs:extension>
@@ -55,7 +53,7 @@
         <xs:complexContent>
             <xs:extension base="a1:TDrzavljanstvo">
                 <xs:sequence>
-                    <xs:element name="Broj_Pasosa" type="a1:TBroj_Pasosa"></xs:element>
+                    <xs:element name="Broj_Pasosa" type="a1:TBroj_Pasosa"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -64,7 +62,7 @@
         <xs:complexContent>
             <xs:extension base="a1:TDrzavljanstvo">
                 <xs:sequence>
-                    <xs:element name="Jmbg" type="a1:TJmbg"></xs:element>
+                    <xs:element name="Jmbg" type="a1:TJmbg"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -73,7 +71,7 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="Mjesto" type="xs:string"/>
-                <xs:element name="Postanski_Broj" type="a1:TPostanski_Broj"></xs:element>
+                <xs:element name="Postanski_Broj" type="a1:TPostanski_Broj"/>
                 <xs:element name="Ulica" type="xs:string"/>
                 <xs:element name="Broj" type="xs:positiveInteger"/>
             </xs:sequence>
@@ -96,7 +94,7 @@
                 <xs:complexType>
                     <xs:choice minOccurs="1">
                         <xs:element maxOccurs="unbounded" minOccurs="1" name="Poznati_Autor"
-                                    type="a1:TAutor"/>
+                            type="a1:TAutor"/>
                         <xs:element default="true" name="Nepoznati_Autor" type="xs:boolean"/>
                     </xs:choice>
                 </xs:complexType>
@@ -109,7 +107,7 @@
                         <xs:element name="Naslov_Originalnog_Djela" type="xs:string"/>
                         <xs:choice>
                             <xs:element name="Poznati_Originalni_Autor" type="a1:TAutor"
-                                        maxOccurs="unbounded" minOccurs="1"/>
+                                maxOccurs="unbounded" minOccurs="1"/>
                             <xs:element default="true" name="Nepoznati_Autor" type="xs:boolean"/>
                         </xs:choice>
                     </xs:sequence>
@@ -117,7 +115,11 @@
             </xs:element>
         </xs:sequence>
     </xs:complexType>
-    <xs:complexType abstract="true" name="TAutor"/>
+    <xs:complexType abstract="true" name="TAutor">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="Pseudonim_Znak_Autora" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
     <xs:complexType name="TZivi_Autor">
         <xs:complexContent>
             <xs:extension base="a1:TAutor">

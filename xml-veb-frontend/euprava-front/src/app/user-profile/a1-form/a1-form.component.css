@@ -1,0 +1,35 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.a1-from-div{
+  display: flex;
+  flex-direction: row;
+  flex-grow: 5;
+}
+
+.a1-component{
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+
+.a1-submit-row{
+ flex-grow: 1;
+ display: flex;
+ flex-direction: row;
+}
+
+.submiter-div{
+  display: flex;
+  flex-direction: column;
+  margin-right: 5%;
+}
+
+.piece-div{
+  display: flex;
+  flex-direction: column;
+  margin-left: 5%;
+}

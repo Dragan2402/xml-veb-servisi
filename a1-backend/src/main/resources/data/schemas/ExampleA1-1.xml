@@ -1,31 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <obrazacA1 xmlns="http://euprava.rs/a1"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://euprava.rs/a1 file:/C:/Users/draga/OneDrive/Dokumenti/4.%20Godina/XML%20i%20Web%20Servisi/Projekat/xml-veb-servisi/Schemas/a1_shema.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://euprava.rs/a1 file:/C:/Users/draga/OneDrive/Dokumenti/4.%20Godina/XML%20i%20Web%20Servisi/Projekat/xml-veb-servisi/a1-backend/src/main/resources/data/schemas/a1_shema.xsd">
     <id>1</id>
-    <Podnosilac xsi:type="TFizicki_Podnosilac">
+    <Podnosilac xsi:type="TPravni_Podnosilac">
         <Telefon>132132132</Telefon>
         <Email>gage2323@gmail.s</Email>
-        <Podaci_Osoba>
-            <Ime>Dragan</Ime>
-            <Prezime>Mirkovic</Prezime>
-            <Adresa>
+        <Poslovno_Ime>Pero</Poslovno_Ime>
+         <Adresa>
                 <Mjesto>Brcko</Mjesto>
                 <Postanski_Broj>2000</Postanski_Broj>
                 <Ulica>Pavlova 666</Ulica>
                 <Broj>24</Broj>
-            </Adresa>
-            <Drzavljanstvo xsi:type="TStrano_Drzavljanstvo">
-                <Broj_Pasosa>aaa2Rdszdsdsdsdsdskk</Broj_Pasosa>
-            </Drzavljanstvo>
-        </Podaci_Osoba>
+         </Adresa>
     </Podnosilac>
+    <Punomocnik>
+        <Ime>Jovan</Ime>
+        <Prezime>Jovic</Prezime>
+        <Adresa>
+            <Mjesto>Jovanova ulica</Mjesto>
+            <Postanski_Broj>23233</Postanski_Broj>
+            <Ulica>Mikarska</Ulica>
+            <Broj>23</Broj>
+        </Adresa>
+        <Drzavljanstvo xsi:type="TDomace_Drzavljanstvo"><Jmbg>2402111685390</Jmbg></Drzavljanstvo>
+    </Punomocnik>
     <Djelo>
         <Naslov>Gage Perez</Naslov>
         <Vrsta_Djela>Informacione Tehnologije</Vrsta_Djela>
         <Forma_Zapisa>Audio</Forma_Zapisa>
-        <Podaci_Autor>
-            <Poznati_Autor xsi:type="TZivi_Autor">
+        <Podaci_Autor>      
+            
+            <Poznati_Autor xsi:type="TZivi_Autor">  
+                <Pseudonim_Znak_Autora>JJ</Pseudonim_Znak_Autora>
                 <Podaci_Autor>
                     <Ime>Jovan</Ime>
                     <Prezime>Jovanovic</Prezime>
@@ -40,11 +47,18 @@
                     </Drzavljanstvo>
                 </Podaci_Autor>
             </Poznati_Autor>
+            <Poznati_Autor xsi:type="TPreminuli_Autor">
+                <Pseudonim_Znak_Autora>KKK</Pseudonim_Znak_Autora>
+                <Ime>Pokolica</Ime>
+                <Prezime>Pokolicanin</Prezime>
+                <Datum_Smrti>2022-11-23</Datum_Smrti>
+                
+            </Poznati_Autor>
         </Podaci_Autor>
         <Stvoreno_U_Radnom_Odnosu>true</Stvoreno_U_Radnom_Odnosu>
         <Nacin_koriscenja>Laganica</Nacin_koriscenja>
         <Podaci_Originalno_Djelo>
-            <Naslov_Originalnog_Djela>Pero</Naslov_Originalnog_Djela>
+            <Naslov_Originalnog_Djela>Macak Tosa</Naslov_Originalnog_Djela>
             <Poznati_Originalni_Autor xsi:type="TPreminuli_Autor">
                 <Ime>Jovan</Ime>
                 <Prezime>Jovic</Prezime>

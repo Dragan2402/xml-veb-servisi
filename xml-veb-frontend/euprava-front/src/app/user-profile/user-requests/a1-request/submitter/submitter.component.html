@@ -1,0 +1,31 @@
+<div>
+  <div *ngIf="this.isIndividual">
+    <div style="display: flex;flex-direction: row;">
+      <div style="margin-right: 1%;">
+        <label>Email: {{this.individual.email}}</label>
+      </div>
+      <div>
+        <label>Telefon: {{this.individual.phoneNumber}}</label>
+      </div>
+    </div>
+    <div>
+      <euprava-person [person]="this.individual.person"></euprava-person>
+    </div>
+  </div>
+
+  <div *ngIf="!this.isIndividual">
+    <div>
+      <label>Email: {{this.legal.email}}</label>
+    </div>
+    <div>
+      <label>Telefon: {{this.legal.phoneNumber}}</label>
+    </div>
+    <div>
+      <label>Pravno Ime: {{this.legal.legalName}}</label>
+    </div>
+    <div>
+      <euprava-address [address]="this.legal.address"></euprava-address>
+    </div>
+  </div>
+
+</div>
