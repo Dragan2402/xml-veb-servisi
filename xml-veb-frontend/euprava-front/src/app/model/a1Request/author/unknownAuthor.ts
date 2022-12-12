@@ -10,4 +10,7 @@ export class UnknownAuthor extends Author{
     return "Nepoznati autor";
   }
 
+  public ToTableData():string{
+    return "";
+  };
 }

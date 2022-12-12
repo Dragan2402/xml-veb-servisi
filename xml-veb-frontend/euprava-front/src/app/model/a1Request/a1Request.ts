@@ -18,6 +18,7 @@ import { LegalSubmitter } from "./submitter/legalSubmitter";
 import { Submitter } from "./submitter/submitter";
 
 export class A1Request{
+
   id : string;
   submitter : Submitter;
   attorney? : Person;
@@ -39,39 +40,50 @@ export class A1Request{
   //   this.submissionNumber = submissionNumber;
   //   this.submissionDate = submissionDate;
 
-  constructor(data : any){
+  constructor();
+  constructor(data:any)
+  constructor(data? : any){
 
-    this.id = data.id;
+    if(data !== undefined){
+      this.id = data.id;
 
-    this.submitter = this.GetSubmitter(data.podnosilac);
+      this.submitter = this.GetSubmitter(data.podnosilac);
 
 
-    if(data.punomocnik === null){
-      this.attorney = undefined;
+      if(data.punomocnik === null){
+        this.attorney = undefined;
+      }else{
+        this.attorney = this.GetPerson(data.punomocnik);
+      }
+
+      this.piece = this.GetPiece(data.djelo);
+
+      this.signature = data.potpis;
+
+      if(data.sifraOpisa === null){
+        this.descriptionId = undefined;
+      }else{
+        this.descriptionId = data.sifraOpisa;
+      }
+
+      if(data.sifraPrimjera === null){
+        this.exampleId = undefined;
+      }else{
+        this.exampleId = data.sifraPrimjera;
+      }
+
+      this.submissionNumber = data.brojPrijave;
+
+      this.submissionDate = new Date(data.datumPodnosenja);
     }else{
-      this.attorney = this.GetPerson(data.punomocnik);
+      this.id = '0';
+      this.submitter = new LegalSubmitter('','','',new Address('','','',0));
+      this.piece = new Piece('',PieceType.INFORMACIONE_TEHNOLOGIJE,WriteForm.AUDIO,[],false,'',new OriginalPiece('',[]));
+      this.signature = '';
+      this.submissionDate= new Date();
+      this.submissionNumber = 0;
     }
-
-    this.piece = this.GetPiece(data.djelo);
-
-    this.signature = data.potpis;
-
-    if(data.sifraOpisa === null){
-      this.descriptionId = undefined;
-    }else{
-      this.descriptionId = data.sifraOpisa;
-    }
-
-    if(data.sifraPrimjera === null){
-      this.exampleId = undefined;
-    }else{
-      this.exampleId = data.sifraPrimjera;
-    }
-
-    this.submissionNumber = data.brojPrijave;
-
-    this.submissionDate = new Date(data.datumPodnosenja);
-    }
+  }
 
 
 
@@ -137,8 +149,11 @@ export class A1Request{
   }
 
 
-  private GetOriginalPiece(o : any):OriginalPiece{
+  private GetOriginalPiece(o : any):any{
+    if(o !== null){
     return new OriginalPiece(o.naslovOriginalnogDjela,this.GetOriginalAuthors(o));
+    }
+    return undefined;
   }
 
   private GetType(type : string):PieceType{
@@ -194,5 +209,30 @@ export class A1Request{
     const a1String = "A1 Zahtjev\nID: " + this.id + "\nPodnosilac: " + this.submitter.ToString()+ "\nPunomocnik: " +attoreneyString+ "\nDjelo: "+this.piece.ToString() +"\nPotpis: " +this.signature
     + "\nSifra opisa: " +this.descriptionId+ "\nSifra primjera: " +this.exampleId+ "\nBroj prijave: " +this.submissionNumber.toString()+ "\nDatum prijave: " +this.submissionDate.toString();
     return a1String;
+  }
+
+
+  public SetSubmitter(submitter : Submitter):void{
+    this.submitter = submitter;
+  }
+
+  public SetAttorney(attorney: Person):void {
+    this.attorney = attorney;
+  }
+
+  public SetSignature(signature:string):void{
+    this.signature = signature;
+  }
+
+  public SetPiece(piece:Piece):void{
+    this.piece = piece;
+  }
+
+  public SetDescriptionId(id:string){
+    this.descriptionId = id;
+  }
+
+  public SetExampleId(id:string){
+    this.exampleId = id;
   }
 }

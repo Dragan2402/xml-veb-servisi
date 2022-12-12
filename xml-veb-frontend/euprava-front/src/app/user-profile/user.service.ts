@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders,  } from '@angular/common/http';
 import { Injectable , Inject} from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { map, Observable, throwError } from 'rxjs';
 import { AppConfig } from '../AppConfig/appconfig.interface';
 import { APP_SERVICE_CONFIG } from '../AppConfig/appconfig.service';
 import axios from 'axios';
@@ -26,4 +26,44 @@ export class UserService {
     return this.http.get("/api/a1");
 
   }
+
+  SubmitA1Request(request: A1Request, descriptionFile?: File, exampleFile? : File) {
+    if(descriptionFile===undefined && exampleFile===undefined){
+      axios.post('/api/a1',request);
+    }else{
+      if(descriptionFile !==undefined){
+        const formData = new FormData();
+        formData.append('file',<File>descriptionFile, (<File>descriptionFile).name);
+        axios.post('/api/a1/uploadDescriptionFile',formData).then((response) =>{
+          request.SetDescriptionId(response.data);
+          if(exampleFile !==undefined){
+            const exampleFormData = new FormData();
+            exampleFormData.append('file',<File>exampleFile, (<File>exampleFile).name);
+            axios.post('/api/a1/uploadExampleFile',exampleFormData).then((response) =>{
+              request.SetExampleId(response.data);
+              axios.post('/api/a1',request);
+            });
+          }else{
+            axios.post('/api/a1',request);
+          }
+        })
+      }else{
+        const exampleFormData = new FormData();
+        exampleFormData.append('file',<File>exampleFile, (<File>exampleFile).name);
+        axios.post('/api/a1/uploadExampleFile',exampleFormData).then((response) =>{
+          request.SetExampleId(response.data);
+          axios.post('/api/a1',request);
+        });
+      }
+    }
+  }
+
+  UploadDescriptionFile(formData: FormData) : Observable<any>{
+
+    return this.http.post<string>('/api/a1/uploadDescriptionFile',formData, { responseType: 'text' as 'json' }).pipe(
+      map((response:any) =>{
+        return response;
+      }
+      ));
+    }
 }

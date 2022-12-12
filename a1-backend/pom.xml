@@ -92,23 +92,28 @@
                     </excludes>
                 </configuration>
             </plugin>
+
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jaxb2-maven-plugin</artifactId>
-                <version>1.5</version>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <version>0.14.0</version>
                 <executions>
                     <execution>
-                        <id>xjc</id>
                         <goals>
-                            <goal>xjc</goal>
+                            <goal>generate</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
-                    <outputDirectory>target/generated-sources/jaxb</outputDirectory>
-                    <packageName>com.euprava</packageName>
-                    <schemaDirectory>src/main/resources/data/schemas</schemaDirectory>
-                    <schemaFiles>a1_shema.xsd</schemaFiles>
+                    <schemaDirectory>${project.basedir}/src/main/resources/data/schemas</schemaDirectory>
+                    <schemaIncludes>
+                        <include>*.xsd</include>
+                    </schemaIncludes>
+                    <generateDirectory>${project.basedir}/src/main/java</generateDirectory>
                 </configuration>
             </plugin>
         </plugins>

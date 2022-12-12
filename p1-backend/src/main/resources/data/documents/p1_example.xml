@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Obrazac_P1 xmlns="http://euprava.com/p1/model"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://euprava.com/p1/model ../schemas/p1_schema.xsd">
+    <Popunjava_zavod>
+        <Broj_prijave>1/22</Broj_prijave>
+        <Datum_prijema>2022-11-30</Datum_prijema>
+        <Priznati_datum_podnosenja>2022-11-30</Priznati_datum_podnosenja>
+    </Popunjava_zavod>
+    <Zahtev_za_priznanje_patenta>
+        <Naziv_pronalaska>
+            <Na_srpskom>Automatski sistemi kočenja</Na_srpskom>
+            <Na_engleskom>Autonomous braking system</Na_engleskom>
+        </Naziv_pronalaska>
+        <Podnosilac_prijave>
+            <Podnosilac_je_pronalazac>false</Podnosilac_je_pronalazac>
+            <Lice xsi:type="TPravni_podnosilac">
+                <Adresa xsi:type="TPuna_adresa">
+                    <Ulica>Glavna</Ulica>
+                    <Broj>23</Broj>
+                    <Postanski_broj>11080</Postanski_broj>
+                    <Mesto>Zemun</Mesto>
+                    <Drzava>Srbija</Drzava>
+                </Adresa>
+                <Kontakt_informacije>
+                    <Broj_telefona>011/2194-492</Broj_telefona>
+                    <E_posta>br_assistant@gmail.com</E_posta>
+                    <Broj_faksa>011/2194-492</Broj_faksa>
+                </Kontakt_informacije>
+                <Poslovno_ime>BRAKING ASSISSTANT</Poslovno_ime>
+            </Lice>
+        </Podnosilac_prijave>
+        <Pronalazac>
+            <Pronalazac_nije_naveden>false</Pronalazac_nije_naveden>
+            <Lice>
+                <Adresa>
+                    <Ulica>4. Sremski Bataljon</Ulica>
+                    <Broj>10</Broj>
+                    <Postanski_broj>11080</Postanski_broj>
+                    <Mesto>Zemun</Mesto>
+                    <Drzava>Srbija</Drzava>
+                </Adresa>
+                <Kontakt_informacije>
+                    <Broj_telefona>066/936-8575</Broj_telefona>
+                    <E_posta>dilic@gmail.com</E_posta>
+                    <Broj_faksa></Broj_faksa>
+                </Kontakt_informacije>
+                <Ime>Dragutin</Ime>
+                <Prezime>ILIĆ</Prezime>
+                <Drzavljanstvo></Drzavljanstvo>
+            </Lice>
+        </Pronalazac>
+        <Punomocnik_ili_predstavnik>
+            <Tip>Punomocnik_za_prijem_pismena</Tip>
+            <Lice xsi:type="TFizicko_lice">
+                <Adresa>
+                    <Ulica>4. Sremski bataljon</Ulica>
+                    <Broj>6</Broj>
+                    <Postanski_broj>11080</Postanski_broj>
+                    <Mesto>Zemun</Mesto>
+                </Adresa>
+                <Kontakt_informacije>
+                    <Broj_telefona>066/936-8581</Broj_telefona>
+                    <E_posta>jovanr@gmail.com</E_posta>
+                </Kontakt_informacije>
+                <Ime>Jovan</Ime>
+                <Prezime>RAJAČIĆ</Prezime>
+            </Lice>
+        </Punomocnik_ili_predstavnik>
+    </Zahtev_za_priznanje_patenta>
+</Obrazac_P1>

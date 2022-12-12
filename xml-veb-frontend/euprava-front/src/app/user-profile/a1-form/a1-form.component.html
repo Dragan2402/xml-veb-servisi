@@ -1,31 +1,363 @@
-<div class="a1-component">
-  <div class="a1-from-div">
+<div class="form-div">
 
-    <div class="submiter-div">
-      <mat-form-field appearance="fill">
-        <mat-label>Podnosilac</mat-label>
-        <input matInput>
-      </mat-form-field>
+  <mat-card  style="background-color: #3F51B5;">
+    <mat-card >
+      <mat-card-title>Forma A1 Zahtjev</mat-card-title>
+      <mat-card-content>
+        <mat-card-subtitle>Podnosilac</mat-card-subtitle>
+        <div>
+          <div>
+            <mat-radio-group class="submitter-radio-group" [(ngModel)]="isLegalSubmitter">
+              <mat-radio-button style="margin-right: 5%;" [value]=false>Fizicki Podnosilac</mat-radio-button>
+              <mat-radio-button  [value]=true>Pravni Podnosilac</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+        <div *ngIf="isLegalSubmitter">
+          <div class="submitter-div">
+            <div style="display: flex;flex-direction: column;margin-right: 13%;">
+              <mat-card-subtitle style="margin-bottom: 2%;">Osnovni podaci</mat-card-subtitle>
+              <mat-form-field >
+                <input matInput placeholder="Pravno ime" [formControl]="submitterLegalName" required>
+              </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Select</mat-label>
-        <mat-select>
-          <mat-option value="one">First option</mat-option>
-          <mat-option value="two">Second option</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-    <div class="piece-div">
-      <mat-form-field appearance="fill">
-        <mat-label>Delo</mat-label>
-        <input matInput>
-      </mat-form-field>
-    </div>
-  </div>
+              <mat-form-field >
+                <input matInput placeholder="Email adresa" [formControl]="submitterEmail" required>
+                <mat-error *ngIf="submitterEmail.invalid">{{getEmailErrorMessage()}}</mat-error>
+              </mat-form-field>
 
-  <div class="a1-submit-row">
-    <button mat-raised-button color="warn">Odustani</button>
-    <button mat-raised-button color="primary">Podnesi Zahtev</button>
-  </div>
+              <mat-form-field >
+                <input matInput placeholder="Broj telefona" [formControl]="submitterPhoneNumber" required>
+                <mat-error *ngIf="submitterPhoneNumber.invalid">{{getPhoneNumberErrorMessage()}}</mat-error>
+              </mat-form-field>
+            </div>
+            <div style="display: flex;flex-direction: column;">
+              <mat-card-subtitle style="margin-bottom: 2%;">Adresa</mat-card-subtitle>
+              <mat-form-field >
+                <input matInput placeholder="Mjesto" [formControl]="submitterPlace" required>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput placeholder="Postanski broj" [formControl]="submitterZipCode" required>
+              </mat-form-field>
+              <mat-form-field >
+                <input matInput placeholder="Ulica" [formControl]="submitterStreet" required>
+              </mat-form-field>
+              <mat-form-field >
+                <input matInput placeholder="Broj" [formControl]="submitterStreetNumber" required>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="!isLegalSubmitter">
+          <div class="submitter-div">
+            <div>
+              <mat-card-subtitle style="margin-bottom: 2%;">Osnovni podaci</mat-card-subtitle>
+              <mat-form-field >
+                <input matInput placeholder="Ime" [formControl]="submitterIndividualFirstName" required>
+              </mat-form-field>
+
+              <mat-form-field >
+                <input matInput placeholder="Prezime" [formControl]="submitterIndividualLastName" required>
+              </mat-form-field>
+
+              <mat-form-field >
+                <input matInput placeholder="Email adresa" [formControl]="submitterEmail" required>
+                <mat-error *ngIf="submitterEmail.invalid">{{getEmailErrorMessage()}}</mat-error>
+              </mat-form-field>
+
+              <mat-form-field >
+                <input matInput placeholder="Broj telefona" [formControl]="submitterPhoneNumber" required>
+                <mat-error *ngIf="submitterPhoneNumber.invalid">{{getPhoneNumberErrorMessage()}}</mat-error>
+              </mat-form-field>
+            </div>
+            <div >
+              <mat-card-subtitle style="margin-bottom: 2%;">Adresa</mat-card-subtitle>
+              <mat-form-field>
+                <input matInput placeholder="Mjesto" [formControl]="submitterPlace" required>
+              </mat-form-field>
+              <mat-form-field >
+                <input matInput placeholder="Postanski broj" [formControl]="submitterZipCode" required>
+              </mat-form-field>
+              <mat-form-field >
+                <input matInput placeholder="Ulica" [formControl]="submitterStreet" required>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput placeholder="Broj" [formControl]="submitterStreetNumber" required>
+              </mat-form-field>
+            </div>
+            <div style="display: flex;flex-direction: column;margin-right: 8%;">
+              <div style="display: flex; justify-content: left;margin-bottom: 2%;">
+                <mat-card-subtitle style="margin-bottom: 2%;">Drzavljanstvo</mat-card-subtitle>
+              </div>
+              <div>
+                <mat-radio-group class="submitter-radio-group" [(ngModel)]="isForeignCitizenship">
+                  <mat-radio-button style="margin-right: 7%;"  [value]=false>Domace</mat-radio-button>
+                  <mat-radio-button  [value]=true>Strano</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div *ngIf="isForeignCitizenship">
+                <mat-form-field>
+                  <input matInput placeholder="Broj pasosa" [formControl]="submitterPassport" required>
+                </mat-form-field>
+              </div>
+              <div *ngIf="!isForeignCitizenship">
+                <mat-form-field>
+                  <input matInput placeholder="Jmbg" [formControl]="submitterJmbg" required>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-content >
+        <mat-card-subtitle>Punomocnik</mat-card-subtitle>
+        <div >
+          <mat-radio-group class="submitter-radio-group" [(ngModel)]="hasAttorney">
+            <mat-radio-button style="margin-right: 5%;"  [value]=false>Bez punomocnika</mat-radio-button>
+            <mat-radio-button  [value]=true>Sa punomocnikom</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div *ngIf="hasAttorney" >
+          <div class="attorney-div">
+            <div style="display: flex;flex-direction: column;margin-right: 14%;">
+              <mat-card-subtitle style="margin-bottom: 2%;">Osnovni podaci</mat-card-subtitle>
+              <mat-form-field>
+                <input matInput placeholder="Ime" [formControl]="attorneyFirstName" required>
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput placeholder="Prezime" [formControl]="attorneyLastName" required>
+              </mat-form-field>
+            </div>
+            <div style="display: flex;flex-direction: column;margin-right: 13%;">
+              <mat-card-subtitle style="margin-bottom: 2%;">Adresa</mat-card-subtitle>
+              <mat-form-field  >
+                <input matInput placeholder="Mjesto" [formControl]="attorneyPlace" required>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput placeholder="Postanski broj" [formControl]="attorneyZipCode" required>
+              </mat-form-field>
+              <mat-form-field  >
+                <input matInput placeholder="Ulica" [formControl]="attorneyStreet" required>
+              </mat-form-field>
+              <mat-form-field  >
+                <input matInput placeholder="Broj" [formControl]="attorneyStreetNumber" required>
+              </mat-form-field>
+            </div>
+            <div style="display: flex;flex-direction: column;margin-right: 8%;">
+              <div style="display: flex; justify-content: left;margin-bottom: 2%;">
+                <mat-card-subtitle style="margin-bottom: 2%;">Drzavljanstvo</mat-card-subtitle>
+              </div>
+              <div  >
+                <mat-radio-group class="submitter-radio-group" [(ngModel)]="attorneyIsForeignCitizenship">
+                  <mat-radio-button style="margin-right: 7%;"  [value]=false>Domace</mat-radio-button>
+                  <mat-radio-button  [value]=true>Strano</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div *ngIf="attorneyIsForeignCitizenship">
+                <mat-form-field >
+                  <input matInput placeholder="Broj pasosa" [formControl]="attorneyPassport" required>
+                </mat-form-field>
+              </div>
+              <div *ngIf="!attorneyIsForeignCitizenship">
+                <mat-form-field>
+                  <input matInput placeholder="Jmbg" [formControl]="attorneyJmbg" required>
+                </mat-form-field>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-content>
+        <div class="piece-div">
+          <div >
+            <mat-card-subtitle>Djelo</mat-card-subtitle>
+            <mat-form-field  style="width: 50%;">
+              <input matInput placeholder="Naslov djela" [formControl]="pieceTittle" required>
+            </mat-form-field>
+          </div>
+
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-label>Vrsta djela</mat-label>
+              <mat-select [(value)]="selectedPieceType">
+                <mat-option *ngFor="let piece of pieceTypes" [value]="piece">
+                  {{piece.toString()}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-label>Forma zapisa djela</mat-label>
+              <mat-select [(value)]="selectedWriteFrom">
+                <mat-option *ngFor="let writeForm of writeForms" [value]="writeForm">
+                  {{writeForm.toString()}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div style="min-height: 180px;">
+          <div>
+            <mat-radio-group class="submitter-radio-group" [(ngModel)]="authorType">
+              <mat-radio-button style="margin-right: 5%;" [value]=0 (change)="ResetAuthors()">Podnosilac je autor</mat-radio-button>
+              <mat-radio-button style="margin-right: 5%;" [value]=1 (change)="ResetAuthors()">Anonimni autor</mat-radio-button>
+              <mat-radio-button [value]=2                           (change)="ResetAuthors()">Poznati autori</mat-radio-button>
+            </mat-radio-group>
+          </div>
+
+          <div *ngIf="authorType==2"  >
+            <div class="authors-div">
+              <div style="display: flex; flex-direction: row;margin-bottom: 3%;">
+                <div style="display: flex;justify-content: left;margin-top: 3%;margin-right: 38%;">
+                  <mat-card-subtitle >Autori</mat-card-subtitle>
+                </div>
+                <div style="display:flex; justify-content: center; margin-top: 3%;">
+                  <button mat-raised-button color="primary"  (click)="openAuthorFormModal()">Dodaj autora</button>
+                </div>
+              </div>
+
+              <div class="authors-table">
+
+                <div *ngFor="let author of pieceAuthors,let i = index" [attr.data-index]="i" class="author-div">
+                  <div style="display: flex; flex-direction: row;font-family: 'Times New Roman', Times, serif;align-items: center;justify-content: center;">
+                    <span style="margin-right: 2%;font-size: 15;">{{i+1}}.</span>
+                    <div style="display: flex;flex-direction: row;min-width: 250px;justify-content: center;font-size: 22px">
+                      <span>
+                        <label>{{author.ToTableData()}}</label>
+                      </span>
+                    </div>
+                    <button mat-icon-button color="warn" (click)="DeleteAuthor(author)" aria-label="Izbrisi autora">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                  </div>
+                </div>
+              </div>
+
+          </div>
+        </div>
+          <div style="margin-top: 5%;margin-bottom:3%">
+            <mat-checkbox  class="checkbox-margin"  [(ngModel)]="isInWorkRelationship">Stvoreno u radnom odnosu</mat-checkbox>
+          </div>
+
+          <mat-form-field style="width: 40%;" >
+            <input matInput placeholder="Nacin koriscenja djela" [formControl]="pieceTypeOfUse">
+          </mat-form-field>
+        </div>
+
+      </mat-card-content>
+
+      <div style="min-height: 180px;">
+      <mat-card-content>
+        <mat-card-subtitle>Originalno djelo</mat-card-subtitle>
+        <div>
+          <mat-radio-group class="submitter-radio-group" [(ngModel)]="isPieceOriginal">
+            <mat-radio-button style="margin-right: 5%;" [value]=true>Djelo je original</mat-radio-button>
+            <mat-radio-button [value]=false>Djelo kreirano po uzoru</mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+        <div *ngIf="!isPieceOriginal"  >
+
+          <mat-form-field style="width: 40%;margin-top: 2%;">
+            <input matInput placeholder="Naslov djela" [formControl]="originalPieceTitle" required>
+          </mat-form-field>
+
+
+          <div  >
+            <mat-radio-group class="submitter-radio-group" [(ngModel)]="originalAuthorType">
+              <mat-radio-button style="margin-right: 5%;" [value]=0 (change)="ResetOriginalAuthors()">Anonimni autor</mat-radio-button>
+              <mat-radio-button  [value]=1 (change)="ResetOriginalAuthors()">Poznati autori</mat-radio-button>
+            </mat-radio-group>
+          </div>
+
+          <div *ngIf="originalAuthorType===1"   >
+            <div class="authors-div">
+              <div style="display: flex; flex-direction: row;margin-bottom: 3%;">
+                <div style="display: flex;justify-content: left;margin-top: 3%;margin-right: 27%;">
+                  <mat-card-subtitle >Originalni autori</mat-card-subtitle>
+                </div>
+                <div style="display:flex; justify-content: center; margin-top: 3%;">
+                  <button mat-raised-button color="primary"  (click)="OpenOriginalAuthorFormModal()">Dodaj originalnog autora</button>
+                </div>
+              </div>
+
+              <div class="authors-table">
+
+                <div *ngFor="let author of originalPieceAuthors,let i = index" [attr.data-index]="i" class="author-div">
+                  <div style="display: flex; flex-direction: row;font-family: 'Times New Roman', Times, serif;align-items: center;justify-content: center;">
+                    <span style="margin-right: 2%;font-size: 15;">{{i+1}}.</span>
+                    <div style="display: flex;flex-direction: row;min-width: 250px;justify-content: center;font-size: 22px">
+                      <span>
+                        <label>{{author.ToTableData()}}</label>
+                      </span>
+                    </div>
+                    <button mat-icon-button color="warn" (click)="DeleteOriginalAuthor(author)" aria-label="Izbrisi autora">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </mat-card-content>
+      </div>
+
+      <div>
+        <mat-card-content>
+          <mat-card-subtitle>Opis autorskog djela</mat-card-subtitle>
+          <input (change)="this.onDescriptionFilechange($event)" type="file" class="file-input" id="formDescriptionFile">
+          <button mat-button color="warn" *ngIf="this.descriptionFile !== undefined" (click)="this.deleteDescriptionFile()" type="button" class="btn btn-primary mt-3"><mat-icon>delete</mat-icon></button>
+        </mat-card-content>
+
+        <mat-card-content style="margin-top: 3%;">
+          <mat-card-subtitle>Primjer autorskog djela</mat-card-subtitle>
+
+            <input (change)="this.onExampleFilechange($event)" class="file-input" type="file" id="formExampleFile">
+
+          <button mat-button color="warn" *ngIf="this.exampleFile !== undefined" (click)="this.deleteExampleFile()" type="button" class="btn btn-primary mt-3"><mat-icon>delete</mat-icon></button>
+        </mat-card-content>
+      </div>
+
+      <mat-card-content >
+        <div class="signature-div">
+          <div style="display:flex; flex-direction: column;">
+            <div style="display:flex;justify-content: center;">
+              <mat-card-subtitle>Potpis</mat-card-subtitle>
+            </div>
+            <div style="display:flex;justify-content: center;">
+              <mat-form-field style="min-width: 333px;">
+                <input style="text-align: center;font-family: Brush Script MT, Brush Script Std, cursive; font-size: 28px;" matInput [formControl]="submitterSignature" required>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-content>
+        <div class="submit-buttons-row">
+          <div style="margin-right: auto;margin-left: 5%;" >
+            <button mat-raised-button color="warn" (click)="CancelRequest()">Odustani</button>
+          </div>
+
+          <div style="margin-left: auto;margin-right: 5%;">
+            <button mat-raised-button  color="primary" (click)="SubmitRequest()">Podnesi Zahtev</button>
+          </div>
+        </div>
+      </mat-card-content>
+
+    </mat-card>
+
+
+  </mat-card>
 </div>
+
 

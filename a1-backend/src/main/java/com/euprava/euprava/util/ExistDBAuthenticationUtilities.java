@@ -8,7 +8,7 @@ import java.util.Properties;
 
 @Component
 public class ExistDBAuthenticationUtilities {
-    private static String connectionUri = "xmldb:exist://%1$s:%2$s/exist/xmlrpc";
+    //private static String connectionUri = "xmldb:exist://localhost:8081/exist/xmlrpc";
 
     /**
      * Connection parameters.
@@ -31,7 +31,7 @@ public class ExistDBAuthenticationUtilities {
             host = props.getProperty("conn.host").trim();
             port = Integer.parseInt(props.getProperty("conn.port"));
 
-            uri = String.format(connectionUri, host, port);
+            uri = "xmldb:exist://localhost:8081/exist/xmlrpc";
 
             driver = props.getProperty("conn.driver").trim();
         }
@@ -43,18 +43,12 @@ public class ExistDBAuthenticationUtilities {
      * @return the configuration object
      */
     public static ConnectionProperties loadProperties() throws IOException {
-        String propsName = "main/resources/application.properties";
-
-        InputStream propsStream = openStream(propsName);
-
-        if (propsStream == null) {
-            throw new IOException("Could not read properties " + propsName);
-        }
-
-
+        String resourceName = "application.properties"; // could also be a constant
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
         Properties props = new Properties();
-        props.load(propsStream);
-
+        try(InputStream resourceStream = loader.getResourceAsStream(resourceName)) {
+            props.load(resourceStream);
+        }
         return new ConnectionProperties(props);
     }
 

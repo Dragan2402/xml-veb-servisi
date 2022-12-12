@@ -29,5 +29,6 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+/a1-backend/src/main/resources/data
 ### VS Code ###
 .vscode/

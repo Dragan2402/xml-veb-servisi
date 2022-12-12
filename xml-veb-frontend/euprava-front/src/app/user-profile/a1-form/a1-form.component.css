@@ -1,35 +1,69 @@
-:host {
+.form-div{
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  margin-left: 20% ;
+  margin-top: 2%;
+  margin-right: 20%;
+}
+.submitter-radio-group {
+  display: inline-flex;
+  flex-direction: row;
 }
 
-.a1-from-div{
+.submitter-div{
   display: flex;
   flex-direction: row;
-  flex-grow: 5;
+  margin-top: 3%;
 }
 
-.a1-component{
+.attorney-div{
   display: flex;
-  flex-direction: column;
-  margin: auto;
-}
-
-.a1-submit-row{
- flex-grow: 1;
- display: flex;
- flex-direction: row;
-}
-
-.submiter-div{
-  display: flex;
-  flex-direction: column;
-  margin-right: 5%;
+  flex-direction: row;
+  margin-top: 3%;
 }
 
 .piece-div{
   display: flex;
   flex-direction: column;
-  margin-left: 5%;
+  margin-top: 3%;
 }
+.authors-div{
+  display: flex;
+  flex-direction: column;
+  min-height: 150px;
+}
+
+.authors-table{
+  display: flex;
+  flex-direction: column;
+}
+
+.author-div{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1%;
+}
+
+.submit-buttons-row{
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 5%;
+}
+
+.signature-div{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+mat-card-content{
+  margin-top: 3%;
+}
+
+.file-input{
+  content: "Odaberite datoteku";
+
+}
+

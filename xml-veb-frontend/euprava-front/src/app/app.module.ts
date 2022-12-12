@@ -18,7 +18,11 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import {MatCard, MatCardModule} from '@angular/material/card';
-
+import {MatTableModule} from '@angular/material/table';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatMenuModule} from '@angular/material/menu';
 import { A1FormComponent } from './user-profile/a1-form/a1-form.component';
 import {MatSelectModule} from '@angular/material/select';
@@ -32,6 +36,8 @@ import { CitizenshipComponent } from './user-profile/user-requests/a1-request/pe
 import { PieceComponent } from './user-profile/user-requests/a1-request/piece/piece.component';
 import { OriginalPieceComponent } from './user-profile/user-requests/a1-request/piece/original-piece/original-piece.component';
 import { AuthorComponent } from './user-profile/user-requests/a1-request/piece/author/author.component';
+import {MatRadioModule} from '@angular/material/radio';
+import { AuthorFormModalComponent } from './user-profile/a1-form/author-form-modal/author-form-modal.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +54,8 @@ import { AuthorComponent } from './user-profile/user-requests/a1-request/piece/a
     CitizenshipComponent,
     PieceComponent,
     OriginalPieceComponent,
-    AuthorComponent
+    AuthorComponent,
+    AuthorFormModalComponent
   ],
   imports: [
     BrowserModule,
@@ -68,6 +75,12 @@ import { AuthorComponent } from './user-profile/user-requests/a1-request/piece/a
     MatMenuModule,
     MatSelectModule,
     MatCardModule,
+    MatRadioModule,
+    MatCheckboxModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatTableModule,
     HttpClientModule
 
   ],

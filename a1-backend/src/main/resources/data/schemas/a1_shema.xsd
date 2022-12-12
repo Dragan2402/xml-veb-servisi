@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-    targetNamespace="http://euprava.rs/a1" xmlns:a1="http://euprava.rs/a1">
+    targetNamespace="http://euprava.euprava.com/model/a1Sertifikat" xmlns:a1="http://euprava.euprava.com/model/a1Sertifikat">
 
     <xs:element name="obrazacA1">
         <xs:complexType>
