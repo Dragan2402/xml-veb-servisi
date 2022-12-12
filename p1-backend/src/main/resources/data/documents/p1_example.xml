@@ -67,5 +67,18 @@
                 <Prezime>RAJAČIĆ</Prezime>
             </Lice>
         </Punomocnik_ili_predstavnik>
+        <Nacin_dostavljanja>Papirni_dokument</Nacin_dostavljanja>
+        <Zahtev_za_priznanje_prava_prvenstva>
+            <Ranija_prijava>
+                <Datum_podnosenja_ranije_prijave>2021-12-12</Datum_podnosenja_ranije_prijave>
+                <Broj_ranije_prijave>3/21</Broj_ranije_prijave>
+                <Oznaka_drzave_ili_organizacije>rs</Oznaka_drzave_ili_organizacije>
+            </Ranija_prijava>
+            <Ranija_prijava>
+                <Datum_podnosenja_ranije_prijave>2021-12-12</Datum_podnosenja_ranije_prijave>
+                <Broj_ranije_prijave>4/21</Broj_ranije_prijave>
+                <Oznaka_drzave_ili_organizacije>rs</Oznaka_drzave_ili_organizacije>
+            </Ranija_prijava>
+        </Zahtev_za_priznanje_prava_prvenstva>
     </Zahtev_za_priznanje_patenta>
 </Obrazac_P1>
