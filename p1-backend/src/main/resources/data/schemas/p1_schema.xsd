@@ -32,6 +32,7 @@
                     </xs:restriction>
                 </xs:simpleType>
             </xs:element>
+            <xs:element name="Mesto" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="TPuna_adresa">
@@ -54,9 +55,7 @@
             <xs:element name="Broj_telefona" type="xs:string"/>
             <xs:element name="E_posta">
                 <xs:simpleType>
-                    <xs:restriction base="xs:string">
-                        <xs:pattern value="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$"/>
-                    </xs:restriction>
+                    <xs:restriction base="xs:string"> </xs:restriction>
                 </xs:simpleType>
             </xs:element>
         </xs:sequence>
@@ -137,7 +136,7 @@
                     <xs:element name="Poslovno_ime">
                         <xs:simpleType>
                             <xs:restriction base="xs:string">
-                                <xs:pattern value="[A-ZŠĐČĆŽ]+"/>
+                                <xs:pattern value="[A-ZŠĐČĆŽ ]+"/>
                             </xs:restriction>
                         </xs:simpleType>
                     </xs:element>
