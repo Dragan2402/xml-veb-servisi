@@ -1,4 +1,4 @@
-package com.example.z1;
+package com.euprava.z1;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

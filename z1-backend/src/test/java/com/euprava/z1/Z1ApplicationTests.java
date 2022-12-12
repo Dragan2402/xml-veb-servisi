@@ -1,4 +1,4 @@
-package com.example.z1;
+package com.euprava.z1;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
