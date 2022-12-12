@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<obrazacA1 xmlns="http://euprava.rs/a1"
+<obrazacA1 xmlns="http://euprava.euprava.com/model/a1Sertifikat"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://euprava.rs/a1 file:/C:/Users/draga/OneDrive/Dokumenti/4.%20Godina/XML%20i%20Web%20Servisi/Projekat/xml-veb-servisi/a1-backend/src/main/resources/data/schemas/a1_shema.xsd">
+    xsi:schemaLocation="http://euprava.euprava.com/model/a1Sertifikat file:/C:/Users/draga/OneDrive/Dokumenti/4.%20Godina/XML%20i%20Web%20Servisi/Projekat/xml-veb-servisi/a1-backend/src/main/resources/data/schemas/a1_shema.xsd">
     <id>1</id>
     <Podnosilac xsi:type="TPravni_Podnosilac">
         <Telefon>132132132</Telefon>
