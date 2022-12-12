@@ -51,7 +51,7 @@
 
         <div *ngIf="!isLegalSubmitter">
           <div class="submitter-div">
-            <div>
+            <div style="display: flex;flex-direction: column;margin-right: 13%;">
               <mat-card-subtitle style="margin-bottom: 2%;">Osnovni podaci</mat-card-subtitle>
               <mat-form-field >
                 <input matInput placeholder="Ime" [formControl]="submitterIndividualFirstName" required>
@@ -71,7 +71,7 @@
                 <mat-error *ngIf="submitterPhoneNumber.invalid">{{getPhoneNumberErrorMessage()}}</mat-error>
               </mat-form-field>
             </div>
-            <div >
+            <div style="display: flex;flex-direction: column; margin-right: 10%;">
               <mat-card-subtitle style="margin-bottom: 2%;">Adresa</mat-card-subtitle>
               <mat-form-field>
                 <input matInput placeholder="Mjesto" [formControl]="submitterPlace" required>
