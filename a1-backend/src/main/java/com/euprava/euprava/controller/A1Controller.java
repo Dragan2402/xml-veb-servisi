@@ -4,6 +4,7 @@ import com.euprava.euprava.model.a1sertifikat.ObrazacA1;
 import com.euprava.euprava.service.IA1Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,14 +22,9 @@ public class A1Controller {
     @Autowired
     private IA1Service a1Service;
 
-    @GetMapping
+    @GetMapping(produces = {"application/xml"})
     public ResponseEntity<ObrazacA1> getA1() throws JAXBException {
         return new ResponseEntity<>(a1Service.getExample(), HttpStatus.OK);
-    }
-
-    @GetMapping("test")
-    public ResponseEntity<String> getTest(){
-        return new ResponseEntity("ok",HttpStatus.OK);
     }
 
     @PostMapping

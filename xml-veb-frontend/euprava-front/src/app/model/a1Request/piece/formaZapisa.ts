@@ -1,4 +1,4 @@
-export enum WriteForm{
+export enum FormaZapisa{
   PISANA = "Pisana",
   AUDIO = "Audio",
   VIZUELNA = "Vizuelna",

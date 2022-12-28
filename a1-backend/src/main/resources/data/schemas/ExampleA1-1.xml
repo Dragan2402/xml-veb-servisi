@@ -14,17 +14,7 @@
                 <Broj>24</Broj>
          </Adresa>
     </Podnosilac>
-    <Punomocnik>
-        <Ime>Jovan</Ime>
-        <Prezime>Jovic</Prezime>
-        <Adresa>
-            <Mjesto>Jovanova ulica</Mjesto>
-            <Postanski_Broj>23233</Postanski_Broj>
-            <Ulica>Mikarska</Ulica>
-            <Broj>23</Broj>
-        </Adresa>
-        <Drzavljanstvo xsi:type="TDomace_Drzavljanstvo"><Jmbg>2402111685390</Jmbg></Drzavljanstvo>
-    </Punomocnik>
+
     <Djelo>
         <Naslov>Gage Perez</Naslov>
         <Vrsta_Djela>Informacione Tehnologije</Vrsta_Djela>

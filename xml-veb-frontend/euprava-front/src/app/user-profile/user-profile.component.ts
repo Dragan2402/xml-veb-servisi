@@ -21,8 +21,5 @@ export class UserProfileComponent implements OnInit {
     this.route.navigate(['/a1-from']);
   }
 
-  getExample(){
-    this.userService.getExample();
-  }
 
 }

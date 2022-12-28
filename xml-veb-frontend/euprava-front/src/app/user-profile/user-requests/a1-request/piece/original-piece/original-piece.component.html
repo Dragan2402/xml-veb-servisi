@@ -2,12 +2,12 @@
   <div style="margin-right: 2%;">
 
     <div>
-      <label>Naslov: {{originalPiece.title}}</label>
+      <label>Naslov: {{originalPiece.naslov_originalnog_djela}}</label>
     </div>
   </div>
  <div style="margin-right: 2%;display: flex; flex-direction: row;">
   <mat-card-subtitle style="margin-right: 2%;">Autori </mat-card-subtitle>
-  <div *ngFor="let author of originalPiece.authors">
+  <div *ngFor="let author of originalPiece.poznati_originalni_autor">
     <euprava-author [author]="author"></euprava-author>
   </div>
  </div>

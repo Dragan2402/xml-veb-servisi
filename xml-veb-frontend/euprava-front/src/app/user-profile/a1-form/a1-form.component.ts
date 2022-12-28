@@ -1,27 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { interval, firstValueFrom } from 'rxjs';
-import { Submitter } from 'src/app/model/a1Request/submitter/submitter';
-import {LegalSubmitter} from 'src/app/model/a1Request/submitter/legalSubmitter';
-import {IndividualSubmitter} from 'src/app/model/a1Request/submitter/individualSubmitter';
-import { Address } from 'src/app/model/a1Request/address';
-import { Person } from 'src/app/model/a1Request/person';
-import { Citizenship } from 'src/app/model/a1Request/citizenship/citizenship';
-import { ForeignCitizenship } from 'src/app/model/a1Request/citizenship/foreignCitizenship';
-import { DomesticCitizenship } from 'src/app/model/a1Request/citizenship/domesticCitizenship';
-import { A1Request } from 'src/app/model/a1Request/a1Request';
+import { TPodnosilac } from 'src/app/model/a1Request/submitter/podnosilac';
+import {TPravniPodnosilac} from 'src/app/model/a1Request/submitter/pravniPodnosilac';
+import {TFizickiPodnosilac} from 'src/app/model/a1Request/submitter/fizickiPodnosilac';
+import { Adresa } from 'src/app/model/a1Request/adresa';
+import { TOsoba } from 'src/app/model/a1Request/osoba';
+
+import { TStranoDrzavljanstvo } from 'src/app/model/a1Request/citizenship/stranoDrzavljanstvo';
+import { ObrazacA1 } from 'src/app/model/a1Request/obrazacA1';
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { PieceType } from 'src/app/model/a1Request/piece/pieceType';
-import { WriteForm } from 'src/app/model/a1Request/piece/writeFrom';
+import { VrstaDjela } from 'src/app/model/a1Request/piece/vrstaDjela';
+import { FormaZapisa } from 'src/app/model/a1Request/piece/formaZapisa';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AuthorFormModalComponent } from './author-form-modal/author-form-modal.component';
-import { Author } from 'src/app/model/a1Request/author/author';
-import { Piece } from 'src/app/model/a1Request/piece/piece';
-import { UnknownAuthor } from 'src/app/model/a1Request/author/unknownAuthor';
-import { OriginalPiece } from 'src/app/model/a1Request/piece/originalPiece';
+import { TAutor } from 'src/app/model/a1Request/author/autor';
+import { TDjelo } from 'src/app/model/a1Request/piece/djelo';
+import { PodaciOriginalnoDjelo } from 'src/app/model/a1Request/piece/podaciOriginalnoDjelo';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
+import { TDrzavljanstvo } from 'src/app/model/a1Request/citizenship/tdrzavljanstvo';
 
 
 
@@ -74,15 +73,15 @@ export class A1FormComponent implements OnInit {
   pieceTittle = new FormControl<string>('',[Validators.required]);
   pieceTypeOfUse = new FormControl<string>('');
 
-  pieceTypes= Object.values(PieceType);
-  selectedPieceType : PieceType = PieceType.INFORMACIONE_TEHNOLOGIJE;
+  pieceTypes= Object.values(VrstaDjela);
+  selectedPieceType : VrstaDjela = VrstaDjela.INFORMACIONE_TEHNOLOGIJE;
 
-  writeForms = Object.values(WriteForm);
-  selectedWriteFrom : WriteForm = WriteForm.AUDIO;
+  writeForms = Object.values(FormaZapisa);
+  selectedWriteFrom : FormaZapisa = FormaZapisa.AUDIO;
 
-  pieceAuthors: Author[];
+  pieceAuthors: TAutor[];
 
-  originalPieceAuthors: Author[];
+  originalPieceAuthors: TAutor[];
   originalPieceTitle = new FormControl<string>('',[Validators.required]);
 
   constructor(private http: HttpClient, public matDialog: MatDialog, private userService : UserService,private route: Router) {
@@ -107,99 +106,98 @@ export class A1FormComponent implements OnInit {
   }
 
   SubmitRequest(){
-    const a1 = new A1Request();
 
-    const submitter = this.isLegalSubmitter? this.GetLegalSubmitter(): this.GetIndividualSubmitter();
-    if(submitter === null){
-      console.log("INVALID INPUT SUBMITTER");
-      return;
-    }
-    a1.SetSubmitter(submitter);
+    // const a1:ObrazacA1;
 
-    const attorney = this.hasAttorney? this.GetAttorney() : undefined;
-    if(attorney !== undefined){
-      if(attorney === null){
-        console.log("INVALID INPUT ATTORNEY");
-        return;
-      }else{
-        a1.SetAttorney(attorney);
-      }
+    // const submitter = this.isLegalSubmitter? this.GetLegalSubmitter(): this.GetIndividualSubmitter();
+    // if(submitter === null){
+    //   console.log("INVALID INPUT SUBMITTER");
+    //   return;
+    // }
+    // a1.SetSubmitter(submitter);
 
-    }
+    // const attorney = this.hasAttorney? this.GetAttorney() : undefined;
+    // if(attorney !== undefined){
+    //   if(attorney === null){
+    //     console.log("INVALID INPUT ATTORNEY");
+    //     return;
+    //   }else{
+    //     a1.SetAttorney(attorney);
+    // }}
 
-    const piece = this.GetPiece();
+    // const piece = this.GetPiece();
 
-    if(piece === null){
-      //this.ResetAuthors();
-      console.log("INVALID INPUT PIECE");
-      return;
-    }
+    // if(piece === null){
+    //   //this.ResetAuthors();
+    //   console.log("INVALID INPUT PIECE");
+    //   return;
+    // }
 
-    a1.SetPiece(piece);
+    // a1.SetPiece(piece);
 
-    if(!this.submitterSignature.valid){
-      console.log("INVALID INPUT SIGNATURE");
-      return;
-    }
-    a1.SetSignature(<string>this.submitterSignature.value);
+    // if(!this.submitterSignature.valid){
+    //   console.log("INVALID INPUT SIGNATURE");
+    //   return;
+    // }
+    // a1.SetSignature(<string>this.submitterSignature.value);
 
-    this.userService.SubmitA1Request(a1, this.descriptionFile, this.exampleFile);
+    // this.userService.SubmitA1Request(a1, this.descriptionFile, this.exampleFile);
 
 
   }
 
 
   private GetLegalSubmitter():any{
-    if(this.submitterLegalName.valid && this.submitterEmail.valid &&
-      this.submitterPhoneNumber.valid && this.submitterPlace.valid &&
-      this.submitterZipCode.valid && this.submitterStreet.valid &&
-      this.submitterStreetNumber.valid){
-        return new LegalSubmitter(<string>this.submitterEmail.value,<string>this.submitterPhoneNumber.value,<string>this.submitterLegalName.value,this.GetSubmitterAddress());
-      }
-    return null;
+    // if(this.submitterLegalName.valid && this.submitterEmail.valid &&
+    //   this.submitterPhoneNumber.valid && this.submitterPlace.valid &&
+    //   this.submitterZipCode.valid && this.submitterStreet.valid &&
+    //   this.submitterStreetNumber.valid){
+    //     return new LegalSubmitter(<string>this.submitterEmail.value,<string>this.submitterPhoneNumber.value,<string>this.submitterLegalName.value,this.GetSubmitterAddress());
+    //   }
+    // return null;
 
   }
 
-  private GetSubmitterAddress():Address{
-    return new Address(<string>this.submitterPlace.value, <string> this.submitterZipCode.value?.toString(),<string> this.submitterStreet.value,
+  private GetSubmitterAddress():Adresa{
+    return new Adresa(<string>this.submitterPlace.value, <string> this.submitterZipCode.value?.toString(),<string> this.submitterStreet.value,
     <number>this.submitterStreetNumber.value);
   }
 
   private GetIndividualSubmitter():any{
-    if(this.submitterIndividualFirstName.valid && this.submitterIndividualLastName.valid && this.submitterEmail.valid &&
-      this.submitterPhoneNumber.valid && this.submitterPlace.valid &&
-      this.submitterZipCode.valid && this.submitterStreet.valid &&
-      this.submitterStreetNumber.valid && ((this.submitterPassport.valid && this.isForeignCitizenship) || (this.submitterJmbg.valid && !this.isForeignCitizenship))){
-        return new IndividualSubmitter(<string>this.submitterEmail.value,<string>this.submitterPhoneNumber.value, this.GetSubmitterPerson());
+    // if(this.submitterIndividualFirstName.valid && this.submitterIndividualLastName.valid && this.submitterEmail.valid &&
+    //   this.submitterPhoneNumber.valid && this.submitterPlace.valid &&
+    //   this.submitterZipCode.valid && this.submitterStreet.valid &&
+    //   this.submitterStreetNumber.valid && ((this.submitterPassport.valid && this.isForeignCitizenship) || (this.submitterJmbg.valid && !this.isForeignCitizenship))){
+    //     return new IndividualSubmitter(<string>this.submitterEmail.value,<string>this.submitterPhoneNumber.value, this.GetSubmitterPerson());
 
-      }
-    return null;
+    //   }
+    // return null;
 
   }
 
-  private GetSubmitterPerson():Person{
-    return new Person(<string>this.submitterIndividualFirstName.value, <string>this.submitterIndividualLastName.value,
-      this.GetSubmitterAddress(),this.GetSubmitterCitizenship());
+  private GetSubmitterPerson(){
+    // return new TOsoba(<string>this.submitterIndividualFirstName.value, <string>this.submitterIndividualLastName.value,
+    //   this.GetSubmitterAddress(),this.GetSubmitterCitizenship());
   }
 
-  private GetSubmitterCitizenship(): Citizenship{
-    if(this.isForeignCitizenship){
-      return new ForeignCitizenship(<string>this.submitterPassport.value);
-    }else{
-      return new DomesticCitizenship(<string>this.submitterJmbg.value);
-    }
+  private GetSubmitterCitizenship(){
+    // if(this.isForeignCitizenship){
+    //   return new TStranoDrzavljanstvo(<string>this.submitterPassport.value);
+    // }else{
+    //   return new DomesticCitizenship(<string>this.submitterJmbg.value);
+    // }
   }
 
   private GetAttorney():any{
-    if(this.attorneyFirstName.valid && this.attorneyLastName.valid && this.attorneyPlace.valid &&
-       this.attorneyZipCode.valid && this.attorneyStreet.valid && this.attorneyStreetNumber.valid &&
-       ((this.attorneyPassport.valid && this.attorneyIsForeignCitizenship) || (this.attorneyJmbg.valid && !this.attorneyIsForeignCitizenship))){
-        const address = new Address(<string>this.attorneyPlace.value,<string>this.attorneyZipCode.value?.toString(),<string>this.attorneyStreet.value,<number>this.attorneyStreetNumber.value);
-        const citizenship = this.attorneyIsForeignCitizenship ? new ForeignCitizenship(<string>this.attorneyPassport.value): new DomesticCitizenship(<string>this.attorneyJmbg.value);
-        return new Person(<string>this.attorneyFirstName.value,<string>this.attorneyLastName.value,address,citizenship);
-    }else{
-      return null;
-    }
+    // if(this.attorneyFirstName.valid && this.attorneyLastName.valid && this.attorneyPlace.valid &&
+    //    this.attorneyZipCode.valid && this.attorneyStreet.valid && this.attorneyStreetNumber.valid &&
+    //    ((this.attorneyPassport.valid && this.attorneyIsForeignCitizenship) || (this.attorneyJmbg.valid && !this.attorneyIsForeignCitizenship))){
+    //     const address = new Adresa(<string>this.attorneyPlace.value,<string>this.attorneyZipCode.value?.toString(),<string>this.attorneyStreet.value,<number>this.attorneyStreetNumber.value);
+    //     const citizenship = this.attorneyIsForeignCitizenship ? new TStranoDrzavljanstvo(<string>this.attorneyPassport.value): new DomesticCitizenship(<string>this.attorneyJmbg.value);
+    //     return new TOsoba(<string>this.attorneyFirstName.value,<string>this.attorneyLastName.value,address,citizenship);
+    // }else{
+    //   return null;
+    // }
   }
 
   private IsAuthorsValid():boolean{
@@ -220,31 +218,31 @@ export class A1FormComponent implements OnInit {
   }
 
   private GetPiece():any{
-    if(this.pieceTittle.valid && this.IsAuthorsValid() && this.IsOriginalPieceValid()){
-      if(this.authorType===0){
-        this.pieceAuthors =[];
-      }else if(this.authorType ===1){
-        this.pieceAuthors =[];
-        this.pieceAuthors.push(new UnknownAuthor());
-      }
+    // if(this.pieceTittle.valid && this.IsAuthorsValid() && this.IsOriginalPieceValid()){
+    //   if(this.authorType===0){
+    //     this.pieceAuthors =[];
+    //   }else if(this.authorType ===1){
+    //     this.pieceAuthors =[];
+    //     this.pieceAuthors.push(new UnknownAuthor());
+    //   }
 
-      let pieceUse = <string>this.pieceTypeOfUse.value==="" ? undefined : <string>this.pieceTypeOfUse.value;
+    //   let pieceUse = <string>this.pieceTypeOfUse.value==="" ? undefined : <string>this.pieceTypeOfUse.value;
 
-      let originalPiece = this.isPieceOriginal ? undefined : this.GetOriginalPiece();
+    //   let originalPiece = this.isPieceOriginal ? undefined : this.GetOriginalPiece();
 
-      return new Piece(<string> this.pieceTittle.value, this.selectedPieceType, this.selectedWriteFrom, this.pieceAuthors,
-        this.isInWorkRelationship, pieceUse, originalPiece);
-    }else{
-      return null;
-    }
+    //   return new Piece(<string> this.pieceTittle.value, this.selectedPieceType, this.selectedWriteFrom, this.pieceAuthors,
+    //     this.isInWorkRelationship, pieceUse, originalPiece);
+    // }else{
+    //   return null;
+    // }
   }
 
-  private GetOriginalPiece():OriginalPiece{
-    if(this.originalAuthorType === 0){
-      this.originalPieceAuthors = [];
-      this.originalPieceAuthors.push(new UnknownAuthor());
-    }
-    return new OriginalPiece(<string> this.originalPieceTitle.value, this.originalPieceAuthors);
+  private GetOriginalPiece(){
+    // if(this.originalAuthorType === 0){
+    //   this.originalPieceAuthors = [];
+    //   this.originalPieceAuthors.push(new UnknownAuthor());
+    // }
+    // return new OriginalPiece(<string> this.originalPieceTitle.value, this.originalPieceAuthors);
   }
 
   getEmailErrorMessage() {
@@ -273,52 +271,52 @@ export class A1FormComponent implements OnInit {
   }
 
   openAuthorFormModal(){
-    const dialogConfig = new MatDialogConfig();
-    // The user can't close the dialog by clicking outside its body
-    dialogConfig.disableClose = true;
-    dialogConfig.id = "author-form-modal";
-    dialogConfig.height = "90%";
-    dialogConfig.width = "70%";
-    // https://material.angular.io/components/dialog/overview
-    const modalDialog = this.matDialog.open(AuthorFormModalComponent, dialogConfig);
+    // const dialogConfig = new MatDialogConfig();
+    // // The user can't close the dialog by clicking outside its body
+    // dialogConfig.disableClose = true;
+    // dialogConfig.id = "author-form-modal";
+    // dialogConfig.height = "90%";
+    // dialogConfig.width = "70%";
+    // // https://material.angular.io/components/dialog/overview
+    // const modalDialog = this.matDialog.open(AuthorFormModalComponent, dialogConfig);
 
-    modalDialog.afterClosed().subscribe(result =>{
-      if(result instanceof Author){
-        this.pieceAuthors.push(result);
-      }
-    })
+    // modalDialog.afterClosed().subscribe(result =>{
+    //   if(result instanceof Author){
+    //     this.pieceAuthors.push(result);
+    //   }
+    // })
   }
 
   OpenOriginalAuthorFormModal(){
-    const dialogConfig = new MatDialogConfig();
-    // The user can't close the dialog by clicking outside its body
-    dialogConfig.disableClose = true;
-    dialogConfig.id = "author-form-modal";
-    dialogConfig.height = "90%";
-    dialogConfig.width = "70%";
-    // https://material.angular.io/components/dialog/overview
-    const modalDialog = this.matDialog.open(AuthorFormModalComponent, dialogConfig);
+    // const dialogConfig = new MatDialogConfig();
+    // // The user can't close the dialog by clicking outside its body
+    // dialogConfig.disableClose = true;
+    // dialogConfig.id = "author-form-modal";
+    // dialogConfig.height = "90%";
+    // dialogConfig.width = "70%";
+    // // https://material.angular.io/components/dialog/overview
+    // const modalDialog = this.matDialog.open(AuthorFormModalComponent, dialogConfig);
 
-    modalDialog.afterClosed().subscribe(result =>{
-      if(result instanceof Author){
-        this.originalPieceAuthors.push(result);
-      }
-    })
+    // modalDialog.afterClosed().subscribe(result =>{
+    //   if(result instanceof Author){
+    //     this.originalPieceAuthors.push(result);
+    //   }
+    // })
   }
 
 
-  DeleteAuthor(author:Author){
-    const index = this.pieceAuthors.indexOf(author, 0);
-    if (index > -1) {
-      this.pieceAuthors.splice(index, 1);
-    }
+  DeleteAuthor(author:TAutor){
+    // const index = this.pieceAuthors.indexOf(author, 0);
+    // if (index > -1) {
+    //   this.pieceAuthors.splice(index, 1);
+    // }
   }
 
-  DeleteOriginalAuthor(author:Author){
-    const index = this.originalPieceAuthors.indexOf(author, 0);
-    if (index > -1) {
-      this.originalPieceAuthors.splice(index, 1);
-    }
+  DeleteOriginalAuthor(author:TAutor){
+    // const index = this.originalPieceAuthors.indexOf(author, 0);
+    // if (index > -1) {
+    //   this.originalPieceAuthors.splice(index, 1);
+    // }
   }
 
   public ResetAuthors(){

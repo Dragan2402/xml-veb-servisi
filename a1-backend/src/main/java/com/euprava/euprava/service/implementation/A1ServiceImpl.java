@@ -77,20 +77,20 @@ public class A1ServiceImpl implements IA1Service {
     public boolean saveA1Request(ObrazacA1 request) {
         try {
             //THIS FOR SAVING TO XML FILE
-//            JAXBContext context = JAXBContext.newInstance("com.euprava.euprava.model.a1sertifikat");
-//
-//            Marshaller marshaller = context.createMarshaller();
-//            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-//            File file = new File(
-//                    "src/main/resources/data/a1requests/requestNumber_"
-//                            +request.getBrojPrijave().toString()
-//                            +".xml" );
-//            FileOutputStream stream = new FileOutputStream(file);
-//
-//            marshaller.marshal(request, stream);
-//            stream.close();
+            JAXBContext context = JAXBContext.newInstance("com.euprava.euprava.model.a1sertifikat");
+
+            Marshaller marshaller = context.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            File file = new File(
+                    "src/main/resources/data/a1requests/requestNumber_"
+                            +request.getBrojPrijave().toString()
+                            +".xml" );
+            FileOutputStream stream = new FileOutputStream(file);
+
+            marshaller.marshal(request, stream);
+            stream.close();
             //THIS FOR SAVING TO EXIST DB
-            a1RequestRepository.save("/db/a1","reqNum_"+request.getBrojPrijave().toString(),request);
+            //a1RequestRepository.save("/db/a1","reqNum_"+request.getBrojPrijave().toString(),request);
             return true;
 
 
@@ -169,7 +169,7 @@ public class A1ServiceImpl implements IA1Service {
                 if(author.containsKey("authorSign")){
                     aliveAuthor.setPseudonimZnakAutora((String) author.get("authorSign"));
                 }
-                originalPiece.addAutor(aliveAuthor);
+                originalPiece.getPoznatiOriginalniAutor().add(aliveAuthor);
             }else{
                 TPreminuliAutor deadAuthor = new TPreminuliAutor();
                 deadAuthor.setIme((String) author.get("firstName"));
@@ -182,7 +182,7 @@ public class A1ServiceImpl implements IA1Service {
                 }
                 catch (Exception ignored){
                 }
-                originalPiece.addAutor(deadAuthor);
+                originalPiece.getPoznatiOriginalniAutor().add(deadAuthor);
             }
         }
         return originalPiece;
@@ -205,7 +205,7 @@ public class A1ServiceImpl implements IA1Service {
                 if(author.containsKey("authorSign")){
                     aliveAuthor.setPseudonimZnakAutora((String) author.get("authorSign"));
                 }
-                authorData.addAutor(aliveAuthor);
+                authorData.getPoznatiAutor().add(aliveAuthor);
             }else{
                 TPreminuliAutor deadAuthor = new TPreminuliAutor();
                 deadAuthor.setIme((String) author.get("firstName"));
@@ -216,7 +216,7 @@ public class A1ServiceImpl implements IA1Service {
                 try {
                     deadAuthor.setDatumSmrti(getGregorianFromString((String) author.get("dod")));
                 }catch (Exception ignored){}
-                authorData.addAutor(deadAuthor);
+                authorData.getPoznatiAutor().add(deadAuthor);
             }
         }
         return authorData;

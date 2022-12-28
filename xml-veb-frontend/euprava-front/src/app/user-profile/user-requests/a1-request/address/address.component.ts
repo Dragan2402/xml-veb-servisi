@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Address } from 'src/app/model/a1Request/address';
+import { Adresa } from 'src/app/model/a1Request/adresa';
 
 @Component({
   selector: 'euprava-address',
@@ -8,7 +8,7 @@ import { Address } from 'src/app/model/a1Request/address';
 })
 export class AddressComponent implements OnInit {
 
-  @Input() address! : Address
+  @Input() address! : Adresa
 
   constructor() { }
 
