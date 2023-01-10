@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
-import { A1Request } from 'src/app/model/a1Request/a1Request';
+import { ObrazacA1 } from 'src/app/model/a1Request/obrazacA1';
 
 @Component({
   selector: 'euprava-a1-request',
@@ -8,7 +8,7 @@ import { A1Request } from 'src/app/model/a1Request/a1Request';
 })
 export class A1RequestComponent implements OnInit {
 
-  @Input() a1request! : A1Request;
+  @Input() a1request! : ObrazacA1;
 
   constructor() { }
 

@@ -3,13 +3,22 @@ package com.euprava.euprava.repository;
 
 import com.euprava.euprava.existdb.ExistDBManager;
 import com.euprava.euprava.model.a1sertifikat.ObrazacA1;
+import com.euprava.euprava.util.SchemaValidationHandler;
+import com.euprava.euprava.util.exception.customExceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.xmldb.api.modules.XMLResource;
 
+import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.OutputStream;
+import java.io.StringReader;
 
 @Repository
 public class A1RequestRepository {
@@ -24,5 +33,21 @@ public class A1RequestRepository {
 
         marshaller.marshal(request, os);
         existDBManager.store(collectionId, documentId, os.toString());
+    }
+
+    public ObrazacA1 findById(String collectionId, String documentId) throws Exception {
+        XMLResource resource = existDBManager.load(collectionId, documentId);
+        if(resource == null){
+            throw new ObjectNotFoundException("Document with provided ID does not exist");
+        }
+        JAXBContext context = JAXBContext.newInstance("com.euprava.euprava.model.a1sertifikat");
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        File schemaFile = new File("src/main/resources/data/schemas/a1_shema.xsd");
+        Schema schema = schemaFactory.newSchema(schemaFile);
+
+        unmarshaller.setSchema(schema);
+        unmarshaller.setEventHandler(new SchemaValidationHandler());
+        return (ObrazacA1) unmarshaller.unmarshal(new StringReader(resource.getContent().toString()));
     }
 }

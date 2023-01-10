@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<obrazacA1 xmlns="http://euprava.euprava.com/model/a1Sertifikat">
+    <id>2975050501161304401</id>
+    <Podnosilac xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TPravni_Podnosilac">
+        <Telefon>069594995</Telefon>
+        <Email>draganmirkovic2402@gmail.com</Email>
+        <Poslovno_Ime>Firma DOO</Poslovno_Ime>
+        <Adresa>
+            <Mjesto>Brcko</Mjesto>
+            <Postanski_Broj>21000</Postanski_Broj>
+            <Ulica>Hoposka</Ulica>
+            <Broj>4</Broj>
+        </Adresa>
+    </Podnosilac>
+    <Punomocnik>
+        <Ime>Pero</Ime>
+        <Prezime>Peric</Prezime>
+        <Adresa>
+            <Mjesto>Perkanovo</Mjesto>
+            <Postanski_Broj>21000</Postanski_Broj>
+            <Ulica>Peritule</Ulica>
+            <Broj>23</Broj>
+        </Adresa>
+        <Drzavljanstvo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TDomace_Drzavljanstvo">
+            <Jmbg>5448445454454</Jmbg>
+        </Drzavljanstvo>
+    </Punomocnik>
+    <Djelo>
+        <Naslov>AI Rad</Naslov>
+        <Vrsta_Djela>Informacione Tehnologije</Vrsta_Djela>
+        <Forma_Zapisa>Pisana</Forma_Zapisa>
+        <Podaci_Autor>
+            <Nepoznati_Autor>true</Nepoznati_Autor>
+        </Podaci_Autor>
+        <Stvoreno_U_Radnom_Odnosu>true</Stvoreno_U_Radnom_Odnosu>
+        <Podaci_Originalno_Djelo>
+            <Naslov_Originalnog_Djela>Originalno djelo</Naslov_Originalnog_Djela>
+            <Poznati_Originalni_Autor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TPreminuli_Autor">
+                <Pseudonim_Znak_Autora>jj</Pseudonim_Znak_Autora>
+                <Ime>Marko</Ime>
+                <Prezime>Markovic</Prezime>
+                <Datum_Smrti>2022-11-15+01:00</Datum_Smrti>
+            </Poznati_Originalni_Autor>
+        </Podaci_Originalno_Djelo>
+    </Djelo>
+    <Potpis>Potpis</Potpis>
+    <Sifra_Opisa>desc_file_5865236531046689232.txt</Sifra_Opisa>
+    <Sifra_Primjera>example_file_7463021103388202358.txt</Sifra_Primjera>
+    <Broj_Prijave>1</Broj_Prijave>
+    <Datum_Podnosenja>2022-12-12+01:00</Datum_Podnosenja>
+</obrazacA1>

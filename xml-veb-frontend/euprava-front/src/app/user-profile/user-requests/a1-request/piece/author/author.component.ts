@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AliveAuthor } from 'src/app/model/a1Request/author/aliveAuthor';
-import { Author } from 'src/app/model/a1Request/author/author';
-import { DeadAuthor } from 'src/app/model/a1Request/author/deadAuthor';
-import { UnknownAuthor } from 'src/app/model/a1Request/author/unknownAuthor';
+import { TZiviAutor } from 'src/app/model/a1Request/author/ziviAutor';
+import { TPreminuliAutor } from 'src/app/model/a1Request/author/preminuliAutor';
+import { TAutor } from 'src/app/model/a1Request/author/autor';
 
 @Component({
   selector: 'euprava-author',
@@ -11,31 +10,31 @@ import { UnknownAuthor } from 'src/app/model/a1Request/author/unknownAuthor';
 })
 export class AuthorComponent implements OnInit {
 
-  @Input() author! : Author;
+  @Input() author! : TAutor;
 
   isUnknown : boolean = false;
 
   isAlive : boolean = false;
 
-  aliveAuthor! : AliveAuthor;
+  aliveAuthor! : TZiviAutor;
 
-  deadAuthor! : DeadAuthor;
+  deadAuthor! : TPreminuliAutor;
 
   constructor() { }
 
   ngOnInit(): void {
 
-    this.isUnknown = this.author instanceof UnknownAuthor;
+    //this.isUnknown = this.author instanceof UnknownAuthor;
 
-    if(!this.isUnknown){
-      this.isAlive = this.author instanceof AliveAuthor;
+    // if(!this.isUnknown){
+    //   this.isAlive = this.author instanceof AliveAuthor;
 
-      if(this.isAlive){
-        this.aliveAuthor = <AliveAuthor> this.author;
-      }else{
-        this.deadAuthor = <DeadAuthor> this.author;
-      }
-    }
+    //   if(this.isAlive){
+    //     this.aliveAuthor = <TZiviAutor> this.author;
+    //   }else{
+    //     this.deadAuthor = <TPreminuliAutor> this.author;
+    //   }
+    // }
 
   }
 

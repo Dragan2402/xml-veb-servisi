@@ -2,25 +2,25 @@
 <div style="display: flex; flex-direction: row;">
   <div style="margin-right: 2%;">
     <div>
-      <label>Naslov: {{piece.title}}</label>
+      <label>Naslov: {{piece.naslov}}</label>
     </div>
     <div>
-      <label>Vrsta djela: {{piece.type}}</label>
+      <label>Vrsta djela: {{piece.vrsta_djela}}</label>
     </div>
     <div>
-      <label>Forma zapisa djela: {{piece.writeFrom}}</label>
+      <label>Forma zapisa djela: {{piece.forma_zapisa}}</label>
     </div>
-    <div *ngIf="piece.inWorkRelationship">
+    <div *ngIf="piece.stvoreno_u_radnom_odnosu">
       <label>Kreirano u radnom odnosu</label>
     </div>
-    <div *ngIf="piece.typeOfUse !== null">
-      <label>Nacin upotrebe djela: {{piece.typeOfUse}}</label>
+    <div *ngIf="piece.nacin_koriscenja !== null">
+      <label>Nacin upotrebe djela: {{piece.nacin_koriscenja}}</label>
     </div>
   </div>
   <div style="margin-right: 2%;">
     <div style="display: flex; flex-direction: row;">
       <mat-card-subtitle style="margin-right: 2%;">Autori </mat-card-subtitle>
-      <div *ngFor="let author of piece.authors" >
+      <div *ngFor="let author of piece.podaci_autor.poznati_autor" >
         <mat-card-content>
           <euprava-author [author]="author"></euprava-author>
         </mat-card-content>
@@ -31,10 +31,10 @@
 </div>
 <div>
     <div style="display: flex; flex-direction: row;">
-      <div *ngIf="piece.originalPiece !== undefined">
+      <div *ngIf="piece.podaci_originalno_djelo !== undefined">
         <mat-card-content>
           <mat-card-subtitle>Originalno djelo</mat-card-subtitle>
-          <euprava-original-piece [originalPiece]="piece.originalPiece"></euprava-original-piece>
+          <euprava-original-piece [originalPiece]="piece.podaci_originalno_djelo!"></euprava-original-piece>
         </mat-card-content>
 
       </div>

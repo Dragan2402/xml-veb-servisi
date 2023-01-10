@@ -1,7 +1,7 @@
 import { Component,  Input, OnInit } from '@angular/core';
-import { IndividualSubmitter } from 'src/app/model/a1Request/submitter/individualSubmitter';
-import { LegalSubmitter } from 'src/app/model/a1Request/submitter/legalSubmitter';
-import { Submitter } from 'src/app/model/a1Request/submitter/submitter';
+import { TFizickiPodnosilac } from 'src/app/model/a1Request/submitter/fizickiPodnosilac';
+import { TPravniPodnosilac } from 'src/app/model/a1Request/submitter/pravniPodnosilac';
+import { TPodnosilac } from 'src/app/model/a1Request/submitter/podnosilac';
 
 @Component({
   selector: 'euprava-submitter',
@@ -10,24 +10,24 @@ import { Submitter } from 'src/app/model/a1Request/submitter/submitter';
 })
 export class SubmitterComponent implements OnInit {
 
-  @Input() submitter! : Submitter;
+  @Input() submitter! : TPodnosilac;
 
   isIndividual : boolean = false;
 
-  individual! : IndividualSubmitter;
-  legal! : LegalSubmitter;
+  individual! : TFizickiPodnosilac;
+  legal! : TPravniPodnosilac;
 
 
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.submitter.ToString());
-    this.isIndividual = this.submitter instanceof IndividualSubmitter;
-    if(this.isIndividual){
-      this.individual =<IndividualSubmitter>this.submitter;
-    }else{
-      this.legal = <LegalSubmitter> this.submitter;
-    }
+    // console.log(this.submitter.ToString());
+    // this.isIndividual = this.submitter instanceof TFizickiPodnosilac;
+    // if(this.isIndividual){
+    //   this.individual =<TFizickiPodnosilac>this.submitter;
+    // }else{
+    //   this.legal = <TPravniPodnosilac> this.submitter;
+    // }
   }
 
 }

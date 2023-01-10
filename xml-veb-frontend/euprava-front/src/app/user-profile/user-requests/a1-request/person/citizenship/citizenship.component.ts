@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Citizenship } from 'src/app/model/a1Request/citizenship/citizenship';
-import { DomesticCitizenship } from 'src/app/model/a1Request/citizenship/domesticCitizenship';
-import { ForeignCitizenship } from 'src/app/model/a1Request/citizenship/foreignCitizenship';
+import { TDomaceDrzavljanstvo } from 'src/app/model/a1Request/citizenship/domaceDrzavljanstvo';
+import { TStranoDrzavljanstvo } from 'src/app/model/a1Request/citizenship/stranoDrzavljanstvo';
+import { TDrzavljanstvo } from 'src/app/model/a1Request/citizenship/tdrzavljanstvo';
 
 @Component({
   selector: 'euprava-citizenship',
@@ -10,24 +10,24 @@ import { ForeignCitizenship } from 'src/app/model/a1Request/citizenship/foreignC
 })
 export class CitizenshipComponent implements OnInit {
 
-  @Input() citizenship! : Citizenship;
+  @Input() citizenship! : TDrzavljanstvo;
 
   isForeign : boolean = false;
 
-  foreign! : ForeignCitizenship;
+  foreign! : TStranoDrzavljanstvo;
 
-  domestic!: DomesticCitizenship;
+  domestic!: TDomaceDrzavljanstvo;
 
   constructor() { }
 
   ngOnInit(): void {
 
-    this.isForeign = this.citizenship instanceof ForeignCitizenship;
-    if(this.isForeign){
-      this.foreign = <ForeignCitizenship> this.citizenship;
-    }else{
-      this.domestic = <DomesticCitizenship> this.citizenship;
-    }
+    // this.isForeign = this.citizenship instanceof TStranoDrzavljanstvo;
+    // if(this.isForeign){
+    //   this.foreign = <TStranoDrzavljanstvo> this.citizenship;
+    // }else{
+    //   this.domestic = <DomesticCitizenship> this.citizenship;
+    // }
   }
 
 }

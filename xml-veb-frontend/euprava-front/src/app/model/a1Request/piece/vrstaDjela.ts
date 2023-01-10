@@ -1,4 +1,4 @@
-export enum PieceType{
+export enum VrstaDjela{
   PISANO = "Pisano",
   SCENSKO = "Scensko",
   LIKOVNO = "Likovno",

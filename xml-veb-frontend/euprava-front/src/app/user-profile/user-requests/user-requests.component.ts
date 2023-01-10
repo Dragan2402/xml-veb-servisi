@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { A1Request } from 'src/app/model/a1Request/a1Request';
+import { ObrazacA1 } from 'src/app/model/a1Request/obrazacA1';
 import { UserService } from '../user.service';
+
 
 @Component({
   selector: 'euprava-user-requests',
@@ -10,7 +11,8 @@ import { UserService } from '../user.service';
 })
 export class UserRequestsComponent implements OnInit {
 
-  requests : A1Request[];
+  requests : ObrazacA1[];
+  xml : any;
 
 
   constructor(private route: Router, private userService: UserService) {
@@ -19,9 +21,21 @@ export class UserRequestsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getExample().subscribe((response) =>{
+    const _this = this;
+    var parseString = require('xml2js').parseString;
+    this.userService.getExample().subscribe((result) =>{
+      this.xml = result;
+      parseString(result ,function(err: any, res: any) {
 
-      this.requests.push(new A1Request(response));
+        console.log(res);
+        console.log(res["obrazacA1"]["Podnosilac"][0]["$"]["xsi:type"])
+        result = res;
+
+        result["obrazacA1"]["Podnosilac"] = result["obrazacA1"]["Podnosilac"][0];
+        result["obrazacA1"]["Punomocnik"] = result["obrazacA1"]["Punomocnik"][0];
+      })
+
+      console.log(result);
 
     });
 

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Person } from 'src/app/model/a1Request/person';
+import { TOsoba } from 'src/app/model/a1Request/osoba';
 
 @Component({
   selector: 'euprava-person',
@@ -8,7 +8,7 @@ import { Person } from 'src/app/model/a1Request/person';
 })
 export class PersonComponent implements OnInit {
 
-  @Input() person! : Person
+  @Input() person! : TOsoba
 
   constructor() { }
 

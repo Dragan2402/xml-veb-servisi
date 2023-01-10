@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Piece } from 'src/app/model/a1Request/piece/piece';
+import { TDjelo } from 'src/app/model/a1Request/piece/djelo';
 
 @Component({
   selector: 'euprava-piece',
@@ -8,7 +8,7 @@ import { Piece } from 'src/app/model/a1Request/piece/piece';
 })
 export class PieceComponent implements OnInit {
 
-  @Input() piece! : Piece;
+  @Input() piece! : TDjelo;
 
   constructor() { }
 
