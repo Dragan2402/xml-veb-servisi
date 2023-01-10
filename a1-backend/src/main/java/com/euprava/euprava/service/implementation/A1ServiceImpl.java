@@ -3,26 +3,26 @@ package com.euprava.euprava.service.implementation;
 import com.euprava.euprava.model.a1sertifikat.*;
 import com.euprava.euprava.repository.A1RequestRepository;
 import com.euprava.euprava.service.IA1Service;
+import com.euprava.euprava.transformation.HTMLTransformer;
+import com.euprava.euprava.transformation.XSLFOTransformer;
 import com.euprava.euprava.util.Utility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.*;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Map;
 
 import static com.euprava.euprava.util.Utility.*;
 
@@ -33,12 +33,17 @@ public class A1ServiceImpl implements IA1Service {
 
     private final A1RequestRepository a1RequestRepository;
 
+    private final XSLFOTransformer xslfoTransformer;
+
+    private final HTMLTransformer htmlTransformer;
+
 
     @Override
-    public ObrazacA1 getExample() throws JAXBException {
-        JAXBContext context = JAXBContext.newInstance("com.euprava.euprava.model.a1sertifikat");
-        Unmarshaller unmarshaller = context.createUnmarshaller();
-        return (ObrazacA1) unmarshaller.unmarshal(new File("src/main/resources/data/schemas/ExampleA1-1.xml"));
+    public ObrazacA1 getObrazacByRegNumber(String reqNumber) throws Exception {
+        //JAXBContext context = JAXBContext.newInstance("com.euprava.euprava.model.a1sertifikat");
+        //Unmarshaller unmarshaller = context.createUnmarshaller();
+        return a1RequestRepository.findById("/db/a1","reqNum_"+reqNumber);
+        //return (ObrazacA1) unmarshaller.unmarshal(new File("src/main/resources/data/schemas/ExampleA1-1.xml"));
     }
 
     @Override
@@ -77,20 +82,20 @@ public class A1ServiceImpl implements IA1Service {
     public boolean saveA1Request(ObrazacA1 request) {
         try {
             //THIS FOR SAVING TO XML FILE
-            JAXBContext context = JAXBContext.newInstance("com.euprava.euprava.model.a1sertifikat");
-
-            Marshaller marshaller = context.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-            File file = new File(
-                    "src/main/resources/data/a1requests/requestNumber_"
-                            +request.getBrojPrijave().toString()
-                            +".xml" );
-            FileOutputStream stream = new FileOutputStream(file);
-
-            marshaller.marshal(request, stream);
-            stream.close();
+//            JAXBContext context = JAXBContext.newInstance("com.euprava.euprava.model.a1sertifikat");
+//
+//            Marshaller marshaller = context.createMarshaller();
+//            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+//            File file = new File(
+//                    "src/main/resources/data/a1requests/requestNumber_"
+//                            +request.getBrojPrijave().toString()
+//                            +".xml" );
+//            FileOutputStream stream = new FileOutputStream(file);
+//
+//            marshaller.marshal(request, stream);
+//            stream.close();
             //THIS FOR SAVING TO EXIST DB
-            //a1RequestRepository.save("/db/a1","reqNum_"+request.getBrojPrijave().toString(),request);
+            a1RequestRepository.save("/db/a1","reqNum_"+request.getBrojPrijave().toString(),request);
             return true;
 
 
@@ -101,9 +106,9 @@ public class A1ServiceImpl implements IA1Service {
     }
 
     @Override
-    public boolean submitRequest(Map<String, Object> obrazacA1) {
-        ObrazacA1 a1 = this.createRequest(obrazacA1);
-        return this.saveA1Request(a1);
+    public boolean submitRequest(ObrazacA1 obrazacA1) {
+        //ObrazacA1 a1 = this.createRequest(obrazacA1);
+        return this.saveA1Request(obrazacA1);
     }
 
     @Override
@@ -128,6 +133,25 @@ public class A1ServiceImpl implements IA1Service {
             System.out.println(exception.getMessage());
             return "";
         }
+    }
+
+    @Override
+    public void generatePdf(String reqNumber) throws Exception {
+        String path_pdf = "src/main/resources/data/gen/pdf/" + reqNumber + ".pdf";
+        String path_html = "src/main/resources/data/gen/html/" + reqNumber + ".html";
+        JAXBContext context = JAXBContext.newInstance("com.euprava.euprava.model.a1sertifikat");
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        OutputStream os = new ByteArrayOutputStream();
+
+        marshaller.marshal(this.getObrazacByRegNumber(reqNumber), os);
+
+        File file = new File("src/main/resources/data/gen/temp.xml");
+        FileOutputStream stream = new FileOutputStream(file);
+        marshaller.marshal(this.getObrazacByRegNumber(reqNumber), stream);
+        stream.close();
+        xslfoTransformer.generatePDF(os.toString(), "src/main/resources/data/xsl_fo/a1-fo.xsl", path_pdf);
+        htmlTransformer.generateHTML("src/main/resources/data/gen/temp.xml","src/main/resources/data/xslt/a1.xsl", path_html);
     }
 
     private TDjelo getPiece(Map<String, Object> pieceMap){

@@ -10,6 +10,7 @@ import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.CollectionManagementService;
 import org.xmldb.api.modules.XMLResource;
 
+import javax.xml.transform.OutputKeys;
 import java.io.IOException;
 
 @Service
@@ -103,4 +104,18 @@ public class ExistDBManager {
         }
     }
 
+    public XMLResource load(String collectionId, String documentId) throws Exception {
+        openConnection();
+        Collection collection = null;
+        XMLResource resource =  null;
+        try {
+            collection = DatabaseManager.getCollection(ExistDBAuthenticationUtilities.loadProperties().uri + collectionId,
+                    ExistDBAuthenticationUtilities.loadProperties().user,
+                    ExistDBAuthenticationUtilities.loadProperties().password);
+            collection.setProperty(OutputKeys.INDENT, "yes");
+            resource = (XMLResource) collection.getResource(documentId);
+        } catch (Exception e) {
+            closeConnection(collection, resource);
+        }
+        return resource;    }
 }
