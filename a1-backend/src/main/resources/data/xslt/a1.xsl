@@ -325,6 +325,9 @@
                                     Sifra primjera: <xsl:value-of select="b:obrazacA1/b:Sifra_Primjera"/>
                                 </div>
                             </xsl:if>
+                            <div class="normal-div" style="border-bottom:1px solid black;width:40%;">
+                                Status: <xsl:value-of select="b:obrazacA1/b:Status"/>
+                            </div>
                             <div class="end-row" >
                                 <div style="border-bottom:1px solid black;">
                                     Broj prijave: <xsl:value-of select="b:obrazacA1/b:Broj_Prijave"/>

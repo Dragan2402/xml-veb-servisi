@@ -1,19 +1,24 @@
 package com.euprava.euprava.service.implementation;
 
 import com.euprava.euprava.model.a1sertifikat.*;
+import com.euprava.euprava.rdf.FusekiWriter;
+import com.euprava.euprava.rdf.MetadataExtractor;
 import com.euprava.euprava.repository.A1RequestRepository;
 import com.euprava.euprava.service.IA1Service;
 import com.euprava.euprava.transformation.HTMLTransformer;
 import com.euprava.euprava.transformation.XSLFOTransformer;
+import com.euprava.euprava.util.EmailService;
 import com.euprava.euprava.util.Utility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.xmldb.api.modules.XMLResource;
 
 import javax.xml.bind.*;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.namespace.QName;
 import java.io.*;
 import java.math.BigInteger;
 import java.text.DateFormat;
@@ -37,12 +42,15 @@ public class A1ServiceImpl implements IA1Service {
 
     private final HTMLTransformer htmlTransformer;
 
+    private final MetadataExtractor metadataExtractor;
+
+    private final EmailService emailService;
 
     @Override
-    public ObrazacA1 getObrazacByRegNumber(String reqNumber) throws Exception {
+    public ObrazacA1 getObrazacById(String id) throws Exception {
         //JAXBContext context = JAXBContext.newInstance("com.euprava.euprava.model.a1sertifikat");
         //Unmarshaller unmarshaller = context.createUnmarshaller();
-        return a1RequestRepository.findById("/db/a1","reqNum_"+reqNumber);
+        return a1RequestRepository.findById("/db/a1","id_"+id);
         //return (ObrazacA1) unmarshaller.unmarshal(new File("src/main/resources/data/schemas/ExampleA1-1.xml"));
     }
 
@@ -59,7 +67,7 @@ public class A1ServiceImpl implements IA1Service {
         }
 
         try {
-            a1.setDatumPodnosenja(getGregorianFromString((String) obrazacA1.get("submissionDate")));
+            a1.getDatumPodnosenja().setValue(getGregorianFromString((String) obrazacA1.get("submissionDate")));
 
         }catch (DatatypeConfigurationException e) {
             e.printStackTrace();
@@ -79,7 +87,7 @@ public class A1ServiceImpl implements IA1Service {
     }
 
     @Override
-    public boolean saveA1Request(ObrazacA1 request) {
+    public long saveA1Request(ObrazacA1 request) {
         try {
             //THIS FOR SAVING TO XML FILE
 //            JAXBContext context = JAXBContext.newInstance("com.euprava.euprava.model.a1sertifikat");
@@ -95,18 +103,56 @@ public class A1ServiceImpl implements IA1Service {
 //            marshaller.marshal(request, stream);
 //            stream.close();
             //THIS FOR SAVING TO EXIST DB
-            a1RequestRepository.save("/db/a1","reqNum_"+request.getBrojPrijave().toString(),request);
-            return true;
+            long id = Utility.getNextId();
+            BigInteger submissionNumber = Utility.getNextSubmissionNumber();
+            request.setId(id);
+            request.setBrojPrijave(submissionNumber);
+            request.setAbout("http://euprava.euprava.com/model/rdf/a1Sertifikat/"+ id);
+            request.setTypeof("pred:IdentifikatorDokumenta");
+
+            request.getDatumPodnosenja().setProperty("pred:PodnesenDatuma");
+            request.getDatumPodnosenja().setDatatype("xs:string");
+
+            request.getDjelo().getNaslov().setProperty("pred:Naslov");
+            request.getDjelo().getNaslov().setDatatype("xs:string");
+
+            request.getDjelo().getVrstaDjela().setProperty("pred:Vrsta");
+            request.getDjelo().getVrstaDjela().setDatatype("xs:string");
+
+            request.getDjelo().getFormaZapisa().setProperty("pred:Forma");
+            request.getDjelo().getFormaZapisa().setDatatype("xs:string");
+
+            request.getPodnosilac().getEmail().setProperty("pred:PodnioEmail");
+            request.getPodnosilac().getEmail().setDatatype("xs:string");
+
+            request.setStatus(new ObrazacA1.Status());
+            request.getStatus().setValue(StatusZahtjeva.PODNESEN);
+            request.getStatus().setProperty("pred:Status");
+            request.getStatus().setDatatype("xs:string");
+
+            request.getOtherAttributes().put(QName.valueOf("xmlns:pred"),"http://euprava.euprava.com/model/rdf/a1Sertifikat/predicate/");
+            request.getOtherAttributes().put(QName.valueOf("xmlns:xs"), "http://www.w3.org/2001/XMLSchema#");
+            a1RequestRepository.save("/db/a1","id_"+request.getId(),request);
+
+            XMLResource resource = a1RequestRepository.loadXmlResource("/db/a1","id_"+request.getId());
+            byte[] out = metadataExtractor.extractMetadataFromXmlContent(resource.getContent().toString());
+            FusekiWriter.saveRDF(new ByteArrayInputStream(out), "a1Sertifikat");
+
+            String pathToPdf = generatePDF(String.valueOf(request.getId()));
+
+            emailService.sendEmailWithAttachment(request.getPodnosilac().getEmail().getValue(), pathToPdf);
+
+            return request.getId();
 
 
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return 0L;
         }
     }
 
     @Override
-    public boolean submitRequest(ObrazacA1 obrazacA1) {
+    public long submitRequest(ObrazacA1 obrazacA1) {
         //ObrazacA1 a1 = this.createRequest(obrazacA1);
         return this.saveA1Request(obrazacA1);
     }
@@ -136,29 +182,26 @@ public class A1ServiceImpl implements IA1Service {
     }
 
     @Override
-    public void generatePdf(String reqNumber) throws Exception {
-        String path_pdf = "src/main/resources/data/gen/pdf/" + reqNumber + ".pdf";
-        String path_html = "src/main/resources/data/gen/html/" + reqNumber + ".html";
-        JAXBContext context = JAXBContext.newInstance("com.euprava.euprava.model.a1sertifikat");
-        Marshaller marshaller = context.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-        OutputStream os = new ByteArrayOutputStream();
-
-        marshaller.marshal(this.getObrazacByRegNumber(reqNumber), os);
-
-        File file = new File("src/main/resources/data/gen/temp.xml");
-        FileOutputStream stream = new FileOutputStream(file);
-        marshaller.marshal(this.getObrazacByRegNumber(reqNumber), stream);
-        stream.close();
-        xslfoTransformer.generatePDF(os.toString(), "src/main/resources/data/xsl_fo/a1-fo.xsl", path_pdf);
-        htmlTransformer.generateHTML("src/main/resources/data/gen/temp.xml","src/main/resources/data/xslt/a1.xsl", path_html);
+    public String generatePDF(String id) throws Exception {
+        String path_pdf = "src/main/resources/data/gen/pdf/" + id + ".pdf";
+        return xslfoTransformer.generatePDF(a1RequestRepository.getObrazacAsStringById(id), "src/main/resources/data/xsl_fo/a1-fo.xsl", path_pdf);
     }
+
+    @Override
+    public String generateXHTML(String id) throws Exception {
+        String path_html = "src/main/resources/data/gen/html/" + id + ".html";
+        String temp_file_path = "src/main/resources/data/gen/temp.xml";
+        a1RequestRepository.saveTempXml(id, temp_file_path);
+        return htmlTransformer.generateHTML(temp_file_path,"src/main/resources/data/xslt/a1.xsl", path_html);
+    }
+
+
 
     private TDjelo getPiece(Map<String, Object> pieceMap){
         TDjelo piece = new TDjelo();
-        piece.setNaslov((String) pieceMap.get("title"));
-        piece.setVrstaDjela(VrstaDjela.fromValue((String) pieceMap.get("type")));
-        piece.setFormaZapisa(FormaZapisa.fromValue((String) pieceMap.get("writeFrom")));
+        piece.getNaslov().setValue((String) pieceMap.get("title"));
+        piece.getVrstaDjela().setValue(VrstaDjela.fromValue((String) pieceMap.get("type")));
+        piece.getFormaZapisa().setValue(FormaZapisa.fromValue((String) pieceMap.get("writeFrom")));
         piece.setStvorenoURadnomOdnosu((Boolean) pieceMap.get("inWorkRelationship"));
         List<Map<String, Object>> authors = (List<Map<String, Object>>) pieceMap.get("authors");
         if(authors.size() > 0) {
@@ -249,13 +292,13 @@ public class A1ServiceImpl implements IA1Service {
     private TPodnosilac getSubmitter(Map<String, Object> submitter){
         if(submitter.containsKey("person")){
             TFizickiPodnosilac individual = new TFizickiPodnosilac();
-            individual.setEmail((String) submitter.get("email"));
+            individual.getEmail().setValue((String) submitter.get("email"));
             individual.setTelefon((String) submitter.get("phoneNumber"));
             individual.setPodaciOsoba(getPerson((Map<String, Object>) submitter.get("person")));
             return individual;
         }
         TPravniPodnosilac legal = new TPravniPodnosilac();
-        legal.setEmail((String) submitter.get("email"));
+        legal.getEmail().setValue((String) submitter.get("email"));
         legal.setTelefon((String) submitter.get("phoneNumber"));
         legal.setPoslovnoIme((String) submitter.get("legalName"));
         legal.setAdresa(getAddress((Map<String, Object>) submitter.get("address")));

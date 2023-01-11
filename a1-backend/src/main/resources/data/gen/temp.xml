@@ -1,27 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<obrazacA1 xmlns="http://euprava.euprava.com/model/a1Sertifikat">
-    <id>1</id>
-    <Podnosilac xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TFizicki_Podnosilac">
+<obrazacA1 xmlns="http://euprava.euprava.com/model/a1Sertifikat" about="http://euprava.euprava.com/model/rdf/a1Sertifikat/8127573515794721178" typeof="pred:IdentifikatorDokumenta">
+    <id>8127573515794721178</id>
+    <Podnosilac xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TPravni_Podnosilac">
         <Telefon>132132132</Telefon>
-        <Email>gage2323@gmail.s</Email>
-        <Podaci_Osoba>
-            <Ime>Dragan</Ime>
-            <Prezime>Mirkovic</Prezime>
-            <Adresa>
-                <Mjesto>Brcko</Mjesto>
-                <Postanski_Broj>2000</Postanski_Broj>
-                <Ulica>Pavlova 666</Ulica>
-                <Broj>24</Broj>
-            </Adresa>
-            <Drzavljanstvo xsi:type="TDomace_Drzavljanstvo">
-                <Jmbg>2312321323333</Jmbg>
-            </Drzavljanstvo>
-        </Podaci_Osoba>
+        <Email property="pred:PodnioEmail" datatype="xs:string">gage2323@gmail.s</Email>
+        <Poslovno_Ime>Pero</Poslovno_Ime>
+        <Adresa>
+            <Mjesto>Brcko</Mjesto>
+            <Postanski_Broj>2000</Postanski_Broj>
+            <Ulica>Pavlova 666</Ulica>
+            <Broj>24</Broj>
+        </Adresa>
     </Podnosilac>
     <Djelo>
-        <Naslov>Gage Perez</Naslov>
-        <Vrsta_Djela>Informacione Tehnologije</Vrsta_Djela>
-        <Forma_Zapisa>Audio</Forma_Zapisa>
+        <Naslov property="pred:Naslov" datatype="xs:string">Gage Perez</Naslov>
+        <Vrsta_Djela property="pred:Vrsta" datatype="xs:string">Informacione Tehnologije</Vrsta_Djela>
+        <Forma_Zapisa property="pred:Forma" datatype="xs:string">Audio</Forma_Zapisa>
         <Podaci_Autor>
             <Poznati_Autor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TZivi_Autor">
                 <Pseudonim_Znak_Autora>JJ</Pseudonim_Znak_Autora>
@@ -50,33 +44,17 @@
         <Nacin_koriscenja>Laganica</Nacin_koriscenja>
         <Podaci_Originalno_Djelo>
             <Naslov_Originalnog_Djela>Macak Tosa</Naslov_Originalnog_Djela>
-            <Poznati_Originalni_Autor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TZivi_Autor">
-                <Pseudonim_Znak_Autora>JJ</Pseudonim_Znak_Autora>
-                <Podaci_Autor>
-                    <Ime>Jovan</Ime>
-                    <Prezime>Jovanovic</Prezime>
-                    <Adresa>
-                        <Mjesto>Kikinda</Mjesto>
-                        <Postanski_Broj>2444</Postanski_Broj>
-                        <Ulica>Neznana</Ulica>
-                        <Broj>54</Broj>
-                    </Adresa>
-                    <Drzavljanstvo xsi:type="TDomace_Drzavljanstvo">
-                        <Jmbg>1234567890123</Jmbg>
-                    </Drzavljanstvo>
-                </Podaci_Autor>
-            </Poznati_Originalni_Autor>
             <Poznati_Originalni_Autor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TPreminuli_Autor">
-                <Pseudonim_Znak_Autora>KKK</Pseudonim_Znak_Autora>
-                <Ime>Pokolica</Ime>
-                <Prezime>Pokolicanin</Prezime>
-                <Datum_Smrti>2022-11-23</Datum_Smrti>
+                <Ime>Jovan</Ime>
+                <Prezime>Jovic</Prezime>
+                <Datum_Smrti>2000-11-11</Datum_Smrti>
             </Poznati_Originalni_Autor>
         </Podaci_Originalno_Djelo>
     </Djelo>
     <Potpis>gageleza</Potpis>
     <Sifra_Opisa>23232</Sifra_Opisa>
     <Sifra_Primjera>gagic</Sifra_Primjera>
-    <Broj_Prijave>233</Broj_Prijave>
-    <Datum_Podnosenja>2022-11-29</Datum_Podnosenja>
+    <Broj_Prijave>1</Broj_Prijave>
+    <Datum_Podnosenja property="pred:PodnesenDatuma" datatype="xs:string">2022-11-29</Datum_Podnosenja>
+    <Status property="pred:Status" datatype="xs:string">Podnesen</Status>
 </obrazacA1>

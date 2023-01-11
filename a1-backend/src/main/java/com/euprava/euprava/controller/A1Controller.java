@@ -17,14 +17,14 @@ public class A1Controller {
     private IA1Service a1Service;
 
     @GetMapping(produces = {"application/xml"})
-    public ResponseEntity<ObrazacA1> getA1(@RequestParam("reqNumber") String reqNumber) throws Exception {
-        return new ResponseEntity<>(a1Service.getObrazacByRegNumber(reqNumber), HttpStatus.OK);
+    public ResponseEntity<ObrazacA1> getA1(@RequestParam("id") String id) throws Exception {
+        return new ResponseEntity<>(a1Service.getObrazacById(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Boolean> createA1(@RequestBody ObrazacA1 obrazacA1) {
-        boolean status = a1Service.submitRequest(obrazacA1);
-        return new ResponseEntity<>(true, HttpStatus.CREATED);
+    public ResponseEntity<Long> createA1(@RequestBody ObrazacA1 obrazacA1) {
+        long id = a1Service.submitRequest(obrazacA1);
+        return new ResponseEntity<>(id, HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/uploadDescriptionFile",produces = "text/plain")
@@ -37,8 +37,9 @@ public class A1Controller {
     }
 
     @GetMapping(value = "generatePdf")
-    public void generatePdf(@RequestParam("regNumber") String reqNumber) throws Exception{
-        this.a1Service.generatePdf(reqNumber);
+    public void generatePdf(@RequestParam("id") String id) throws Exception{
+        this.a1Service.generatePDF(id);
+        this.a1Service.generateXHTML(id);
     }
 
     @PostMapping(value = "/uploadExampleFile",produces = "text/plain")

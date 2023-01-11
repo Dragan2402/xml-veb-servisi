@@ -20,16 +20,45 @@
                 <xs:element minOccurs="0" name="Sifra_Opisa" type="xs:string"/>
                 <xs:element minOccurs="0" name="Sifra_Primjera" type="xs:string"/>
                 <xs:element name="Broj_Prijave" type="xs:positiveInteger"/>
-                <xs:element name="Datum_Podnosenja" type="xs:date"/>
+                <xs:element name="Datum_Podnosenja">
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:date">
+                                <xs:attribute name="property"/>
+                                <xs:attribute name="datatype"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element default="Podnesen" name="Status">
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="a1:Status_Zahtjeva">
+                                <xs:attribute name="property"/>
+                                <xs:attribute name="datatype"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
             </xs:sequence>
             <xs:attribute name="about"/>
             <xs:attribute name="typeof"/>
+            <xs:anyAttribute/>
         </xs:complexType>
     </xs:element>
     <xs:complexType abstract="true" name="TPodnosilac">
         <xs:sequence>
             <xs:element name="Telefon" type="a1:TBrojTelefona"/>
-            <xs:element name="Email" type="a1:TEmail"/>
+            <xs:element name="Email">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="a1:TEmail">
+                            <xs:attribute name="property"/>
+                            <xs:attribute name="datatype"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="TFizicki_Podnosilac">
@@ -90,9 +119,36 @@
     </xs:complexType>
     <xs:complexType name="TDjelo">
         <xs:sequence>
-            <xs:element name="Naslov" type="xs:string"/>
-            <xs:element name="Vrsta_Djela" type="a1:Vrsta_Djela"/>
-            <xs:element name="Forma_Zapisa" type="a1:Forma_Zapisa"/>
+            <xs:element name="Naslov">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                            <xs:attribute name="property"/>
+                            <xs:attribute name="datatype"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Vrsta_Djela">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="a1:Vrsta_Djela">
+                            <xs:attribute name="property"/>
+                            <xs:attribute name="datatype"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Forma_Zapisa">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="a1:Forma_Zapisa">
+                            <xs:attribute name="property"/>
+                            <xs:attribute name="datatype"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
             <xs:element minOccurs="0" name="Podaci_Autor">
                 <xs:complexType>
                     <xs:choice minOccurs="1">
@@ -143,6 +199,13 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
+    <xs:simpleType name="Status_Zahtjeva">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Podnesen"/>
+            <xs:enumeration value="Prihvacen"/>
+            <xs:enumeration value="Odbijen"/>
+        </xs:restriction>
+    </xs:simpleType>
     <xs:simpleType name="Vrsta_Djela">
         <xs:restriction base="xs:string">
             <xs:enumeration value="Pisano"/>

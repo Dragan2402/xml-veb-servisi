@@ -14,40 +14,34 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for Forma_Zapisa.
+ * <p>Java class for Status_Zahtjeva.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="Forma_Zapisa"&gt;
+ * &lt;simpleType name="Status_Zahtjeva"&gt;
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
- *     &lt;enumeration value="Pisana"/&gt;
- *     &lt;enumeration value="Audio"/&gt;
- *     &lt;enumeration value="Vizuelna"/&gt;
- *     &lt;enumeration value="AudioVizuelna"/&gt;
- *     &lt;enumeration value="Opticki Disk"/&gt;
+ *     &lt;enumeration value="Podnesen"/&gt;
+ *     &lt;enumeration value="Prihvacen"/&gt;
+ *     &lt;enumeration value="Odbijen"/&gt;
  *   &lt;/restriction&gt;
  * &lt;/simpleType&gt;
  * </pre>
  * 
  */
-@XmlType(name = "Forma_Zapisa")
+@XmlType(name = "Status_Zahtjeva")
 @XmlEnum
-public enum FormaZapisa {
+public enum StatusZahtjeva {
 
-    @XmlEnumValue("Pisana")
-    PISANA("Pisana"),
-    @XmlEnumValue("Audio")
-    AUDIO("Audio"),
-    @XmlEnumValue("Vizuelna")
-    VIZUELNA("Vizuelna"),
-    @XmlEnumValue("AudioVizuelna")
-    AUDIO_VIZUELNA("AudioVizuelna"),
-    @XmlEnumValue("Opticki Disk")
-    OPTICKI_DISK("Opticki Disk");
+    @XmlEnumValue("Podnesen")
+    PODNESEN("Podnesen"),
+    @XmlEnumValue("Prihvacen")
+    PRIHVACEN("Prihvacen"),
+    @XmlEnumValue("Odbijen")
+    ODBIJEN("Odbijen");
     private final String value;
 
-    FormaZapisa(String v) {
+    StatusZahtjeva(String v) {
         value = v;
     }
 
@@ -55,8 +49,8 @@ public enum FormaZapisa {
         return value;
     }
 
-    public static FormaZapisa fromValue(String v) {
-        for (FormaZapisa c: FormaZapisa.values()) {
+    public static StatusZahtjeva fromValue(String v) {
+        for (StatusZahtjeva c: StatusZahtjeva.values()) {
             if (c.value.equals(v)) {
                 return c;
             }

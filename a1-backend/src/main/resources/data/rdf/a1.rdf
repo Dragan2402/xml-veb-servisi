@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xml:base="http://euprava.euprava.com/model/rdf/a1Sertifikat#">
+
+    <rdfs:Class rdf:ID="IdentifikatorDokumenta">
+
+    <rdf:Property rdf:ID="PodnioEmail">
+
+    <rdf:Property rdf:ID="Naslov">
+
+    <rdf:Property rdf:ID="Vrsta">
+
+    <rdf:Property rdf:ID="Forma">
+
+    <rdf:Property rdf:ID="Status">
+
+    <rdf:Property rdf:ID="PodnesenDatuma">
+
+</rdf:RDF>

@@ -271,6 +271,9 @@
                                     Sifra primjera: <xsl:value-of select="b:obrazacA1/b:Sifra_Primjera"/>
                                 </fo:block>
                             </xsl:if>
+                            <fo:block margin-bottom="1%">
+                                Status: <xsl:value-of select="b:obrazacA1/b:Status"/>
+                            </fo:block>
                             <fo:block text-align="center">
                                 <fo:inline>
                                     Broj prijave: <xsl:value-of select="b:obrazacA1/b:Broj_Prijave"/>

@@ -15,10 +15,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.OutputStream;
-import java.io.StringReader;
+import java.io.*;
 
 @Repository
 public class A1RequestRepository {
@@ -49,5 +46,32 @@ public class A1RequestRepository {
         unmarshaller.setSchema(schema);
         unmarshaller.setEventHandler(new SchemaValidationHandler());
         return (ObrazacA1) unmarshaller.unmarshal(new StringReader(resource.getContent().toString()));
+    }
+
+    public String getObrazacAsStringById(String id) throws Exception {
+        JAXBContext context = JAXBContext.newInstance("com.euprava.euprava.model.a1sertifikat");
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        OutputStream os = new ByteArrayOutputStream();
+        marshaller.marshal(this.findById("/db/a1","id_"+id), os);
+        return os.toString();
+    }
+
+    public XMLResource loadXmlResource(String collectionId, String documentId) throws Exception {
+        XMLResource resource = existDBManager.load(collectionId, documentId);
+        if(resource == null){
+            throw new ObjectNotFoundException("Document with provided ID does not exist");
+        }
+        return resource;
+    }
+
+    public void saveTempXml(String id, String temp_file_path) throws Exception {
+        JAXBContext context = JAXBContext.newInstance("com.euprava.euprava.model.a1sertifikat");
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        File file = new File("src/main/resources/data/gen/temp.xml");
+        FileOutputStream stream = new FileOutputStream(file);
+        marshaller.marshal(this.findById("/db/a1","id_"+id), stream);
+        stream.close();
     }
 }

@@ -40,7 +40,7 @@ public class XSLFOTransformer {
         transformerFactory = new TransformerFactoryImpl();
     }
 
-    public void generatePDF(String xmlContent, String XSL_FILE, String OUTPUT_FILE) throws Exception {
+    public String generatePDF(String xmlContent, String XSL_FILE, String OUTPUT_FILE) throws Exception {
 
 
         System.out.println("[INFO] " + XSLFOTransformer.class.getSimpleName());
@@ -89,6 +89,8 @@ public class XSLFOTransformer {
         out.close();
 
         System.out.println("[INFO] End.");
+
+        return OUTPUT_FILE;
 
     }
 

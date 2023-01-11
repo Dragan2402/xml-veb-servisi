@@ -42,15 +42,12 @@ public class FusekiAuthenticationUtilities {
      * @return the configuration object
      */
     public static ConnectionProperties loadProperties() throws IOException {
-        String propsPath = "main/resources/fuseki.properties";
-
-        InputStream propsStream = openStream(propsPath);
-        if (propsStream == null)
-            throw new IOException("Could not read properties " + propsPath);
-
+        String resourceName = "fuseki.properties";
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
         Properties props = new Properties();
-        props.load(propsStream);
-
+        try(InputStream resourceStream = loader.getResourceAsStream(resourceName)) {
+            props.load(resourceStream);
+        }
         return new ConnectionProperties(props);
     }
 

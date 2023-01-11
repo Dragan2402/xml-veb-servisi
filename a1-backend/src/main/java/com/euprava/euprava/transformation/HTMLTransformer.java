@@ -21,7 +21,7 @@ public class HTMLTransformer {
 
     private static TransformerFactory transformerFactory;
 
-    private static HashMap<Class, String> shemaLocationRegistry = new HashMap<>();
+    private static final HashMap<Class, String> shemaLocationRegistry = new HashMap<>();
 
     static {
 
@@ -58,7 +58,7 @@ public class HTMLTransformer {
     }
 
 
-    public void generateHTML(String xmlPath, String xslPath, String HTML_FILE) throws FileNotFoundException {
+    public String generateHTML(String xmlPath, String xslPath, String HTML_FILE) throws FileNotFoundException {
 
         try {
 
@@ -75,12 +75,12 @@ public class HTMLTransformer {
             DOMSource source = new DOMSource(buildDocument(xmlPath));
             StreamResult result = new StreamResult(new FileOutputStream(HTML_FILE));
             transformer.transform(source, result);
-
-
-
+            return HTML_FILE;
 
         } catch (TransformerFactoryConfigurationError | TransformerException e) {
             e.printStackTrace();
+            return "";
         }
+
     }
 }
