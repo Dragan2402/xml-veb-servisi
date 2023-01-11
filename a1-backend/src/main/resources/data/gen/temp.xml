@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<obrazacA1 xmlns="http://euprava.euprava.com/model/a1Sertifikat" about="http://euprava.euprava.com/model/rdf/a1Sertifikat/8127573515794721178" typeof="pred:IdentifikatorDokumenta">
-    <id>8127573515794721178</id>
+<obrazacA1 xmlns="http://euprava.euprava.com/model/a1Sertifikat" about="http://euprava.euprava.com/model/rdf/a1Sertifikat/3849598164618952856" typeof="pred:IdentifikatorDokumenta">
+    <id>3849598164618952856</id>
     <Podnosilac xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TPravni_Podnosilac">
         <Telefon>132132132</Telefon>
-        <Email property="pred:PodnioEmail" datatype="xs:string">gage2323@gmail.s</Email>
+        <Email property="pred:PodnioEmail" datatype="xs:string">draganmirkovic2402@gmail.com</Email>
         <Poslovno_Ime>Pero</Poslovno_Ime>
         <Adresa>
             <Mjesto>Brcko</Mjesto>

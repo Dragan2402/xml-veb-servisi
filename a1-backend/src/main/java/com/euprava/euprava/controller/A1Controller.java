@@ -39,6 +39,10 @@ public class A1Controller {
     @GetMapping(value = "generatePdf")
     public void generatePdf(@RequestParam("id") String id) throws Exception{
         this.a1Service.generatePDF(id);
+    }
+
+    @GetMapping(value = "generateXHTML")
+    public void generateXHTML(@RequestParam("id") String id) throws Exception{
         this.a1Service.generateXHTML(id);
     }
 
