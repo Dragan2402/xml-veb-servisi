@@ -73,11 +73,12 @@ export class A1FormComponent implements OnInit {
   pieceTittle = new FormControl<string>('',[Validators.required]);
   pieceTypeOfUse = new FormControl<string>('');
 
-  pieceTypes= Object.values(VrstaDjela);
-  selectedPieceType : VrstaDjela = VrstaDjela.INFORMACIONE_TEHNOLOGIJE;
+  pieceTypes= ["Pisano","Scensko","Likovno","Primjenjeno", "Patent","Informacione Tehnologije","Naucna Teorija","Naucna Djelatnost"];
 
-  writeForms = Object.values(FormaZapisa);
-  selectedWriteFrom : FormaZapisa = FormaZapisa.AUDIO;
+  selectedPieceType : String = "Informacione Tehnologije";
+
+  writeForms = ["Pisana", "Audio", "Vizuelna", "AudioVizuelna","Opticki Disk"];
+  selectedWriteFrom : String = "Pisana";
 
   pieceAuthors: TAutor[];
 
@@ -109,23 +110,29 @@ export class A1FormComponent implements OnInit {
 
     // const a1:ObrazacA1;
 
-    // const submitter = this.isLegalSubmitter? this.GetLegalSubmitter(): this.GetIndividualSubmitter();
-    // if(submitter === null){
-    //   console.log("INVALID INPUT SUBMITTER");
-    //   return;
-    // }
+    let request = '';
+
+    request = request + this.GetHeader();
+    const submitter = this.isLegalSubmitter? this.GetLegalSubmitter(): this.GetIndividualSubmitter();
+
+    if(submitter === null){
+      console.log("INVALID INPUT SUBMITTER");
+      return;
+    }
     // a1.SetSubmitter(submitter);
+    request = request + submitter;
 
-    // const attorney = this.hasAttorney? this.GetAttorney() : undefined;
-    // if(attorney !== undefined){
-    //   if(attorney === null){
-    //     console.log("INVALID INPUT ATTORNEY");
-    //     return;
-    //   }else{
-    //     a1.SetAttorney(attorney);
-    // }}
 
-    // const piece = this.GetPiece();
+    const attorney = this.hasAttorney? this.GetAttorney() : undefined;
+    if(attorney !== undefined){
+      if(attorney === null){
+        console.log("INVALID INPUT ATTORNEY");
+        return;
+      }else{
+        request = request + attorney;
+    }}
+
+    const piece = this.GetPiece();
 
     // if(piece === null){
     //   //this.ResetAuthors();
@@ -142,20 +149,69 @@ export class A1FormComponent implements OnInit {
     // a1.SetSignature(<string>this.submitterSignature.value);
 
     // this.userService.SubmitA1Request(a1, this.descriptionFile, this.exampleFile);
+    console.log(request);
 
+  }
 
+  private GetHeader():String{
+    return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><obrazacA1 xmlns="http://euprava.euprava.com/model/a1Sertifikat" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">';
   }
 
 
   private GetLegalSubmitter():any{
-    // if(this.submitterLegalName.valid && this.submitterEmail.valid &&
-    //   this.submitterPhoneNumber.valid && this.submitterPlace.valid &&
-    //   this.submitterZipCode.valid && this.submitterStreet.valid &&
-    //   this.submitterStreetNumber.valid){
-    //     return new LegalSubmitter(<string>this.submitterEmail.value,<string>this.submitterPhoneNumber.value,<string>this.submitterLegalName.value,this.GetSubmitterAddress());
-    //   }
-    // return null;
+    if(this.submitterLegalName.valid && this.submitterEmail.valid &&
+      this.submitterPhoneNumber.valid && this.submitterPlace.valid &&
+      this.submitterZipCode.valid && this.submitterStreet.valid &&
+      this.submitterStreetNumber.valid){
+        let legalSubmitter = '<Podnosilac xsi:type="TPravni_Podnosilac">';
+        legalSubmitter = legalSubmitter + this.GetPhone();
+        legalSubmitter = legalSubmitter + this.GetEmail();
+        legalSubmitter = legalSubmitter + this.GetLegalName();
+        legalSubmitter = legalSubmitter + this.GetAddress(1);
+        legalSubmitter = legalSubmitter + "</Podnosilac>";
+        return legalSubmitter;
+      }
+    return null;
 
+  }
+
+  private GetPhone():String{
+    return "<Telefon>"+this.submitterPhoneNumber.value+"</Telefon>";
+  }
+
+  private GetEmail():String{
+    return "<Email>"+this.submitterEmail.value+"</Email>";
+  }
+
+  private GetLegalName():String{
+    return '<Poslovno_Ime>'+this.submitterLegalName.value+'</Poslovno_Ime>';
+  }
+
+  private GetAddress(type:number):String{
+    let Place;
+    let ZipCode;
+    let Street;
+    let Number;
+    if(type===1){
+      Place = this.submitterPlace.value;
+      ZipCode = this.submitterZipCode.value;
+      Street = this.submitterStreet.value;
+      Number = this.submitterStreetNumber.value;
+    }
+    else if(type===2){
+      Place = this.attorneyPlace.value;
+      ZipCode = this.attorneyZipCode.value;
+      Street = this.attorneyStreet.value;
+      Number = this.attorneyStreetNumber.value;
+    }
+
+    let address = '<Adresa>';
+    address = address + "<Mjesto>"+Place+"</Mjesto>";
+    address = address + "<Postanski_Broj>"+ZipCode+"</Postanski_Broj>";
+    address = address + "<Ulica>"+Street+"</Ulica>";
+    address = address + "<Broj>"+Number+"</Broj>";
+    address = address + "</Adresa>";
+    return address;
   }
 
   private GetSubmitterAddress():Adresa{
@@ -164,15 +220,77 @@ export class A1FormComponent implements OnInit {
   }
 
   private GetIndividualSubmitter():any{
-    // if(this.submitterIndividualFirstName.valid && this.submitterIndividualLastName.valid && this.submitterEmail.valid &&
-    //   this.submitterPhoneNumber.valid && this.submitterPlace.valid &&
-    //   this.submitterZipCode.valid && this.submitterStreet.valid &&
-    //   this.submitterStreetNumber.valid && ((this.submitterPassport.valid && this.isForeignCitizenship) || (this.submitterJmbg.valid && !this.isForeignCitizenship))){
-    //     return new IndividualSubmitter(<string>this.submitterEmail.value,<string>this.submitterPhoneNumber.value, this.GetSubmitterPerson());
+    if(this.submitterIndividualFirstName.valid && this.submitterIndividualLastName.valid && this.submitterEmail.valid &&
+      this.submitterPhoneNumber.valid && this.submitterPlace.valid &&
+      this.submitterZipCode.valid && this.submitterStreet.valid &&
+      this.submitterStreetNumber.valid && ((this.submitterPassport.valid && this.isForeignCitizenship) || (this.submitterJmbg.valid && !this.isForeignCitizenship))){
+        let individualSubmitter = '<Podnosilac xsi:type="TFizicki_Podnosilac">';
+        individualSubmitter = individualSubmitter + this.GetPhone();
+        individualSubmitter = individualSubmitter + this.GetEmail();
+        individualSubmitter = individualSubmitter + this.GetPerson(1);
+        individualSubmitter = individualSubmitter + "</Podnosilac>";
+        return individualSubmitter;
 
-    //   }
-    // return null;
+      }
+    return null;
 
+  }
+
+  private GetPerson(type : number):String{
+    let firstName;
+    let lastName;
+    let tag;
+    if(type ===1){
+      firstName = this.submitterIndividualFirstName.value;
+      lastName = this.submitterIndividualLastName.value;
+      tag = "Podaci_Osoba";
+    }
+    else if(type === 2){
+      firstName = this.attorneyFirstName.value;
+      lastName = this.attorneyLastName.value;
+      tag = "Punomocnik";
+    }
+    let person = "<"+tag+">";
+    person = person + "<Ime>"+firstName+"</Ime>";
+    person = person + "<Prezime>"+lastName+"</Prezime>";
+    person = person + this.GetAddress(type);
+    person = person + this.GetCitizenship(type);
+    person = person + "</"+tag+">";
+    return person;
+  }
+
+  private GetCitizenship(type:number):String{
+    let citizenship;
+    let isForeign = type===1 ? this.isForeignCitizenship : this.attorneyIsForeignCitizenship;
+    if(isForeign){
+      citizenship = citizenship + '<Drzavljanstvo xsi:type="TStrano_Drzavljanstvo">';
+      citizenship = citizenship + this.GetPassport(type);
+      citizenship = citizenship + "</Drzavljanstvo>";
+      return citizenship;
+    }else{
+      citizenship = citizenship + '<Drzavljanstvo xsi:type="TDomace_Drzavljanstvo">';
+      citizenship = citizenship + this.GetJmbg(type);
+      citizenship = citizenship + "</Drzavljanstvo>";
+      return citizenship;
+    }
+  }
+
+  private GetJmbg(type:number):String{
+    if(type === 1){
+      return "<Jmbg>"+this.submitterJmbg.value+"</Jmbg>";
+    }
+    else{
+      return "<Jmbg>"+this.attorneyJmbg.value+"</Jmbg>";
+    }
+  }
+
+  private GetPassport(type:number):String{
+    if(type === 1){
+      return "<Broj_Pasosa>"+this.submitterPassport.value+"</Broj_Pasosa>";
+    }
+    else{
+      return "<Broj_Pasosa>"+this.attorneyPassport.value+"</Broj_Pasosa>";
+    }
   }
 
   private GetSubmitterPerson(){
@@ -189,15 +307,13 @@ export class A1FormComponent implements OnInit {
   }
 
   private GetAttorney():any{
-    // if(this.attorneyFirstName.valid && this.attorneyLastName.valid && this.attorneyPlace.valid &&
-    //    this.attorneyZipCode.valid && this.attorneyStreet.valid && this.attorneyStreetNumber.valid &&
-    //    ((this.attorneyPassport.valid && this.attorneyIsForeignCitizenship) || (this.attorneyJmbg.valid && !this.attorneyIsForeignCitizenship))){
-    //     const address = new Adresa(<string>this.attorneyPlace.value,<string>this.attorneyZipCode.value?.toString(),<string>this.attorneyStreet.value,<number>this.attorneyStreetNumber.value);
-    //     const citizenship = this.attorneyIsForeignCitizenship ? new TStranoDrzavljanstvo(<string>this.attorneyPassport.value): new DomesticCitizenship(<string>this.attorneyJmbg.value);
-    //     return new TOsoba(<string>this.attorneyFirstName.value,<string>this.attorneyLastName.value,address,citizenship);
-    // }else{
-    //   return null;
-    // }
+    if(this.attorneyFirstName.valid && this.attorneyLastName.valid && this.attorneyPlace.valid &&
+       this.attorneyZipCode.valid && this.attorneyStreet.valid && this.attorneyStreetNumber.valid &&
+       ((this.attorneyPassport.valid && this.attorneyIsForeignCitizenship) || (this.attorneyJmbg.valid && !this.attorneyIsForeignCitizenship))){
+        return this.GetPerson(2);
+    }else{
+      return null;
+    }
   }
 
   private IsAuthorsValid():boolean{
@@ -218,23 +334,19 @@ export class A1FormComponent implements OnInit {
   }
 
   private GetPiece():any{
-    // if(this.pieceTittle.valid && this.IsAuthorsValid() && this.IsOriginalPieceValid()){
-    //   if(this.authorType===0){
-    //     this.pieceAuthors =[];
-    //   }else if(this.authorType ===1){
-    //     this.pieceAuthors =[];
-    //     this.pieceAuthors.push(new UnknownAuthor());
-    //   }
+    if(this.pieceTittle.valid && this.IsAuthorsValid() && this.IsOriginalPieceValid()){
+      if(this.authorType===0){
+        this.pieceAuthors =[];
+      }else if(this.authorType ===1){
+        this.pieceAuthors =[];
 
-    //   let pieceUse = <string>this.pieceTypeOfUse.value==="" ? undefined : <string>this.pieceTypeOfUse.value;
-
-    //   let originalPiece = this.isPieceOriginal ? undefined : this.GetOriginalPiece();
-
-    //   return new Piece(<string> this.pieceTittle.value, this.selectedPieceType, this.selectedWriteFrom, this.pieceAuthors,
-    //     this.isInWorkRelationship, pieceUse, originalPiece);
-    // }else{
-    //   return null;
-    // }
+      }
+      let piece = "<Djelo>";
+      piece = piece + "<Naslov>"+this.pieceTittle.value+"</Naslov>";
+      piece = piece + "<Vrsta_Djela>"+this.selectedPieceType+"</Vrsta_Djela>";
+    }else{
+      return null;
+    }
   }
 
   private GetOriginalPiece(){

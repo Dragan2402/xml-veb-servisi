@@ -36,7 +36,6 @@ public class ExistDBManager {
         openConnection();
         Collection col = null;
         XMLResource res = null;
-
         try {
             col = getOrCreateCollection(collectionId, 0);
             res = (XMLResource) col.createResource(documentId, XMLResource.RESOURCE_TYPE);

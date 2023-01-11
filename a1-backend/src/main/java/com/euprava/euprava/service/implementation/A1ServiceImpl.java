@@ -107,6 +107,7 @@ public class A1ServiceImpl implements IA1Service {
             BigInteger submissionNumber = Utility.getNextSubmissionNumber();
             request.setId(id);
             request.setBrojPrijave(submissionNumber);
+
             request.setAbout("http://euprava.euprava.com/model/rdf/a1Sertifikat/"+ id);
             request.setTypeof("pred:IdentifikatorDokumenta");
 

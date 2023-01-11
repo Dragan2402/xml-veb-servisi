@@ -1,17 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<obrazacA1 xmlns="http://euprava.euprava.com/model/a1Sertifikat" about="http://euprava.euprava.com/model/rdf/a1Sertifikat/3849598164618952856" typeof="pred:IdentifikatorDokumenta">
-    <id>3849598164618952856</id>
+<obrazacA1 xmlns="http://euprava.euprava.com/model/a1Sertifikat" about="http://euprava.euprava.com/model/rdf/a1Sertifikat/7822828869401202852" typeof="pred:IdentifikatorDokumenta">
+    <id>7822828869401202852</id>
     <Podnosilac xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TPravni_Podnosilac">
-        <Telefon>132132132</Telefon>
+        <Telefon>1231231231</Telefon>
         <Email property="pred:PodnioEmail" datatype="xs:string">draganmirkovic2402@gmail.com</Email>
-        <Poslovno_Ime>Pero</Poslovno_Ime>
+        <Poslovno_Ime>Firma</Poslovno_Ime>
         <Adresa>
             <Mjesto>Brcko</Mjesto>
-            <Postanski_Broj>2000</Postanski_Broj>
-            <Ulica>Pavlova 666</Ulica>
-            <Broj>24</Broj>
+            <Postanski_Broj>21000</Postanski_Broj>
+            <Ulica>Hopvoska</Ulica>
+            <Broj>4</Broj>
         </Adresa>
     </Podnosilac>
+    <Punomocnik>
+        <Ime>Pero</Ime>
+        <Prezime>Peric</Prezime>
+        <Adresa>
+            <Mjesto>Perkan</Mjesto>
+            <Postanski_Broj>21000</Postanski_Broj>
+            <Ulica>Novosadska</Ulica>
+            <Broj>69</Broj>
+        </Adresa>
+        <Drzavljanstvo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TStrano_Drzavljanstvo">
+            <Broj_Pasosa>asdasdasdas</Broj_Pasosa>
+        </Drzavljanstvo>
+    </Punomocnik>
     <Djelo>
         <Naslov property="pred:Naslov" datatype="xs:string">Gage Perez</Naslov>
         <Vrsta_Djela property="pred:Vrsta" datatype="xs:string">Informacione Tehnologije</Vrsta_Djela>
@@ -54,7 +67,7 @@
     <Potpis>gageleza</Potpis>
     <Sifra_Opisa>23232</Sifra_Opisa>
     <Sifra_Primjera>gagic</Sifra_Primjera>
-    <Broj_Prijave>1</Broj_Prijave>
+    <Broj_Prijave>12</Broj_Prijave>
     <Datum_Podnosenja property="pred:PodnesenDatuma" datatype="xs:string">2022-11-29</Datum_Podnosenja>
     <Status property="pred:Status" datatype="xs:string">Podnesen</Status>
 </obrazacA1>

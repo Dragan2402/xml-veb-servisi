@@ -186,12 +186,11 @@
               <mat-label>Vrsta djela</mat-label>
               <mat-select [(value)]="selectedPieceType">
                 <mat-option *ngFor="let piece of pieceTypes" [value]="piece">
-                  {{piece.toString()}}
+                  {{piece}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
           </div>
-
           <div>
             <mat-form-field appearance="outline">
               <mat-label>Forma zapisa djela</mat-label>
@@ -202,7 +201,6 @@
               </mat-select>
             </mat-form-field>
           </div>
-
           <div style="min-height: 180px;">
           <div>
             <mat-radio-group class="submitter-radio-group" [(ngModel)]="authorType">

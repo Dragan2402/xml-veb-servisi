@@ -140,6 +140,36 @@
                                 </xsl:if>
                             </div>
                         </div>
+                        <xsl:if test="b:obrazacA1/b:Punomocnik">
+                            <div class="content-div">
+                                <div class="section-div">
+                                    1.2) Punomocnik
+                                </div>
+                                <div class="margin-left-div">
+                                    <div class="normal-div" style="border-bottom:1px solid black;width:40%;">
+                                        Ime:
+                                        <xsl:value-of select="b:obrazacA1/b:Punomocnik/b:Ime"/>
+                                    </div>
+                                    <div class="normal-div" style="border-bottom:1px solid black;width:40%;">
+                                        Prezime:
+                                        <xsl:value-of select="b:obrazacA1/b:Punomocnik/b:Prezime"/>
+                                    </div>
+                                    <div class="normal-div" style="border-bottom:1px solid black;width:40%;">
+                                        Adresa:
+                                        <xsl:value-of select="b:obrazacA1/b:Punomocnik/b:Adresa"/>
+                                    </div>
+                                    <div class="normal-div" style="border-bottom:1px solid black;width:40%;">
+                                        <xsl:if test="b:obrazacA1/b:Punomocnik/b:Drzavljanstvo/b:Jmbg">
+                                            JMBG:
+                                        </xsl:if>
+                                        <xsl:if test="b:obrazacA1/b:Punomocnik/b:Drzavljanstvo/b:Broj_Pasosa">
+                                            Broj Pasosa:
+                                        </xsl:if>
+                                        <xsl:value-of select="b:obrazacA1/b:Punomocnik/b:Drzavljanstvo"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </xsl:if>
                         <div class="content-div">
                             <div class="section-div">
                                 2) Djelo

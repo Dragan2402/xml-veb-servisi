@@ -86,6 +86,36 @@
                                 </xsl:if>
                             </fo:block>
                         </fo:block-container>
+                        <xsl:if test="b:obrazacA1/b:Punomocnik">
+                            <fo:block-container>
+                                <fo:block margin-bottom="1%" text-decoration="underline">
+                                    1.2) Punomocnik
+                                </fo:block>
+                                <fo:block margin-bottom="1%">
+                                    <fo:block margin-bottom="1%">
+                                        Ime:
+                                        <xsl:value-of select="b:obrazacA1/b:Punomocnik/b:Ime"/>
+                                    </fo:block>
+                                    <fo:block margin-bottom="1%">
+                                        Prezime:
+                                        <xsl:value-of select="b:obrazacA1/b:Punomocnik/b:Prezime"/>
+                                    </fo:block>
+                                    <fo:block margin-bottom="1%">
+                                        Adresa:
+                                        <xsl:value-of select="b:obrazacA1/b:Punomocnik/b:Adresa"/>
+                                    </fo:block>
+                                    <fo:block margin-bottom="1%">
+                                        <xsl:if test="b:obrazacA1/b:Punomocnik/b:Drzavljanstvo/b:Jmbg">
+                                            JMBG:
+                                        </xsl:if>
+                                        <xsl:if test="b:obrazacA1/b:Punomocnik/b:Drzavljanstvo/b:Broj_Pasosa">
+                                            Broj Pasosa:
+                                        </xsl:if>
+                                        <xsl:value-of select="b:obrazacA1/b:Punomocnik/b:Drzavljanstvo"/>
+                                    </fo:block>
+                                </fo:block>
+                            </fo:block-container>
+                        </xsl:if>
                         <fo:block-container margin-top="2%">
                             <fo:block text-decoration="underline" margin-bottom="1%" margin-top="2%">
                                 2) Djelo

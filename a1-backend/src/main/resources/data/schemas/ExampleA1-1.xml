@@ -3,60 +3,48 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://euprava.euprava.com/model/a1Sertifikat file:/C:/Users/draga/OneDrive/Dokumenti/4.%20Godina/XML%20i%20Web%20Servisi/Projekat/xml-veb-servisi/a1-backend/src/main/resources/data/schemas/a1_shema.xsd">
     <id>1</id>
-    <Podnosilac xsi:type="TFizicki_Podnosilac">
-        <Telefon>132132132</Telefon>
-        <Email>gage2323@gmail.s</Email>
+    <Podnosilac xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TFizicki_Podnosilac">
+        <Telefon>0692402000</Telefon>
+        <Email>draganmirkovic2402@yahoo.com</Email>
         <Podaci_Osoba>
-            <Ime>Dragan</Ime>
-            <Prezime>Mirkovic</Prezime>
+            <Ime>gage</Ime>
+            <Prezime>gage</Prezime>
             <Adresa>
                 <Mjesto>Brcko</Mjesto>
-                <Postanski_Broj>2000</Postanski_Broj>
-                <Ulica>Pavlova 666</Ulica>
-                <Broj>24</Broj>
+                <Postanski_Broj>21000</Postanski_Broj>
+                <Ulica>12321312</Ulica>
+                <Broj>13</Broj>
             </Adresa>
-            <Drzavljanstvo xsi:type="TDomace_Drzavljanstvo">
-                <Jmbg>2312321323333</Jmbg>
+            <Drzavljanstvo xsi:type="TStrano_Drzavljanstvo">
+                <Broj_Pasosa>asdasdas</Broj_Pasosa>
             </Drzavljanstvo>
         </Podaci_Osoba>
     </Podnosilac>
-
+    <Punomocnik>
+        <Ime>Pero</Ime>
+        <Prezime>Peric</Prezime>
+        <Adresa>
+            <Mjesto>Lokalac</Mjesto>
+            <Postanski_Broj>1233</Postanski_Broj>
+            <Ulica>Brza</Ulica>
+            <Broj>123</Broj>
+        </Adresa>
+        <Drzavljanstvo xsi:type="TStrano_Drzavljanstvo">
+            <Broj_Pasosa>asdasdas</Broj_Pasosa>
+        </Drzavljanstvo>
+    </Punomocnik>
+    
     <Djelo>
         <Naslov>Gage Perez</Naslov>
         <Vrsta_Djela>Informacione Tehnologije</Vrsta_Djela>
         <Forma_Zapisa>Audio</Forma_Zapisa>
-        <Podaci_Autor>      
-    
-            <Poznati_Autor xsi:type="TZivi_Autor">  
-                <Pseudonim_Znak_Autora>JJ</Pseudonim_Znak_Autora>
-                <Podaci_Autor>
-                    <Ime>Jovan</Ime>
-                    <Prezime>Jovanovic</Prezime>
-                    <Adresa>
-                        <Mjesto>Kikinda</Mjesto>
-                        <Postanski_Broj>2444</Postanski_Broj>
-                        <Ulica>Neznana</Ulica>
-                        <Broj>54</Broj>
-                    </Adresa>
-                    <Drzavljanstvo xsi:type="TDomace_Drzavljanstvo">
-                        <Jmbg>1234567890123</Jmbg>
-                    </Drzavljanstvo>
-                </Podaci_Autor>
-            </Poznati_Autor>
-            <Poznati_Autor xsi:type="TPreminuli_Autor">
-                <Pseudonim_Znak_Autora>KKK</Pseudonim_Znak_Autora>
-                <Ime>Pokolica</Ime>
-                <Prezime>Pokolicanin</Prezime>
-                <Datum_Smrti>2022-11-23</Datum_Smrti>
-                
-            </Poznati_Autor>
-        </Podaci_Autor>
+
         <Stvoreno_U_Radnom_Odnosu>true</Stvoreno_U_Radnom_Odnosu>
         <Nacin_koriscenja>Laganica</Nacin_koriscenja>
         <Podaci_Originalno_Djelo>
             <Naslov_Originalnog_Djela>Macak Tosa</Naslov_Originalnog_Djela>
-            
-            <Poznati_Originalni_Autor xsi:type="TZivi_Autor">  
+
+            <Poznati_Originalni_Autor xsi:type="TZivi_Autor">
                 <Pseudonim_Znak_Autora>JJ</Pseudonim_Znak_Autora>
                 <Podaci_Autor>
                     <Ime>Jovan</Ime>
@@ -77,7 +65,7 @@
                 <Ime>Pokolica</Ime>
                 <Prezime>Pokolicanin</Prezime>
                 <Datum_Smrti>2022-11-23</Datum_Smrti>
-                
+
             </Poznati_Originalni_Autor>
         </Podaci_Originalno_Djelo>
     </Djelo>
@@ -86,4 +74,5 @@
     <Sifra_Primjera>gagege</Sifra_Primjera>
     <Broj_Prijave>233</Broj_Prijave>
     <Datum_Podnosenja>2022-11-29</Datum_Podnosenja>
+    <Status>Podnesen</Status>
 </obrazacA1>
