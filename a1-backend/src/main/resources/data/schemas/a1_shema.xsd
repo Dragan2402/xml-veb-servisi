@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-    targetNamespace="http://euprava.euprava.com/model/a1Sertifikat" xmlns:a1="http://euprava.euprava.com/model/a1Sertifikat">
+    targetNamespace="http://euprava.euprava.com/model/a1Sertifikat"
+    xmlns:a1="http://euprava.euprava.com/model/a1Sertifikat">
 
     <xs:element name="obrazacA1">
         <xs:complexType>
@@ -21,6 +22,8 @@
                 <xs:element name="Broj_Prijave" type="xs:positiveInteger"/>
                 <xs:element name="Datum_Podnosenja" type="xs:date"/>
             </xs:sequence>
+            <xs:attribute name="about"/>
+            <xs:attribute name="typeof"/>
         </xs:complexType>
     </xs:element>
     <xs:complexType abstract="true" name="TPodnosilac">

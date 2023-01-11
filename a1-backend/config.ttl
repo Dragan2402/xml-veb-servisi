@@ -1,0 +1,27 @@
+@prefix :      <http://localhost:3030/> .
+@prefix fuseki: <http://jena.apache.org/fuseki#> .
+
+:config
+    a fuseki:Server ;
+    fuseki:services (
+        <#service-mydataset>
+    ) .
+
+# The dataset name (and directory)
+# /ds is the url prefix for the SPARQL service.
+# If it starts with "/" (the root), then it is relative to the Fuseki server
+# If it starts with "/ds" then it is relative to the context of the web application.
+<#service-mydataset> a fuseki:Service ;
+    fuseki:name "mydataset" ;
+    fuseki:serviceQuery       "query" ;
+    fuseki:serviceUpdate      "update" ;
+    fuseki:serviceUpload      "upload" ;
+    fuseki:serviceReadWriteGraphStore "data" ;
+    fuseki:dataset <#dataset-mydataset> .
+
+<#dataset-mydataset> a      fuseki:Dataset ;
+    fuseki:dataset <file:mydataset> ;
+    fuseki:services (
+        <#service-read>
+        <#service-query>
+    ) .
