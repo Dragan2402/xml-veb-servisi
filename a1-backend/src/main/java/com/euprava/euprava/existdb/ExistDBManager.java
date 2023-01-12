@@ -4,14 +4,15 @@ import com.euprava.euprava.util.ExistDBAuthenticationUtilities;
 import org.exist.xmldb.EXistResource;
 import org.springframework.stereotype.Service;
 import org.xmldb.api.DatabaseManager;
-import org.xmldb.api.base.Collection;
-import org.xmldb.api.base.Database;
-import org.xmldb.api.base.XMLDBException;
+import org.xmldb.api.base.*;
 import org.xmldb.api.modules.CollectionManagementService;
 import org.xmldb.api.modules.XMLResource;
+import org.xmldb.api.modules.XQueryService;
 
 import javax.xml.transform.OutputKeys;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ExistDBManager {
@@ -117,4 +118,50 @@ public class ExistDBManager {
             closeConnection(collection, resource);
         }
         return resource;    }
+
+    public List<Resource> executeQuery(String collectionUri, String targetNamespace, String query) throws XMLDBException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        openConnection();
+        Collection collection = null;
+        List<Resource> resources = new ArrayList<Resource>();
+
+        try {
+            collection = DatabaseManager.getCollection(ExistDBAuthenticationUtilities.loadProperties().uri + collectionUri,
+                    ExistDBAuthenticationUtilities.loadProperties().user,
+                    ExistDBAuthenticationUtilities.loadProperties().password);
+            collection.setProperty(OutputKeys.INDENT, "yes");
+
+            // get an instance of xquery service
+            XQueryService xqueryService = (XQueryService) collection.getService("XQueryService", "1.0");
+            xqueryService.setProperty("indent", "yes");
+
+            // make the service aware of namespaces
+            xqueryService.setNamespace("b", targetNamespace);
+
+            CompiledExpression compiledXquery = xqueryService.compile(query);
+            ResourceSet result = xqueryService.execute(compiledXquery);
+
+            ResourceIterator i = result.getIterator();
+            Resource res = null;
+
+            while(i.hasMoreResources()) {
+                try {
+                    res = i.nextResource();
+                    resources.add(res);
+                    System.out.println(res.getContent());
+
+                } finally {
+
+                    // don't forget to cleanup resources
+                    try {
+                        ((EXistResource)res).freeResources();
+                    } catch (XMLDBException xe) {
+                        xe.printStackTrace();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            closeConnection(collection, null);
+        }
+        return resources;
+    }
 }

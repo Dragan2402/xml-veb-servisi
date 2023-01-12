@@ -19,7 +19,8 @@ public class SparqlUtil {
 
 
     /* Simple SPARQL query on a named graph */
-    private static final String SELECT_NAMED_GRAPH_TEMPLATE = "SELECT * FROM <%1$s> WHERE { %2$s }";
+    private static final String SELECT_NAMED_GRAPH_TEMPLATE = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
+            "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT DISTINCT * FROM <%1$s> WHERE { %2$s }";
 
     private static final String CONSTRUCT_NAMED_GRAPH_TEMPLATE = "CONSTRUCT FROM <%1$s> WHERE { %2$s }";
 

@@ -7,8 +7,9 @@ import com.euprava.euprava.util.SchemaValidationHandler;
 import com.euprava.euprava.util.exception.customExceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
-
+import org.xmldb.api.base.Resource;
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -16,6 +17,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.*;
+import java.util.List;
 
 @Repository
 public class A1RequestRepository {
@@ -73,5 +75,9 @@ public class A1RequestRepository {
         FileOutputStream stream = new FileOutputStream(file);
         marshaller.marshal(this.findById("/db/a1","id_"+id), stream);
         stream.close();
+    }
+
+    public List<Resource> getObrazacByQuery(String collection, String namespace, String query) throws XMLDBException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        return existDBManager.executeQuery(collection, namespace, query);
     }
 }
