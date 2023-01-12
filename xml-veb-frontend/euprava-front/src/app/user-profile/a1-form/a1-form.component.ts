@@ -134,22 +134,24 @@ export class A1FormComponent implements OnInit {
 
     const piece = this.GetPiece();
 
-    // if(piece === null){
-    //   //this.ResetAuthors();
-    //   console.log("INVALID INPUT PIECE");
-    //   return;
-    // }
+    if(piece === null){
+      this.ResetAuthors();
+      console.log("INVALID INPUT PIECE");
+      return;
+    }
 
-    // a1.SetPiece(piece);
+    request = request + piece;
 
-    // if(!this.submitterSignature.valid){
-    //   console.log("INVALID INPUT SIGNATURE");
-    //   return;
-    // }
-    // a1.SetSignature(<string>this.submitterSignature.value);
+    if(!this.submitterSignature.valid){
+      console.log("INVALID INPUT SIGNATURE");
+      return;
+    }
 
-    // this.userService.SubmitA1Request(a1, this.descriptionFile, this.exampleFile);
-    console.log(request);
+    request = request + "<Potpis>"+this.submitterSignature.value+"</Potpis>";
+
+
+    this.userService.SubmitA1Request(request, this.descriptionFile, this.exampleFile);
+
 
   }
 
@@ -212,11 +214,6 @@ export class A1FormComponent implements OnInit {
     address = address + "<Broj>"+Number+"</Broj>";
     address = address + "</Adresa>";
     return address;
-  }
-
-  private GetSubmitterAddress():Adresa{
-    return new Adresa(<string>this.submitterPlace.value, <string> this.submitterZipCode.value?.toString(),<string> this.submitterStreet.value,
-    <number>this.submitterStreetNumber.value);
   }
 
   private GetIndividualSubmitter():any{
@@ -293,19 +290,6 @@ export class A1FormComponent implements OnInit {
     }
   }
 
-  private GetSubmitterPerson(){
-    // return new TOsoba(<string>this.submitterIndividualFirstName.value, <string>this.submitterIndividualLastName.value,
-    //   this.GetSubmitterAddress(),this.GetSubmitterCitizenship());
-  }
-
-  private GetSubmitterCitizenship(){
-    // if(this.isForeignCitizenship){
-    //   return new TStranoDrzavljanstvo(<string>this.submitterPassport.value);
-    // }else{
-    //   return new DomesticCitizenship(<string>this.submitterJmbg.value);
-    // }
-  }
-
   private GetAttorney():any{
     if(this.attorneyFirstName.valid && this.attorneyLastName.valid && this.attorneyPlace.valid &&
        this.attorneyZipCode.valid && this.attorneyStreet.valid && this.attorneyStreetNumber.valid &&
@@ -339,22 +323,61 @@ export class A1FormComponent implements OnInit {
         this.pieceAuthors =[];
       }else if(this.authorType ===1){
         this.pieceAuthors =[];
-
       }
       let piece = "<Djelo>";
       piece = piece + "<Naslov>"+this.pieceTittle.value+"</Naslov>";
       piece = piece + "<Vrsta_Djela>"+this.selectedPieceType+"</Vrsta_Djela>";
+      piece = piece + "<Forma_Zapisa>" + this.selectedWriteFrom + "</Forma_Zapisa>";
+      piece = piece + this.GetAuthors();
+      piece = piece + this.GetInWorkRelationship();
+      piece = piece + this.GetWayOfUse();
+      if(!this.isPieceOriginal && this.IsOriginalPieceValid()){
+        piece = piece + this.GetOriginalPiece();
+      }
+
+      piece = piece +"</Djelo>";
+      return piece;
     }else{
       return null;
     }
   }
 
-  private GetOriginalPiece(){
-    // if(this.originalAuthorType === 0){
-    //   this.originalPieceAuthors = [];
-    //   this.originalPieceAuthors.push(new UnknownAuthor());
-    // }
-    // return new OriginalPiece(<string> this.originalPieceTitle.value, this.originalPieceAuthors);
+  private GetInWorkRelationship():String{
+    if(this.isInWorkRelationship){
+      return "<Stvoreno_U_Radnom_Odnosu>true</Stvoreno_U_Radnom_Odnosu>";
+    }
+    return "<Stvoreno_U_Radnom_Odnosu>false</Stvoreno_U_Radnom_Odnosu>";
+  }
+
+  private GetWayOfUse():String{
+    let typeOfUse = <String>this.pieceTypeOfUse.value;
+    if(typeOfUse.length > 1){
+      return "<Nacin_koriscenja>"+typeOfUse+"</Nacin_koriscenja>"
+    }
+    return "";
+  }
+
+  private GetAuthors():String{
+    if(this.authorType === 0){
+      this.pieceAuthors = [];
+      return "";
+    }else if(this.authorType === 1){
+      this.pieceAuthors = [];
+      return "<Podaci_Autor><Nepoznati_Autor>true</Nepoznati_Autor></Podaci_Autor>";
+    }else{
+      return "";
+    }
+  }
+
+  private GetOriginalPiece():String{
+    let originalPiece = "<Podaci_Originalno_Djelo>";
+    originalPiece = originalPiece + "<Naslov_Originalnog_Djela>"+this.originalPieceTitle.value+"</Naslov_Originalnog_Djela>";
+    if(this.originalAuthorType === 0){
+      this.originalPieceAuthors = [];
+      originalPiece = originalPiece + "<Nepoznati_Autor>true</Nepoznati_Autor>";
+    }
+    originalPiece = originalPiece + "</Podaci_Originalno_Djelo>";
+    return originalPiece;
   }
 
   getEmailErrorMessage() {

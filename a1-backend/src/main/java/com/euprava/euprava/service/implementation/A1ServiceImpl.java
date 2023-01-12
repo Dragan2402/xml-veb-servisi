@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.xmldb.api.modules.XMLResource;
 
-import javax.xml.bind.*;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -24,10 +23,7 @@ import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.euprava.euprava.util.Utility.*;
 
@@ -87,7 +83,7 @@ public class A1ServiceImpl implements IA1Service {
     }
 
     @Override
-    public long saveA1Request(ObrazacA1 request) {
+    public ObrazacA1 saveA1Request(ObrazacA1 request) {
         try {
             //THIS FOR SAVING TO XML FILE
 //            JAXBContext context = JAXBContext.newInstance("com.euprava.euprava.model.a1sertifikat");
@@ -111,6 +107,14 @@ public class A1ServiceImpl implements IA1Service {
             request.setAbout("http://euprava.euprava.com/model/rdf/a1Sertifikat/"+ id);
             request.setTypeof("pred:IdentifikatorDokumenta");
 
+            request.setDatumPodnosenja(new ObrazacA1.DatumPodnosenja());
+            DatatypeFactory df = DatatypeFactory.newInstance();
+            XMLGregorianCalendar xmlCalendar = df.newXMLGregorianCalendar();
+            xmlCalendar.setYear(GregorianCalendar.getInstance().get(Calendar.YEAR));
+            xmlCalendar.setMonth(GregorianCalendar.getInstance().get(Calendar.MONTH) + 1);
+            xmlCalendar.setDay(GregorianCalendar.getInstance().get(Calendar.DAY_OF_MONTH));
+
+            request.getDatumPodnosenja().setValue(xmlCalendar);
             request.getDatumPodnosenja().setProperty("pred:PodnesenDatuma");
             request.getDatumPodnosenja().setDatatype("xs:string");
 
@@ -143,17 +147,17 @@ public class A1ServiceImpl implements IA1Service {
 
             emailService.sendEmailWithAttachment(request.getPodnosilac().getEmail().getValue(), pathToPdf);
 
-            return request.getId();
+            return request;
 
 
         } catch (Exception e) {
             e.printStackTrace();
-            return 0L;
+            return null;
         }
     }
 
     @Override
-    public long submitRequest(ObrazacA1 obrazacA1) {
+    public ObrazacA1 submitRequest(ObrazacA1 obrazacA1) {
         //ObrazacA1 a1 = this.createRequest(obrazacA1);
         return this.saveA1Request(obrazacA1);
     }

@@ -11,9 +11,9 @@ public interface IA1Service {
 
     ObrazacA1 createRequest(Map<String, Object> obrazacA1);
 
-    long saveA1Request(ObrazacA1 request);
+    ObrazacA1 saveA1Request(ObrazacA1 request);
 
-    long submitRequest(ObrazacA1 obrazacA1);
+    ObrazacA1 submitRequest(ObrazacA1 obrazacA1);
 
     String uploadDescriptionFile(MultipartFile file);
 

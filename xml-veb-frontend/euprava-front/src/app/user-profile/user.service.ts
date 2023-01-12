@@ -26,32 +26,43 @@ export class UserService {
 
   }
 
-  SubmitA1Request(request: ObrazacA1, descriptionFile?: File, exampleFile? : File) {
+  SubmitA1Request(request: String, descriptionFile?: File, exampleFile? : File) {
+    const headers = { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'};
     if(descriptionFile===undefined && exampleFile===undefined){
-      axios.post('/api/a1',request);
+      request = request + "</obrazacA1>";
+      axios.post('/api/a1',request, {headers}).then(response => {console.log(response)});
     }else{
       if(descriptionFile !==undefined){
         const formData = new FormData();
         formData.append('file',<File>descriptionFile, (<File>descriptionFile).name);
         axios.post('/api/a1/uploadDescriptionFile',formData).then((response) =>{
-          //request.SetDescriptionId(response.data);
+          request = request + "<Sifra_Opisa>"+response.data+"</Sifra_Opisa>";
           if(exampleFile !==undefined){
             const exampleFormData = new FormData();
             exampleFormData.append('file',<File>exampleFile, (<File>exampleFile).name);
             axios.post('/api/a1/uploadExampleFile',exampleFormData).then((response) =>{
-              //request.SetExampleId(response.data);
-              axios.post('/api/a1',request);
+              request = request + "<Sifra_Primjera>"+response.data+"</Sifra_Primjera>";
+              request = request + "</obrazacA1>";
+              axios.post('/api/a1',request, {headers}).then(response =>{
+                console.log(response);
+              });
             });
           }else{
-            axios.post('/api/a1',request);
+            request = request + "</obrazacA1>";
+            axios.post('/api/a1',request, {headers}).then(resposne =>{
+              console.log(resposne);
+            });
           }
         })
       }else{
         const exampleFormData = new FormData();
         exampleFormData.append('file',<File>exampleFile, (<File>exampleFile).name);
         axios.post('/api/a1/uploadExampleFile',exampleFormData).then((response) =>{
-          //request.SetExampleId(response.data);
-          axios.post('/api/a1',request);
+          request = request + "<Sifra_Primjera>"+response.data+"</Sifra_Primjera>";
+          request = request + "</obrazacA1>";
+          axios.post('/api/a1',request, {headers}).then(response =>{
+            console.log(response);
+          });
         });
       }
     }

@@ -21,10 +21,9 @@ public class A1Controller {
         return new ResponseEntity<>(a1Service.getObrazacById(id), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<Long> createA1(@RequestBody ObrazacA1 obrazacA1) {
-        long id = a1Service.submitRequest(obrazacA1);
-        return new ResponseEntity<>(id, HttpStatus.CREATED);
+    @PostMapping(produces = {"application/xml"})
+    public ResponseEntity<ObrazacA1> createA1(@RequestBody ObrazacA1 obrazacA1) {
+        return new ResponseEntity<>(a1Service.submitRequest(obrazacA1), HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/uploadDescriptionFile",produces = "text/plain")
