@@ -4,9 +4,6 @@ import { map, Observable, throwError } from 'rxjs';
 import { AppConfig } from '../AppConfig/appconfig.interface';
 import { APP_SERVICE_CONFIG } from '../AppConfig/appconfig.service';
 import axios from 'axios';
-import { TOsoba } from '../model/a1Request/osoba';
-import { Adresa } from '../model/a1Request/adresa';
-import { ObrazacA1 } from '../model/a1Request/obrazacA1';
 
 
 @Injectable({
