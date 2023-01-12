@@ -1,5 +1,10 @@
 import { TDrzavljanstvo } from "./tdrzavljanstvo";
 
-export interface TStranoDrzavljanstvo extends TDrzavljanstvo{
+export class TStranoDrzavljanstvo extends TDrzavljanstvo{
   broj_pasosa : string;
+
+  constructor(brojPasosa :string){
+    super();
+    this.broj_pasosa = brojPasosa;
+  }
 }

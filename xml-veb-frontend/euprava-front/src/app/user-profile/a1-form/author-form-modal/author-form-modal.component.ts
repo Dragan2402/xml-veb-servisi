@@ -6,6 +6,7 @@ import { TZiviAutor } from 'src/app/model/a1Request/author/ziviAutor';
 import { TPreminuliAutor } from 'src/app/model/a1Request/author/preminuliAutor';
 import { TStranoDrzavljanstvo } from 'src/app/model/a1Request/citizenship/stranoDrzavljanstvo';
 import { TOsoba } from 'src/app/model/a1Request/osoba';
+import { TDomaceDrzavljanstvo } from 'src/app/model/a1Request/citizenship/domaceDrzavljanstvo';
 
 @Component({
   selector: 'euprava-author-form-modal',
@@ -16,7 +17,7 @@ export class AuthorFormModalComponent implements OnInit {
 
   isAuthorAlive : boolean;
   authorIsForeignCitizenship : boolean;
-
+  minDate: Date = new Date();
   authorSign = new FormControl<string>('');
 
   authorFirstName = new FormControl<string>('',[Validators.required]);
@@ -51,29 +52,28 @@ export class AuthorFormModalComponent implements OnInit {
   }
 
   private GetAliveAuthor():any{
-    // if(this.authorFirstName.valid && this.authorLastName.valid && this.authorPlace.valid && this.authorStreet.valid &&
-    //    this.authorZipCode.valid && this.authorStreetNumber.valid &&
-    //    ((this.authorPassport.valid && this.authorIsForeignCitizenship) || (this.authorJmbg.valid && !this.authorIsForeignCitizenship))){
-    //     let sign = this.authorSign.value==="" ? null:<string>this.authorSign.value;
-    //     return new AliveAuthor(sign,this.GetAliveAuthorPerson());
-    // }else{
-    //   return null;
-    // }
+    if(this.authorFirstName.valid && this.authorLastName.valid && this.authorPlace.valid && this.authorStreet.valid &&
+       this.authorZipCode.valid && this.authorStreetNumber.valid &&
+       ((this.authorPassport.valid && this.authorIsForeignCitizenship) || (this.authorJmbg.valid && !this.authorIsForeignCitizenship))){
+        let sign = this.authorSign.value==="" ? undefined:<string>this.authorSign.value;
+        return new TZiviAutor(this.GetAliveAuthorPerson(),sign);
+    }else{
+      return null;
+    }
   }
 
   private GetDeadAuthor(){
-    // if(this.authorFirstName.valid && this.authorLastName.valid && this.authorSign.valid && this.authorDod.valid){
-    //   let sign = this.authorSign.value==="" ? null:<string>this.authorSign.value;
-    //   return new DeadAuthor(sign,<string>this.authorFirstName.value, <string>this.authorLastName.value,<Date>this.authorDod.value);
-    // }else{
-    //   return null;
-    // }
-
+    if(this.authorFirstName.valid && this.authorLastName.valid && this.authorSign.valid && this.authorDod.valid){
+      let sign = this.authorSign.value==="" ? undefined:<string>this.authorSign.value;
+      return new TPreminuliAutor(<string>this.authorFirstName.value, <string>this.authorLastName.value,<Date>this.authorDod.value,sign);
+    }else{
+      return null;
+    }
   }
 
   private GetAliveAuthorPerson(){
-    // const address = new Adresa(<string>this.authorPlace.value,<string>this.authorZipCode.value?.toString(),<string>this.authorStreet.value,<number>this.authorStreetNumber.value);
-    // const citizenship = this.authorIsForeignCitizenship ? new TStranoDrzavljanstvo(<string>this.authorPassport.value): new DomesticCitizenship(<string>this.authorJmbg.value);
-    // return new TOsoba(<string>this.authorFirstName.value,<string>this.authorLastName.value,address,citizenship);
+    const address = new Adresa(<string>this.authorPlace.value,<string>this.authorZipCode.value?.toString(),<string>this.authorStreet.value,<number>this.authorStreetNumber.value);
+    const citizenship = this.authorIsForeignCitizenship ? new TStranoDrzavljanstvo(<string>this.authorPassport.value): new TDomaceDrzavljanstvo(<string>this.authorJmbg.value);
+    return new TOsoba(<string>this.authorFirstName.value,<string>this.authorLastName.value,address,citizenship);
   }
 }

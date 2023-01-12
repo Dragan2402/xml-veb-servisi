@@ -1,2 +1,2 @@
-export interface TDrzavljanstvo {
+export abstract class TDrzavljanstvo {
 }

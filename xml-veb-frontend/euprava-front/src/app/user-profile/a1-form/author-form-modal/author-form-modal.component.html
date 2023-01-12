@@ -84,7 +84,7 @@
             <div style="display: flex; flex-direction: row; width: 25%;" >
                 <mat-form-field  style="width: 100%;">
                     <mat-label>Datum smrti</mat-label>
-                    <input matInput [matDatepicker]="picker" [formControl]="authorDod">
+                    <input matInput [matDatepicker]="picker" [formControl]="authorDod"  [max]="minDate">
                     <mat-hint>MM/DD/YYYY</mat-hint>
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>

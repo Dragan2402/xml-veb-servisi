@@ -21,6 +21,9 @@ import { PodaciOriginalnoDjelo } from 'src/app/model/a1Request/piece/podaciOrigi
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
 import { TDrzavljanstvo } from 'src/app/model/a1Request/citizenship/tdrzavljanstvo';
+import { TZiviAutor } from 'src/app/model/a1Request/author/ziviAutor';
+import { TPreminuliAutor } from 'src/app/model/a1Request/author/preminuliAutor';
+import { TDomaceDrzavljanstvo } from 'src/app/model/a1Request/citizenship/domaceDrzavljanstvo';
 
 
 
@@ -334,7 +337,6 @@ export class A1FormComponent implements OnInit {
       if(!this.isPieceOriginal && this.IsOriginalPieceValid()){
         piece = piece + this.GetOriginalPiece();
       }
-
       piece = piece +"</Djelo>";
       return piece;
     }else{
@@ -365,8 +367,96 @@ export class A1FormComponent implements OnInit {
       this.pieceAuthors = [];
       return "<Podaci_Autor><Nepoznati_Autor>true</Nepoznati_Autor></Podaci_Autor>";
     }else{
-      return "";
+      let authors = "<Podaci_Autor>";
+      this.pieceAuthors.forEach(author => {
+        if(author instanceof TZiviAutor){
+          authors = authors + this.GetAliveAuthor(author);
+        }else if (author instanceof TPreminuliAutor){
+          authors = authors + this.GetDeadAuthor(author);
+        }
+      });
+      authors = authors + "</Podaci_Autor>";
+      return authors;
     }
+  }
+
+  private GetAliveAuthor(author:TZiviAutor):string{
+    let element = '<Poznati_Autor xsi:type="TZivi_Autor">';
+    if(author.pseudonim_znak_autora !== undefined){
+      element = element + "<Pseudonim_Znak_Autora>"+author.pseudonim_znak_autora+"</Pseudonim_Znak_Autora>";
+    }
+    element = element + "<Podaci_Autor>";
+    element = element + "<Ime>"+author.podaci_autor.ime+"</Ime>";
+    element = element + "<Prezime>"+author.podaci_autor.prezime+"</Prezime>";
+    element = element + this.GetAddressAuthor(author.podaci_autor.adresa);
+    element = element + this.GetCitizenshipAuthor(author.podaci_autor.drzavljanstvo);
+    element = element + "</Podaci_Autor></Poznati_Autor>";
+    return element;
+  }
+
+  private GetAliveAuthorOriginalPiece(author:TZiviAutor):string{
+    let element = '<Poznati_Originalni_Autor xsi:type="TZivi_Autor"';
+    if(author.pseudonim_znak_autora !== undefined){
+      element = element + "<Pseudonim_Znak_Autora>"+author.pseudonim_znak_autora+"</Pseudonim_Znak_Autora>";
+    }
+    element = element + "<Podaci_Autor>";
+    element = element + "<Ime>"+author.podaci_autor.ime+"</Ime>";
+    element = element + "<Prezime>"+author.podaci_autor.prezime+"</Prezime>";
+    element = element + this.GetAddressAuthor(author.podaci_autor.adresa);
+    element = element + this.GetCitizenshipAuthor(author.podaci_autor.drzavljanstvo);
+    element = element + "</Podaci_Autor></Poznati_Autor>";
+    return element;
+  }
+
+  private GetDeadAuthor(author:TPreminuliAutor):string{
+    let element = '<Poznati_Autor xsi:type="TPreminuli_Autor">';
+    if(author.pseudonim_znak_autora !== undefined){
+      element = element + "<Pseudonim_Znak_Autora>"+author.pseudonim_znak_autora+"</Pseudonim_Znak_Autora>";
+    }
+    element = element + "<Ime>"+author.ime+"</Ime>";
+    element = element + "<Prezime>"+author.prezime+"</Prezime>";
+
+    var isoString = author.datum_smrti.toISOString();
+    var dateInFormat = isoString.split("T")[0];
+    console.log(dateInFormat);
+    element = element + '<Datum_Smrti>'+dateInFormat+'</Datum_Smrti>';
+    element = element + "</Poznati_Autor>";
+    return element;
+  }
+
+  private GetDeadAuthorOriginalPiece(author:TPreminuliAutor):string{
+    let element = '<Poznati_Originalni_Autor xsi:type="TPreminuli_Autor">';
+    if(author.pseudonim_znak_autora !== undefined){
+      element = element + "<Pseudonim_Znak_Autora>"+author.pseudonim_znak_autora+"</Pseudonim_Znak_Autora>";
+    }
+    element = element + "<Ime>"+author.ime+"</Ime>";
+    element = element + "<Prezime>"+author.prezime+"</Prezime>";
+
+    var isoString = author.datum_smrti.toISOString();
+    var dateInFormat = isoString.split("T")[0];
+    console.log(dateInFormat);
+    element = element + '<Datum_Smrti>'+dateInFormat+'</Datum_Smrti>';
+    element = element + "</Poznati_Originalni_Autor>";
+    return element;
+  }
+
+  private GetAddressAuthor(address:Adresa):string{
+    let adresa= "<Adresa>";
+    adresa = adresa + "<Mjesto>"+address.mjesto+"</Mjesto>";
+    adresa = adresa + "<Postanski_Broj>"+address.postanski_broj+"</Postanski_Broj>";
+    adresa = adresa + "<Ulica>"+address.ulica+"</Ulica>";
+    adresa = adresa + "<Broj>"+address.broj+"</Broj>";
+    adresa = adresa + "</Adresa>";
+    return adresa;
+  }
+
+  private GetCitizenshipAuthor(citizenship:TDrzavljanstvo):string{
+    if(citizenship instanceof TDomaceDrzavljanstvo){
+      return '<Drzavljanstvo xsi:type="TDomace_Drzavljanstvo"><Jmbg>'+citizenship.jmbg+'</Jmbg></Drzavljanstvo>'
+    }else if(citizenship instanceof TStranoDrzavljanstvo){
+      return '<Drzavljanstvo xsi:type="TStrano_Drzavljanstvo"><Broj_Pasosa>'+citizenship.broj_pasosa+'</Broj_Pasosa></Drzavljanstvo>';
+    }
+    return "";
   }
 
   private GetOriginalPiece():String{
@@ -375,6 +465,16 @@ export class A1FormComponent implements OnInit {
     if(this.originalAuthorType === 0){
       this.originalPieceAuthors = [];
       originalPiece = originalPiece + "<Nepoznati_Autor>true</Nepoznati_Autor>";
+    }else{
+      let authorsElement = ''
+      this.originalPieceAuthors.forEach(author => {
+        if(author instanceof TZiviAutor){
+          authorsElement = authorsElement + this.GetAliveAuthorOriginalPiece(author);
+        }else if(author instanceof TPreminuliAutor){
+          authorsElement = authorsElement + this.GetDeadAuthorOriginalPiece(author);
+        }
+      });
+      originalPiece = originalPiece + authorsElement;
     }
     originalPiece = originalPiece + "</Podaci_Originalno_Djelo>";
     return originalPiece;
@@ -406,52 +506,53 @@ export class A1FormComponent implements OnInit {
   }
 
   openAuthorFormModal(){
-    // const dialogConfig = new MatDialogConfig();
-    // // The user can't close the dialog by clicking outside its body
-    // dialogConfig.disableClose = true;
-    // dialogConfig.id = "author-form-modal";
-    // dialogConfig.height = "90%";
-    // dialogConfig.width = "70%";
-    // // https://material.angular.io/components/dialog/overview
-    // const modalDialog = this.matDialog.open(AuthorFormModalComponent, dialogConfig);
+    const dialogConfig = new MatDialogConfig();
+    // The user can't close the dialog by clicking outside its body
+    dialogConfig.disableClose = true;
+    dialogConfig.id = "author-form-modal";
+    dialogConfig.height = "90%";
+    dialogConfig.width = "70%";
+    // https://material.angular.io/components/dialog/overview
+    const modalDialog = this.matDialog.open(AuthorFormModalComponent, dialogConfig);
 
-    // modalDialog.afterClosed().subscribe(result =>{
-    //   if(result instanceof Author){
-    //     this.pieceAuthors.push(result);
-    //   }
-    // })
+    modalDialog.afterClosed().subscribe(result =>{
+      if(result instanceof TAutor){
+        this.pieceAuthors.push(result);
+        console.log(result);
+      }
+    })
   }
 
   OpenOriginalAuthorFormModal(){
-    // const dialogConfig = new MatDialogConfig();
-    // // The user can't close the dialog by clicking outside its body
-    // dialogConfig.disableClose = true;
-    // dialogConfig.id = "author-form-modal";
-    // dialogConfig.height = "90%";
-    // dialogConfig.width = "70%";
-    // // https://material.angular.io/components/dialog/overview
-    // const modalDialog = this.matDialog.open(AuthorFormModalComponent, dialogConfig);
+    const dialogConfig = new MatDialogConfig();
+    // The user can't close the dialog by clicking outside its body
+    dialogConfig.disableClose = true;
+    dialogConfig.id = "author-form-modal";
+    dialogConfig.height = "90%";
+    dialogConfig.width = "70%";
+    // https://material.angular.io/components/dialog/overview
+    const modalDialog = this.matDialog.open(AuthorFormModalComponent, dialogConfig);
 
-    // modalDialog.afterClosed().subscribe(result =>{
-    //   if(result instanceof Author){
-    //     this.originalPieceAuthors.push(result);
-    //   }
-    // })
+    modalDialog.afterClosed().subscribe(result =>{
+      if(result instanceof TAutor){
+        this.originalPieceAuthors.push(result);
+      }
+    })
   }
 
 
   DeleteAuthor(author:TAutor){
-    // const index = this.pieceAuthors.indexOf(author, 0);
-    // if (index > -1) {
-    //   this.pieceAuthors.splice(index, 1);
-    // }
+    const index = this.pieceAuthors.indexOf(author, 0);
+    if (index > -1) {
+      this.pieceAuthors.splice(index, 1);
+    }
   }
 
   DeleteOriginalAuthor(author:TAutor){
-    // const index = this.originalPieceAuthors.indexOf(author, 0);
-    // if (index > -1) {
-    //   this.originalPieceAuthors.splice(index, 1);
-    // }
+    const index = this.originalPieceAuthors.indexOf(author, 0);
+    if (index > -1) {
+      this.originalPieceAuthors.splice(index, 1);
+    }
   }
 
   public ResetAuthors(){

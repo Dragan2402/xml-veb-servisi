@@ -1,6 +1,11 @@
 import { TDrzavljanstvo } from "./tdrzavljanstvo";
 
-export interface TDomaceDrzavljanstvo extends TDrzavljanstvo{
+export class TDomaceDrzavljanstvo extends TDrzavljanstvo{
 
   jmbg : string;
+
+  constructor(jmbg:string){
+    super();
+    this.jmbg= jmbg;
+  }
 }

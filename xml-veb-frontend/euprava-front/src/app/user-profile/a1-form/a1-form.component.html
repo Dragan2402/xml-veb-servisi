@@ -228,7 +228,7 @@
                     <span style="margin-right: 2%;font-size: 15;">{{i+1}}.</span>
                     <div style="display: flex;flex-direction: row;min-width: 250px;justify-content: center;font-size: 22px">
                       <span>
-                        <label>{{author.pseudonim_znak_autora}}</label>
+                        <label>{{author.TableString()}}</label>
                       </span>
                     </div>
                     <button mat-icon-button color="warn" (click)="DeleteAuthor(author)" aria-label="Izbrisi autora">
