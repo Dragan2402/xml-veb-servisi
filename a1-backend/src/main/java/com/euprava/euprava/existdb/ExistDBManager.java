@@ -1,6 +1,7 @@
 package com.euprava.euprava.existdb;
 
 import com.euprava.euprava.util.ExistDBAuthenticationUtilities;
+import com.euprava.euprava.util.XUpdateTemplate;
 import org.exist.xmldb.EXistResource;
 import org.springframework.stereotype.Service;
 import org.xmldb.api.DatabaseManager;
@@ -8,6 +9,7 @@ import org.xmldb.api.base.*;
 import org.xmldb.api.modules.CollectionManagementService;
 import org.xmldb.api.modules.XMLResource;
 import org.xmldb.api.modules.XQueryService;
+import org.xmldb.api.modules.XUpdateQueryService;
 
 import javax.xml.transform.OutputKeys;
 import java.io.IOException;
@@ -163,5 +165,47 @@ public class ExistDBManager {
             closeConnection(collection, null);
         }
         return resources;
+    }
+
+    public void updateRequestToApproved(String collectionUri, String documentId) throws XMLDBException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        openConnection();
+        Collection collection = null;
+        XMLResource resource =  null;
+
+        try {
+            collection = DatabaseManager.getCollection(ExistDBAuthenticationUtilities.loadProperties().uri + collectionUri,
+                    ExistDBAuthenticationUtilities.loadProperties().user,
+                    ExistDBAuthenticationUtilities.loadProperties().password);
+            collection.setProperty(OutputKeys.INDENT, "yes");
+
+            XUpdateQueryService xupdateService = (XUpdateQueryService) collection.getService("XUpdateQueryService", "1.0");
+            xupdateService.setProperty("indent", "yes");
+
+            xupdateService.updateResource(documentId, String.format(XUpdateTemplate.getUpdateExpression("http://euprava.euprava.com/model/a1Sertifikat"), "/obrazacA1/Status", "Prihvacen"));
+
+        } catch (Exception e) {
+            closeConnection(collection, resource);
+        }
+    }
+
+    public void updateRequestToDeclined(String collectionUri, String documentId) throws XMLDBException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        openConnection();
+        Collection collection = null;
+        XMLResource resource =  null;
+
+        try {
+            collection = DatabaseManager.getCollection(ExistDBAuthenticationUtilities.loadProperties().uri + collectionUri,
+                    ExistDBAuthenticationUtilities.loadProperties().user,
+                    ExistDBAuthenticationUtilities.loadProperties().password);
+            collection.setProperty(OutputKeys.INDENT, "yes");
+
+            XUpdateQueryService xupdateService = (XUpdateQueryService) collection.getService("XUpdateQueryService", "1.0");
+            xupdateService.setProperty("indent", "yes");
+
+            xupdateService.updateResource(documentId, String.format(XUpdateTemplate.getUpdateExpression("http://euprava.euprava.com/model/a1Sertifikat"), "/obrazacA1/Status", "Odbijen"));
+
+        } catch (Exception e) {
+            closeConnection(collection, resource);
+        }
     }
 }

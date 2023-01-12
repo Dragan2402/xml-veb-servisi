@@ -80,4 +80,12 @@ public class A1RequestRepository {
     public List<Resource> getObrazacByQuery(String collection, String namespace, String query) throws XMLDBException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         return existDBManager.executeQuery(collection, namespace, query);
     }
+
+    public void approveRequest(String collection, String documentId) throws XMLDBException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        existDBManager.updateRequestToApproved(collection,documentId);
+    }
+
+    public void declineRequest(String collectionUri, String documentId) throws XMLDBException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        existDBManager.updateRequestToDeclined(collectionUri, documentId);
+    }
 }

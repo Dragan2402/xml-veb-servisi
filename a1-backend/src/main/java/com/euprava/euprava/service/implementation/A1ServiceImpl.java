@@ -11,8 +11,7 @@ import com.euprava.euprava.transformation.XSLFOTransformer;
 import com.euprava.euprava.util.EmailService;
 import com.euprava.euprava.util.SchemaValidationHandler;
 import com.euprava.euprava.util.Utility;
-import com.euprava.euprava.util.exception.customExceptions.ObjectNotFoundException;
-import javafx.util.Pair;
+import com.euprava.euprava.util.exception.customExceptions.UnsupportedTypeException;
 import lombok.RequiredArgsConstructor;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
@@ -28,7 +27,6 @@ import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
@@ -39,9 +37,6 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.euprava.euprava.util.Utility.*;
@@ -60,6 +55,8 @@ public class A1ServiceImpl implements IA1Service {
     private final MetadataExtractor metadataExtractor;
 
     private final EmailService emailService;
+
+    private final List<String> supportedMetadataTypes = Arrays.asList("RDF/JSON", "RDF/XML", "N-TRIPLE");
 
     @Override
     public ObrazacA1 getObrazacById(String id) throws Exception {
@@ -223,6 +220,42 @@ public class A1ServiceImpl implements IA1Service {
             documents.add(getObrazacById(parts[parts.length - 1]));
         }
         return documents;
+    }
+
+    @Override
+    public String getMetadata(String id, String type) throws IOException {
+        if(!supportedMetadataTypes.contains(type)){
+            throw new UnsupportedTypeException("Unsupported metadata type.");
+        }
+        String sparqlCondition = "<http://euprava.euprava.com/model/rdf/a1Sertifikat/" + id + "> ?d ?s .";
+        return FusekiReader.readMetadata("/a1Sertifikat", sparqlCondition, type);
+    }
+
+    @Override
+    public File getPDFFileById(String id) throws Exception {
+        ObrazacA1 document = this.getObrazacById(id);
+        String path_pdf = "src/main/resources/data/gen/pdf/" + document.getId() + ".pdf";
+        return new File(path_pdf);
+    }
+
+    @Override
+    public File getHTMLFileById(String id) throws Exception {
+        ObrazacA1 document = this.getObrazacById(id);
+        generateXHTML(String.valueOf(document.getId()));
+        String path_html = "src/main/resources/data/gen/html/" + document.getId() + ".html";
+        return new File(path_html);
+    }
+
+    @Override
+    public ObrazacA1 approveRequest(String id) throws Exception {
+        a1RequestRepository.approveRequest("/db/a1","id_"+id);
+        return getObrazacById(id);
+    }
+
+    @Override
+    public ObrazacA1 declineRequest(String id) throws Exception {
+        a1RequestRepository.declineRequest("/db/a1","id_"+id);
+        return getObrazacById(id);
     }
 
     private String generateLogicalQuery(String search){

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<obrazacA1 xmlns="http://euprava.euprava.com/model/a1Sertifikat" about="http://euprava.euprava.com/model/rdf/a1Sertifikat/7822828869401202852" typeof="pred:IdentifikatorDokumenta">
-    <id>7822828869401202852</id>
+<obrazacA1 xmlns="http://euprava.euprava.com/model/a1Sertifikat" about="http://euprava.euprava.com/model/rdf/a1Sertifikat/2567450636117858924" typeof="pred:IdentifikatorDokumenta">
+    <id>2567450636117858924</id>
     <Podnosilac xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TPravni_Podnosilac">
         <Telefon>1231231231</Telefon>
-        <Email property="pred:PodnioEmail" datatype="xs:string">draganmirkovic2402@gmail.com</Email>
+        <Email property="pred:PodnioEmail" datatype="xs:string">draganmirkovic2402@maildrop.cc</Email>
         <Poslovno_Ime>Firma</Poslovno_Ime>
         <Adresa>
             <Mjesto>Brcko</Mjesto>
@@ -26,32 +26,11 @@
         </Drzavljanstvo>
     </Punomocnik>
     <Djelo>
-        <Naslov property="pred:Naslov" datatype="xs:string">Gage Perez</Naslov>
-        <Vrsta_Djela property="pred:Vrsta" datatype="xs:string">Informacione Tehnologije</Vrsta_Djela>
+        <Naslov property="pred:Naslov" datatype="xs:string">sdsadas</Naslov>
+        <Vrsta_Djela property="pred:Vrsta" datatype="xs:string">Pisano</Vrsta_Djela>
         <Forma_Zapisa property="pred:Forma" datatype="xs:string">Audio</Forma_Zapisa>
         <Podaci_Autor>
-            <Poznati_Autor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TZivi_Autor">
-                <Pseudonim_Znak_Autora>JJ</Pseudonim_Znak_Autora>
-                <Podaci_Autor>
-                    <Ime>Jovan</Ime>
-                    <Prezime>Jovanovic</Prezime>
-                    <Adresa>
-                        <Mjesto>Kikinda</Mjesto>
-                        <Postanski_Broj>2444</Postanski_Broj>
-                        <Ulica>Neznana</Ulica>
-                        <Broj>54</Broj>
-                    </Adresa>
-                    <Drzavljanstvo xsi:type="TDomace_Drzavljanstvo">
-                        <Jmbg>1234567890123</Jmbg>
-                    </Drzavljanstvo>
-                </Podaci_Autor>
-            </Poznati_Autor>
-            <Poznati_Autor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TPreminuli_Autor">
-                <Pseudonim_Znak_Autora>KKK</Pseudonim_Znak_Autora>
-                <Ime>Pokolica</Ime>
-                <Prezime>Pokolicanin</Prezime>
-                <Datum_Smrti>2022-11-23</Datum_Smrti>
-            </Poznati_Autor>
+            <Nepoznati_Autor>true</Nepoznati_Autor>
         </Podaci_Autor>
         <Stvoreno_U_Radnom_Odnosu>true</Stvoreno_U_Radnom_Odnosu>
         <Nacin_koriscenja>Laganica</Nacin_koriscenja>
@@ -67,7 +46,7 @@
     <Potpis>gageleza</Potpis>
     <Sifra_Opisa>23232</Sifra_Opisa>
     <Sifra_Primjera>gagic</Sifra_Primjera>
-    <Broj_Prijave>12</Broj_Prijave>
-    <Datum_Podnosenja property="pred:PodnesenDatuma" datatype="xs:string">2022-11-29</Datum_Podnosenja>
+    <Broj_Prijave>1</Broj_Prijave>
+    <Datum_Podnosenja property="pred:PodnesenDatuma" datatype="xs:string">2023-01-12</Datum_Podnosenja>
     <Status property="pred:Status" datatype="xs:string">Podnesen</Status>
 </obrazacA1>

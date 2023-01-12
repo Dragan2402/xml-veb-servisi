@@ -6,6 +6,7 @@ import org.xml.sax.SAXException;
 import org.xmldb.api.base.XMLDBException;
 
 import javax.xml.bind.JAXBException;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -31,4 +32,14 @@ public interface IA1Service {
     List<ObrazacA1> searchMetadataByParam(String param) throws Exception;
 
     List<ObrazacA1> searchMetadataByLogicalParams(String search) throws Exception;
+
+    String getMetadata(String id, String type) throws IOException;
+
+    File getPDFFileById(String id) throws Exception;
+
+    File getHTMLFileById(String id) throws Exception;
+
+    ObrazacA1 approveRequest(String id) throws Exception;
+
+    ObrazacA1 declineRequest(String id) throws Exception;
 }
