@@ -38,6 +38,7 @@ import { OriginalPieceComponent } from './user-profile/user-requests/a1-request/
 import { AuthorComponent } from './user-profile/user-requests/a1-request/piece/author/author.component';
 import {MatRadioModule} from '@angular/material/radio';
 import { AuthorFormModalComponent } from './user-profile/a1-form/author-form-modal/author-form-modal.component';
+import { P1FormComponent } from './user-profile/p1-form/p1-form.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { AuthorFormModalComponent } from './user-profile/a1-form/author-form-mod
     PieceComponent,
     OriginalPieceComponent,
     AuthorComponent,
-    AuthorFormModalComponent
+    AuthorFormModalComponent,
+    P1FormComponent
   ],
   imports: [
     BrowserModule,

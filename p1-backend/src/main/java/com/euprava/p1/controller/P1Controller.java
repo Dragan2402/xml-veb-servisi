@@ -2,17 +2,17 @@ package com.euprava.p1.controller;
 
 import com.euprava.p1.model.ObrazacP1;
 import com.euprava.p1.service.P1Service;
+import jakarta.xml.bind.JAXBException;
+import org.exist.http.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.xml.sax.SAXException;
+import org.xmldb.api.base.XMLDBException;
 
-import javax.xml.bind.JAXBException;
-import javax.xml.datatype.DatatypeConfigurationException;
 import java.io.IOException;
-import java.text.ParseException;
-import java.util.Map;
+import java.lang.reflect.InvocationTargetException;
 
 @RestController
 @RequestMapping(value = "api/p1")
@@ -21,21 +21,21 @@ public class P1Controller {
     @Autowired
     private P1Service p1Service;
 
-    @GetMapping(value = "/{fileName}")
-    public ResponseEntity<ObrazacP1> getObrazacP1(@PathVariable(value = "fileName") String fileName) throws JAXBException, IOException {
-        ObrazacP1 p1 = p1Service.readObrazacP1(fileName);
+    @GetMapping(value = "/{documentId}")
+    public ResponseEntity<ObrazacP1> getObrazacP1(@PathVariable(value = "documentId") String documentId) throws IOException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, JAXBException, NotFoundException, SAXException {
+        ObrazacP1 p1 = p1Service.retrieveObrazacP1(documentId);
         return new ResponseEntity<>(p1, HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<ObrazacP1> getExampleObrazacP1() throws JAXBException, IOException {
-        ObrazacP1 p1 = p1Service.readObrazacP1("p1_example.xml");
+    @GetMapping(produces = {"application/xml"})
+    public ResponseEntity<ObrazacP1> getExampleObrazacP1() throws IOException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, JAXBException, NotFoundException, SAXException {
+        ObrazacP1 p1 = p1Service.retrieveObrazacP1("p1_example.xml");
         return new ResponseEntity<>(p1, HttpStatus.OK);
     }
 
-    @PostMapping()
-    public ResponseEntity<Void> postObrazacP1(@RequestBody Map<?, ?> obrazacP1Map) throws DatatypeConfigurationException, ParseException, JAXBException, IOException {
-        p1Service.createObrazacP1(obrazacP1Map);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @PostMapping(produces = {"application/xml"})
+    public ResponseEntity<String> postObrazacP1(@RequestBody ObrazacP1 obrazacP1) throws JAXBException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+        p1Service.createObrazacP1(obrazacP1);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

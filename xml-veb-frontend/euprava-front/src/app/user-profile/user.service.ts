@@ -4,6 +4,7 @@ import { map, Observable, throwError } from 'rxjs';
 import { AppConfig } from '../AppConfig/appconfig.interface';
 import { APP_SERVICE_CONFIG } from '../AppConfig/appconfig.service';
 import axios from 'axios';
+import { Entity } from '../model/p1Request/Entity';
 
 
 @Injectable({
@@ -63,5 +64,19 @@ export class UserService {
         });
       }
     }
+  }
+
+  sendXml(entity: string) {
+    // return this.http.post("http://localhost:8080/api/p1", entity);
+    const headers = { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'};
+    axios.post("/api/p1", entity, {headers})
+    .then(response =>{
+        console.log(response.data);
+      });
+    // console.log(this.http.get('http://localhost:8080/api/p1', {responseType: "text" as "json"}));
+    // axios.get('/api/p1', {responseType: "text" as "json"})
+    // .then(response =>{
+    //   console.log(response);
+    // });
   }
 }

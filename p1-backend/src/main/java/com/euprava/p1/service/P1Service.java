@@ -1,15 +1,15 @@
 package com.euprava.p1.service;
 
 import com.euprava.p1.model.ObrazacP1;
+import jakarta.xml.bind.JAXBException;
+import org.exist.http.NotFoundException;
+import org.xml.sax.SAXException;
+import org.xmldb.api.base.XMLDBException;
 
-import javax.xml.bind.JAXBException;
-import javax.xml.datatype.DatatypeConfigurationException;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.ParseException;
-import java.util.Map;
+import java.lang.reflect.InvocationTargetException;
 
 public interface P1Service {
-    ObrazacP1 readObrazacP1(String fileName) throws JAXBException, IOException;
-    void createObrazacP1(Map<?, ?> obrazacP1Map) throws DatatypeConfigurationException, ParseException, JAXBException, IOException;
+    ObrazacP1 retrieveObrazacP1(String fileName) throws IOException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, JAXBException, NotFoundException, SAXException;
+    void createObrazacP1(ObrazacP1 obrazacP1) throws JAXBException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException;
 }

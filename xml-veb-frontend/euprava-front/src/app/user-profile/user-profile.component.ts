@@ -21,5 +21,8 @@ export class UserProfileComponent implements OnInit {
     this.route.navigate(['/a1-from']);
   }
 
+  createP1Request() {
+    this.route.navigate(['/p1-form']);
+  }
 
 }
