@@ -27,12 +27,6 @@ public class P1Controller {
         return new ResponseEntity<>(p1, HttpStatus.OK);
     }
 
-    @GetMapping(produces = {"application/xml"})
-    public ResponseEntity<ObrazacP1> getExampleObrazacP1() throws IOException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, JAXBException, NotFoundException, SAXException {
-        ObrazacP1 p1 = p1Service.retrieveObrazacP1("p1_example.xml");
-        return new ResponseEntity<>(p1, HttpStatus.OK);
-    }
-
     @PostMapping(produces = {"application/xml"})
     public ResponseEntity<String> postObrazacP1(@RequestBody ObrazacP1 obrazacP1) throws JAXBException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         p1Service.createObrazacP1(obrazacP1);

@@ -12,11 +12,11 @@ export class XonomyService {
   public p1Specification = {
     elements: {
       Obrazac_P1: {
-
+        hasText: false
       },
 
       Popunjava_zavod: {
-
+        hasText: false
       },
       Broj_prijave: {
         hasText: true,
@@ -35,11 +35,11 @@ export class XonomyService {
       },
 
       Zahtev_za_priznanje_patenta: {
-
+        hasText: false
       },
 
       Naziv_pronalaska: {
-
+        hasText: false
       },
       Na_srpskom: {
         hasText: true,
@@ -53,7 +53,7 @@ export class XonomyService {
       },
 
       Podnosilac_prijave: {
-
+        hasText: false
       },
       Podnosilac_je_pronalazac: {
         hasText: true,
@@ -62,11 +62,11 @@ export class XonomyService {
       },
 
       Lice_podnosilac: {
-
+        hasText: false
       },
 
       Adresa: {
-
+        hasText: false
       },
       Ulica: {
         hasText: true,
@@ -95,7 +95,7 @@ export class XonomyService {
       },
 
       Kontakt_informacije: {
-
+        hasText: false
       },
       Broj_telefona: {
         hasText: true,
@@ -103,7 +103,7 @@ export class XonomyService {
         asker: Xonomy.askString
       },
       E_posta: {
-
+        hasText: false
       },
       Broj_faksa: {
         hasText: true,
@@ -118,7 +118,7 @@ export class XonomyService {
       },
 
       Pronalazac: {
-
+        hasText: false
       },
       Pronalazac_nije_naveden: {
         hasText: true,
@@ -127,7 +127,7 @@ export class XonomyService {
       },
 
       Lice_pronalazac: {
-
+        hasText: false
       },
       Ime: {
         hasText: true,
@@ -140,7 +140,7 @@ export class XonomyService {
         asker: Xonomy.askString
       },
       Drzavljanstvo: {
-
+        hasText: false
       },
 
       Tip: {
@@ -150,17 +150,17 @@ export class XonomyService {
       }, // should be changed
 
       Punomocnik_ili_predstavnik: {
-
+        hasText: false
       },
       Tip_punomocnika_ili_predstavnika: {
-
+        hasText: false
       },
       Lice_punomocnik_ili_predstavnik: {
-
+        hasText: false
       },
 
       Adresa_za_dostavljanje: {
-
+        hasText: false
       },
 
       Nacin_dostavljanja: {
@@ -170,10 +170,10 @@ export class XonomyService {
       },
 
       Povezana_prijava: {
-
+        hasText: false
       },
       Tip_povezane_prijave: {
-
+        hasText: false
       },
       Broj_ranije_prijave: {
         hasText: true,
@@ -187,10 +187,10 @@ export class XonomyService {
       },
 
       Zahtev_za_priznanje_prava_prvenstva: {
-
+        hasText: false
       },
       Ranija_prijava: {
-
+        hasText: false
       },
       Oznaka_drzave_ili_organizacije: {
         hasText: true,

@@ -67,16 +67,15 @@ export class UserService {
   }
 
   sendXml(entity: string) {
-    // return this.http.post("http://localhost:8080/api/p1", entity);
     const headers = { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'};
     axios.post("/api/p1", entity, {headers})
     .then(response =>{
         console.log(response.data);
       });
-    // console.log(this.http.get('http://localhost:8080/api/p1', {responseType: "text" as "json"}));
-    // axios.get('/api/p1', {responseType: "text" as "json"})
-    // .then(response =>{
-    //   console.log(response);
-    // });
+  }
+
+  loadXml(documentId: any) {
+    // const headers = { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'};
+    return this.http.get(`/api/p1/${documentId}`, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
   }
 }
