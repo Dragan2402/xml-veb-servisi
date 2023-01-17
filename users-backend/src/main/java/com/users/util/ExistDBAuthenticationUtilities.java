@@ -1,4 +1,4 @@
-package com.euprava.euprava.util;
+package com.users.util;
 
 import org.springframework.stereotype.Component;
 
