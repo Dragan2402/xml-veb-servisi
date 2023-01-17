@@ -1,0 +1,32 @@
+.submitter-radio-group {
+    display: inline-flex;
+    flex-direction: row;
+    margin-top: 3%;
+  }
+
+.author-main-div{
+  display: flex;
+  flex-direction: column;
+  height: 100%
+}
+.form-div{
+  display: flex;
+  flex-direction: column;
+  height: 90%;
+
+}
+.author-div{
+  display: flex;
+  flex-direction: row;
+  margin-top: 5%;
+  margin-left: 3%;
+}
+
+
+.flex-row-buttons{
+  display: flex;
+  flex-direction: row;
+  align-self: baseline;
+  margin-top: auto;
+  width: 100%;
+}

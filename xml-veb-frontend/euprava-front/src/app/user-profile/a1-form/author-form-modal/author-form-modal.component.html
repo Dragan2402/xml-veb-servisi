@@ -1,0 +1,108 @@
+<div class="author-main-div">
+  <mat-card  style="background-color: #3F51B5; height: 100%;">
+    <mat-card  style="height: 95%;">
+      <mat-card-title>Forma A1 Zahtjev</mat-card-title>
+      <div class="form-div">
+
+        <div >
+            <mat-radio-group class="submitter-radio-group" [(ngModel)]="isAuthorAlive">
+              <mat-radio-button  style="margin-right: 5%;" [value]=true>Zivi autor</mat-radio-button>
+              <mat-radio-button   [value]=false>Preminuli autor</mat-radio-button>
+            </mat-radio-group>
+        </div>
+
+        <div *ngIf="isAuthorAlive">
+          <div class="author-div">
+            <div style="display: flex; flex-direction: column;margin-right: 10%;">
+              <mat-card-subtitle>Osnovni podaci</mat-card-subtitle>
+              <mat-form-field  >
+                  <input matInput placeholder="Pseudonim znak autora" [formControl]="authorSign">
+              </mat-form-field>
+
+              <mat-form-field  >
+                  <input matInput placeholder="Ime" [formControl]="authorFirstName" required>
+              </mat-form-field>
+
+              <mat-form-field  >
+                  <input matInput placeholder="Prezime" [formControl]="authorLastName" required>
+              </mat-form-field>
+            </div>
+            <div style="display: flex;flex-direction: column;margin-right: 10%;">
+                <mat-card-subtitle>Adresa</mat-card-subtitle>
+                <mat-form-field  >
+                  <input matInput placeholder="Mjesto" [formControl]="authorPlace" required>
+                </mat-form-field>
+                <mat-form-field  >
+                  <input matInput placeholder="Postanski broj" [formControl]="authorZipCode" required>
+                </mat-form-field>
+                <mat-form-field  >
+                  <input matInput placeholder="Ulica" [formControl]="authorStreet" required>
+                </mat-form-field>
+                <mat-form-field  >
+                  <input matInput placeholder="Broj" [formControl]="authorStreetNumber" required>
+                </mat-form-field>
+              </div>
+            <div style="display: flex;flex-direction: column;">
+              <div  >
+                <mat-card-subtitle>Drzavljanstvo</mat-card-subtitle>
+                  <mat-radio-group class="submitter-radio-group" [(ngModel)]="authorIsForeignCitizenship">
+                    <mat-radio-button  style="margin-right: 5%;"  [value]=false>Domace</mat-radio-button>
+                    <mat-radio-button   [value]=true>Strano</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div *ngIf="authorIsForeignCitizenship">
+                  <mat-form-field  >
+                    <input matInput placeholder="Broj pasosa" [formControl]="authorPassport" required>
+                  </mat-form-field>
+                </div>
+                <div *ngIf="!authorIsForeignCitizenship">
+                  <mat-form-field  >
+                    <input matInput placeholder="Jmbg" [formControl]="authorJmbg" required>
+                  </mat-form-field>
+                </div>
+            </div>
+          </div>
+
+
+        </div>
+
+
+        <div *ngIf="!isAuthorAlive">
+          <div class="author-div">
+            <div style="display: flex; flex-direction: column;margin-right: 15%;">
+              <mat-form-field  >
+                  <input matInput placeholder="Pseudonim znak autora" [formControl]="authorSign">
+              </mat-form-field>
+              <mat-form-field  >
+                  <input matInput placeholder="Ime" [formControl]="authorFirstName" required>
+              </mat-form-field>
+
+              <mat-form-field  >
+                  <input matInput placeholder="Prezime" [formControl]="authorLastName" required>
+              </mat-form-field>
+            </div>
+            <div style="display: flex; flex-direction: row; width: 25%;" >
+                <mat-form-field  style="width: 100%;">
+                    <mat-label>Datum smrti</mat-label>
+                    <input matInput [matDatepicker]="picker" [formControl]="authorDod"  [max]="minDate">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+          </div>
+
+        </div>
+        <div class="flex-row-buttons">
+          <div style="display: flex;">
+            <button mat-raised-button color="warn" (click)="closeDialog()">Odustani</button>
+          </div>
+          <div style="display:flex; margin-left: auto;">
+            <button mat-raised-button  color="primary" (click)="addAuthor()">Dodaj autora</button>
+          </div>
+        </div>
+      </div>
+
+  </mat-card>
+  </mat-card>
+</div>
