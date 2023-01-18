@@ -10,7 +10,7 @@
       </div>
       <span class="example-spacer"></span>
       <div>
-        <button mat-button [matMenuTriggerFor]="menu">{{rola}} {{email}}</button>
+        <button mat-button [matMenuTriggerFor]="menu">{{firstName}} {{lastName}}</button>
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="navigateToProfile()" *ngIf="isClient()">Moji Zahtevi</button>
           <button mat-menu-item (click)="logout()">Odjava</button>

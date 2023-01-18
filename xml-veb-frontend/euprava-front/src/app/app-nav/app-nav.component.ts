@@ -21,7 +21,9 @@ export class AppNavComponent implements OnInit {
 
   logged! : boolean;
 
-  email! : string;
+  firstName! : string;
+
+  lastName! :string;
 
   rola! :string;
 
@@ -32,11 +34,11 @@ export class AppNavComponent implements OnInit {
     this.authService.logged$.subscribe((attr:boolean) =>{
       this.logged = attr;
     });
-    this.authService.email$.subscribe((attr:string) =>{
-      this.email = attr;
+    this.authService.firstName$.subscribe((attr:string) =>{
+      this.firstName = attr;
     });
-    this.authService.rola$.subscribe((attr:string) =>{
-      this.rola = attr;
+    this.authService.lastName$.subscribe((attr:string) =>{
+      this.lastName = attr;
     });
   }
 

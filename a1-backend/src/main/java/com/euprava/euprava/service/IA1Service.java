@@ -1,5 +1,6 @@
 package com.euprava.euprava.service;
 
+import com.euprava.euprava.controller.Responses.A1Response;
 import com.euprava.euprava.model.a1sertifikat.ObrazacA1;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
@@ -39,7 +40,15 @@ public interface IA1Service {
 
     File getHTMLFileById(String id) throws Exception;
 
-    ObrazacA1 approveRequest(String id) throws Exception;
+    ObrazacA1 approveRequest(String id, int code) throws Exception;
 
     ObrazacA1 declineRequest(String id) throws Exception;
+
+    List<A1Response> getClientRequests(long clientId) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException;
+
+    List<A1Response> searchClientByParam(long clientId, String param) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException;
+
+    List<A1Response> searchEmployeeByParam(String param) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException;
+
+    List<A1Response> getRequests() throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException;
 }

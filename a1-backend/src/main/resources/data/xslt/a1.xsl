@@ -359,9 +359,11 @@
                                 Status: <xsl:value-of select="b:obrazacA1/b:Status"/>
                             </div>
                             <div class="end-row" >
-                                <div style="border-bottom:1px solid black;">
-                                    Broj prijave: <xsl:value-of select="b:obrazacA1/b:Broj_Prijave"/>
-                                </div >
+                                <xsl:if test="b:obrazacA1/b:Broj_Prijave">
+                                    <div style="border-bottom:1px solid black;">
+                                        Broj prijave: <xsl:value-of select="b:obrazacA1/b:Broj_Prijave"/>
+                                    </div >
+                                </xsl:if>
                                 <div style="border-bottom:1px solid black;">
                                     Potpis: <xsl:value-of select="b:obrazacA1/b:Potpis"/>
                                 </div>

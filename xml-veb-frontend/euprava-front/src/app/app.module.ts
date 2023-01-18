@@ -41,6 +41,7 @@ import { RegisterComponent } from './register/register.component';
 import { EmployeeProfileComponent } from './employee-profile/employee-profile.component';
 import { SnackbarComponent } from './snackbar/snackbar.component';
 import {MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS} from '@angular/material/snack-bar';
+import { HandleRequestComponent } from './employee-profile/handle-request/handle-request.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import {MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS} from '@angular/materia
     P1FormComponent,
     RegisterComponent,
     EmployeeProfileComponent,
-    SnackbarComponent
+    SnackbarComponent,
+    HandleRequestComponent
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,8 @@
 package com.euprava.euprava.controller;
 
 import com.euprava.euprava.controller.Requests.SearchRequest;
+import com.euprava.euprava.controller.Responses.A1Response;
+import com.euprava.euprava.controller.Responses.A1ResponseList;
 import com.euprava.euprava.controller.Responses.SearchResponse;
 import com.euprava.euprava.model.a1sertifikat.ObrazacA1;
 import com.euprava.euprava.service.IA1Service;
@@ -35,9 +37,18 @@ public class A1Controller {
         return new ResponseEntity<>(a1Service.getObrazacById(id), HttpStatus.OK);
     }
 
+    @GetMapping(value = "getClientRequests", produces = {"application/xml"})
+    public ResponseEntity<A1ResponseList> getClientRequests(@RequestParam("clientId") long clientId) throws Exception{
+        return new ResponseEntity<>(new A1ResponseList(a1Service.getClientRequests(clientId)), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "getRequests", produces = {"application/xml"})
+    public ResponseEntity<A1ResponseList> getRequests() throws Exception{
+        return new ResponseEntity<>(new A1ResponseList(a1Service.getRequests()), HttpStatus.OK);
+    }
     @GetMapping(value= "approveRequest",produces = {"application/xml"})
-    public ResponseEntity<ObrazacA1> approveRequest(@RequestParam("id") String id) throws Exception {
-        return new ResponseEntity<>(a1Service.approveRequest(id), HttpStatus.OK);
+    public ResponseEntity<ObrazacA1> approveRequest(@RequestParam("id") String id, @RequestParam("code") int code) throws Exception {
+        return new ResponseEntity<>(a1Service.approveRequest(id, code), HttpStatus.OK);
     }
 
     @GetMapping(value= "declineRequest",produces = {"application/xml"})
@@ -81,6 +92,16 @@ public class A1Controller {
     @PostMapping(value = "searchByParam", produces = {"application/xml"})
     public ResponseEntity<SearchResponse> searchByParam(@RequestBody SearchRequest request) throws Exception{
         return new ResponseEntity<>(new SearchResponse(a1Service.searchByParam(request.getParam())), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "searchClientByParam", produces = {"application/xml"})
+    public ResponseEntity<A1ResponseList> searchClientByParam(@RequestParam("clientId") long clientId, @RequestBody SearchRequest request) throws Exception{
+        return new ResponseEntity<>(new A1ResponseList(a1Service.searchClientByParam(clientId, request.getParam())), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "searchEmployeeByParam", produces = {"application/xml"})
+    public ResponseEntity<A1ResponseList> searchEmployeeByParam( @RequestBody SearchRequest request) throws Exception{
+        return new ResponseEntity<>(new A1ResponseList(a1Service.searchEmployeeByParam(request.getParam())), HttpStatus.OK);
     }
 
     @PostMapping(value = "searchMetadataByParam", produces = {"application/xml"})

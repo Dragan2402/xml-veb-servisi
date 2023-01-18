@@ -86,7 +86,7 @@ public class UserService implements IUserService {
             throw new ObjectNotFoundException("User not found.");
         }
         if(Objects.equals(user.getEmail().getValue(), request.getEmail()) && Objects.equals(user.getSifra(), request.getPassword())){
-            return new LoginResponse(user.getId(), user.getRola().getValue().value(), user.getEmail().getValue());
+            return new LoginResponse(user.getId(), user.getRola().getValue().value(), user.getEmail().getValue(), user.getIme().getValue(), user.getPrezime().getValue());
         }else{
             throw new InvalidRequestException("Bad credentials");
         }

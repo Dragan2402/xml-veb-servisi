@@ -15,6 +15,10 @@ export class AuthenticationService {
 
   email$ = new BehaviorSubject<string>(this.getUserEmail());
 
+  firstName$ = new BehaviorSubject<string>(this.getFirstName());
+
+  lastName$ = new BehaviorSubject<string>(this.getLastName());
+
   constructor(private http:HttpClient, private router:Router) { }
 
   private isLoggedIn():boolean{
@@ -45,8 +49,12 @@ export class AuthenticationService {
     localStorage.removeItem("id");
     localStorage.removeItem("rola");
     localStorage.removeItem("email");
+    localStorage.removeItem("firstName");
+    localStorage.removeItem("lastName");
     this.rola$.next("");
     this.email$.next("");
+    this.firstName$.next("");
+    this.lastName$.next("");
     this.logged$.next(false);
     this.router.navigate(["/"]);
   }
@@ -56,9 +64,13 @@ export class AuthenticationService {
       localStorage.setItem("id", result["login"]["id"][0]);
       localStorage.setItem("email", result["login"]["email"][0]);
       localStorage.setItem("rola", result["login"]["rola"][0]);
+      localStorage.setItem("firstName", result["login"]["firstName"][0]);
+      localStorage.setItem("lastName", result["login"]["lastName"][0]);
       this.logged$.next(true);
       this.rola$.next(this.getUserRole());
       this.email$.next(this.getUserEmail());
+      this.firstName$.next(this.getFirstName());
+      this.lastName$.next(this.getLastName());
       if(this.getUserRole() === "Klijent"){
         this.router.navigate(["/userProfile"]);
       }else if(this.getUserRole() === "Sluzbenik"){
@@ -75,5 +87,15 @@ export class AuthenticationService {
   public getUserEmail(){
     let email = localStorage.getItem("email");
     return email===null  ? '': email;
+  }
+
+  public getFirstName(){
+    let firstName = localStorage.getItem("firstName");
+    return firstName===null  ? '': firstName;
+  }
+
+  public getLastName(){
+    let lastName = localStorage.getItem("lastName");
+    return lastName===null  ? '': lastName;
   }
 }

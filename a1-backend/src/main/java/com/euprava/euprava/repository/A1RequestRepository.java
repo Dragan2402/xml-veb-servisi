@@ -81,8 +81,8 @@ public class A1RequestRepository {
         return existDBManager.executeQuery(collection, namespace, query);
     }
 
-    public void approveRequest(String collection, String documentId) throws XMLDBException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        existDBManager.updateRequestToApproved(collection,documentId);
+    public void approveRequest(String collection, String documentId,int code) throws XMLDBException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        existDBManager.updateRequestToApproved(collection,documentId, code);
     }
 
     public void declineRequest(String collectionUri, String documentId) throws XMLDBException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {

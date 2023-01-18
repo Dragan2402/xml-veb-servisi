@@ -1,5 +1,6 @@
 package com.euprava.euprava.service.implementation;
 
+import com.euprava.euprava.controller.Responses.A1Response;
 import com.euprava.euprava.model.a1sertifikat.*;
 import com.euprava.euprava.rdf.FusekiReader;
 import com.euprava.euprava.rdf.FusekiWriter;
@@ -11,6 +12,7 @@ import com.euprava.euprava.transformation.XSLFOTransformer;
 import com.euprava.euprava.util.EmailService;
 import com.euprava.euprava.util.SchemaValidationHandler;
 import com.euprava.euprava.util.Utility;
+import com.euprava.euprava.util.exception.customExceptions.InvalidRequestException;
 import com.euprava.euprava.util.exception.customExceptions.UnsupportedTypeException;
 import lombok.RequiredArgsConstructor;
 import org.apache.jena.query.QuerySolution;
@@ -65,11 +67,13 @@ public class A1ServiceImpl implements IA1Service {
 
     @Override
     public ObrazacA1 saveA1Request(ObrazacA1 request) {
+
+            if(request.getIdKlijenta() == 0){
+                throw new InvalidRequestException("Missing client id");
+            }
         try {
             long id = Utility.getNextId();
-            BigInteger submissionNumber = Utility.getNextSubmissionNumber();
             request.setId(id);
-            request.setBrojPrijave(submissionNumber);
 
             request.setAbout("http://euprava.euprava.com/model/rdf/a1Sertifikat/"+ id);
             request.setTypeof("pred:IdentifikatorDokumenta");
@@ -247,8 +251,8 @@ public class A1ServiceImpl implements IA1Service {
     }
 
     @Override
-    public ObrazacA1 approveRequest(String id) throws Exception {
-        a1RequestRepository.approveRequest("/db/a1","id_"+id);
+    public ObrazacA1 approveRequest(String id, int code) throws Exception {
+        a1RequestRepository.approveRequest("/db/a1","id_"+id, code);
         return getObrazacById(id);
     }
 
@@ -256,6 +260,73 @@ public class A1ServiceImpl implements IA1Service {
     public ObrazacA1 declineRequest(String id) throws Exception {
         a1RequestRepository.declineRequest("/db/a1","id_"+id);
         return getObrazacById(id);
+    }
+
+    @Override
+    public List<A1Response> getClientRequests(long clientId) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException {
+        String queryPath = "src/main/resources/data/xquery/client_id.xqy";
+        byte[] encoded = Files.readAllBytes(Paths.get(queryPath));
+        String xqueryExpression = new String(encoded, StandardCharsets.UTF_8);
+        String formattedXQueryExpression = String.format(xqueryExpression, clientId);
+        System.out.println(formattedXQueryExpression);
+
+        List<Resource> resources = a1RequestRepository.getObrazacByQuery("/db/a1","http://euprava.euprava.com/model/a1Sertifikat", formattedXQueryExpression);
+
+        return getResponseListFromResource(resources);
+    }
+
+    @Override
+    public List<A1Response> searchClientByParam(long clientId, String param) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException {
+        String queryPath = "src/main/resources/data/xquery/param_search_client.xqy";
+        byte[] encoded = Files.readAllBytes(Paths.get(queryPath));
+        String xqueryExpression = new String(encoded, StandardCharsets.UTF_8);
+        String formattedXQueryExpression = String.format(xqueryExpression, param, clientId);
+        System.out.println(formattedXQueryExpression);
+
+        List<Resource> resources = a1RequestRepository.getObrazacByQuery("/db/a1","http://euprava.euprava.com/model/a1Sertifikat", formattedXQueryExpression);
+
+        return getResponseListFromResource(resources);
+    }
+
+    @Override
+    public List<A1Response> searchEmployeeByParam(String param) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException {
+        String queryPath = "src/main/resources/data/xquery/param_search.xqy";
+        byte[] encoded = Files.readAllBytes(Paths.get(queryPath));
+        String xqueryExpression = new String(encoded, StandardCharsets.UTF_8);
+        String formattedXQueryExpression = String.format(xqueryExpression, param);
+        System.out.println(formattedXQueryExpression);
+
+        List<Resource> resources = a1RequestRepository.getObrazacByQuery("/db/a1","http://euprava.euprava.com/model/a1Sertifikat", formattedXQueryExpression);
+
+        return getResponseListFromResource(resources);
+    }
+
+    @Override
+    public List<A1Response> getRequests() throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException {
+        String queryPath = "src/main/resources/data/xquery/all.xqy";
+        byte[] encoded = Files.readAllBytes(Paths.get(queryPath));
+        String xqueryExpression = new String(encoded, StandardCharsets.UTF_8);
+
+
+        List<Resource> resources = a1RequestRepository.getObrazacByQuery("/db/a1","http://euprava.euprava.com/model/a1Sertifikat", xqueryExpression);
+
+        return getResponseListFromResource(resources);
+    }
+
+    private List<A1Response> getResponseListFromResource(List<Resource> resources) throws JAXBException, XMLDBException, SAXException {
+        List<A1Response> responseList = new ArrayList<>();
+        for(Resource resource : resources){
+            ObrazacA1 tempRequest = unmarshallXMLResource((XMLResource) resource);
+            String submitterName = "";
+            if(tempRequest.getPodnosilac() instanceof TPravniPodnosilac){
+                submitterName = ((TPravniPodnosilac) tempRequest.getPodnosilac()).getPoslovnoIme();
+            }else if(tempRequest.getPodnosilac() instanceof TFizickiPodnosilac){
+                submitterName = ((TFizickiPodnosilac) tempRequest.getPodnosilac()).getPodaciOsoba().getIme() + " "+((TFizickiPodnosilac) tempRequest.getPodnosilac()).getPodaciOsoba().getPrezime();
+            }
+            A1Response response = new A1Response(tempRequest.getId(),submitterName,"A1",tempRequest.getDatumPodnosenja().getValue().toString(),tempRequest.getStatus().getValue().toString());
+            responseList.add(response);
+        }
+        return responseList;
     }
 
     private String generateLogicalQuery(String search){

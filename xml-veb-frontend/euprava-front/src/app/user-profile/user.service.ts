@@ -76,6 +76,25 @@ export class UserService {
       });
   }
 
+  getClientRequests(){
+    const id = localStorage.getItem("id");
+    return this.http.get("/api/a1/getClientRequests?clientId="+id,{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
+  }
+
+  downloadPDF(id:number){
+    return this.http.get("/api/a1/downloadPDFById?id="+id, { responseType: 'blob' });
+  }
+
+  downloadHTML(id:number){
+    return this.http.get("/api/a1/downloadHTMLById?id="+id, { responseType: 'blob' });
+  }
+
+  getClientRequestsByParam(param:string){
+    const id = localStorage.getItem("id");
+    const body = "<searchRequest><param>"+param+"</param></searchRequest>";
+    return this.http.post("/api/a1/searchClientByParam?clientId="+id,body, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}})
+  }
+
   loadXml(documentId: any) {
     // const headers = { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'};
     return this.http.get(`/api/p1/${documentId}`, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});

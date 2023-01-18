@@ -1,52 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<obrazacA1 xmlns="http://euprava.euprava.com/model/a1Sertifikat" about="http://euprava.euprava.com/model/rdf/a1Sertifikat/2567450636117858924" typeof="pred:IdentifikatorDokumenta">
-    <id>2567450636117858924</id>
+<obrazacA1 xmlns="http://euprava.euprava.com/model/a1Sertifikat" about="http://euprava.euprava.com/model/rdf/a1Sertifikat/8851968746134750875" typeof="pred:IdentifikatorDokumenta">
+    <id>8851968746134750875</id>
+    <Id_Klijenta>4658778283503140088</Id_Klijenta>
     <Podnosilac xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TPravni_Podnosilac">
-        <Telefon>1231231231</Telefon>
-        <Email property="pred:PodnioEmail" datatype="xs:string">draganmirkovic2402@maildrop.cc</Email>
-        <Poslovno_Ime>Firma</Poslovno_Ime>
+        <Telefon>213213132</Telefon>
+        <Email property="pred:PodnioEmail" datatype="xs:string">jao@c.c</Email>
+        <Poslovno_Ime>Jao</Poslovno_Ime>
         <Adresa>
-            <Mjesto>Brcko</Mjesto>
+            <Mjesto>133131</Mjesto>
             <Postanski_Broj>21000</Postanski_Broj>
-            <Ulica>Hopvoska</Ulica>
-            <Broj>4</Broj>
+            <Ulica>Brckoo</Ulica>
+            <Broj>13</Broj>
         </Adresa>
     </Podnosilac>
-    <Punomocnik>
-        <Ime>Pero</Ime>
-        <Prezime>Peric</Prezime>
-        <Adresa>
-            <Mjesto>Perkan</Mjesto>
-            <Postanski_Broj>21000</Postanski_Broj>
-            <Ulica>Novosadska</Ulica>
-            <Broj>69</Broj>
-        </Adresa>
-        <Drzavljanstvo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TStrano_Drzavljanstvo">
-            <Broj_Pasosa>asdasdasdas</Broj_Pasosa>
-        </Drzavljanstvo>
-    </Punomocnik>
     <Djelo>
-        <Naslov property="pred:Naslov" datatype="xs:string">sdsadas</Naslov>
-        <Vrsta_Djela property="pred:Vrsta" datatype="xs:string">Pisano</Vrsta_Djela>
-        <Forma_Zapisa property="pred:Forma" datatype="xs:string">Audio</Forma_Zapisa>
-        <Podaci_Autor>
-            <Nepoznati_Autor>true</Nepoznati_Autor>
-        </Podaci_Autor>
-        <Stvoreno_U_Radnom_Odnosu>true</Stvoreno_U_Radnom_Odnosu>
-        <Nacin_koriscenja>Laganica</Nacin_koriscenja>
-        <Podaci_Originalno_Djelo>
-            <Naslov_Originalnog_Djela>Macak Tosa</Naslov_Originalnog_Djela>
-            <Poznati_Originalni_Autor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TPreminuli_Autor">
-                <Ime>Jovan</Ime>
-                <Prezime>Jovic</Prezime>
-                <Datum_Smrti>2000-11-11</Datum_Smrti>
-            </Poznati_Originalni_Autor>
-        </Podaci_Originalno_Djelo>
+        <Naslov property="pred:Naslov" datatype="xs:string">gas gas</Naslov>
+        <Vrsta_Djela property="pred:Vrsta" datatype="xs:string">Informacione Tehnologije</Vrsta_Djela>
+        <Forma_Zapisa property="pred:Forma" datatype="xs:string">Pisana</Forma_Zapisa>
+        <Stvoreno_U_Radnom_Odnosu>false</Stvoreno_U_Radnom_Odnosu>
     </Djelo>
-    <Potpis>gageleza</Potpis>
-    <Sifra_Opisa>23232</Sifra_Opisa>
-    <Sifra_Primjera>gagic</Sifra_Primjera>
-    <Broj_Prijave>1</Broj_Prijave>
-    <Datum_Podnosenja property="pred:PodnesenDatuma" datatype="xs:string">2023-01-12</Datum_Podnosenja>
-    <Status property="pred:Status" datatype="xs:string">Podnesen</Status>
+    <Potpis>gags gassa</Potpis>
+    <Datum_Podnosenja property="pred:PodnesenDatuma" datatype="xs:string">2023-01-18</Datum_Podnosenja>
+    <Status property="pred:Status" datatype="xs:string">Odobren</Status>
+    <Broj_Prijave>123</Broj_Prijave>
 </obrazacA1>
