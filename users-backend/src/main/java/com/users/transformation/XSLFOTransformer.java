@@ -31,7 +31,7 @@ public class XSLFOTransformer {
     public XSLFOTransformer() throws SAXException, IOException {
 
         // Initialize FOP factory object
-        fopFactory = FopFactory.newInstance(new File("src/main/java/com/euprava/euprava/fop.xconf"));
+        fopFactory = FopFactory.newInstance(new File("src/main/java/com/users/fop.xconf"));
 
         // Setup the XSLT transformer factory
         transformerFactory = new TransformerFactoryImpl();

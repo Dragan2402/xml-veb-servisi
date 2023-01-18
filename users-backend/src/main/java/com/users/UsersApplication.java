@@ -15,9 +15,11 @@ public class UsersApplication {
         SpringApplication.run(UsersApplication.class, args);
 
         Dataset ds = DatasetFactory.createTxnMem() ;
+        Dataset dsUser = DatasetFactory.createTxnMem() ;
         FusekiServer fusekiServer = FusekiServer.create()
                 .port(3031)
                 .add("/a1",ds)
+                .add("/user",dsUser)
                 .build();
         FusekiLogging.setLogging();
         fusekiServer.start();

@@ -6,13 +6,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { APP_CONFIG, APP_SERVICE_CONFIG } from './AppConfig/appconfig.service';
 import { AppComponent } from './app.component';
 import { AppNavComponent } from './app-nav/app-nav.component';
 import { LoginComponent } from './login/login.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatBadgeModule } from '@angular/material/badge';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -39,6 +37,10 @@ import { AuthorComponent } from './user-profile/user-requests/a1-request/piece/a
 import {MatRadioModule} from '@angular/material/radio';
 import { AuthorFormModalComponent } from './user-profile/a1-form/author-form-modal/author-form-modal.component';
 import { P1FormComponent } from './user-profile/p1-form/p1-form.component';
+import { RegisterComponent } from './register/register.component';
+import { EmployeeProfileComponent } from './employee-profile/employee-profile.component';
+import { SnackbarComponent } from './snackbar/snackbar.component';
+import {MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -57,7 +59,10 @@ import { P1FormComponent } from './user-profile/p1-form/p1-form.component';
     OriginalPieceComponent,
     AuthorComponent,
     AuthorFormModalComponent,
-    P1FormComponent
+    P1FormComponent,
+    RegisterComponent,
+    EmployeeProfileComponent,
+    SnackbarComponent
   ],
   imports: [
     BrowserModule,
@@ -83,13 +88,12 @@ import { P1FormComponent } from './user-profile/p1-form/p1-form.component';
     MatDatepickerModule,
     MatNativeDateModule,
     MatTableModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSnackBarModule
 
   ],
-  providers: [{
-    provide: APP_SERVICE_CONFIG,
-    useValue: APP_CONFIG,
-  }],
+  providers: [    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {horizontalPosition: 'center',
+  verticalPosition: 'top', panelClass : "snackbar", duration:1500}},],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

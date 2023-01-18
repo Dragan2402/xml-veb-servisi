@@ -1,10 +1,9 @@
 import { HttpClient, HttpHeaders,  } from '@angular/common/http';
 import { Injectable , Inject} from '@angular/core';
 import { map, Observable, throwError } from 'rxjs';
-import { AppConfig } from '../AppConfig/appconfig.interface';
-import { APP_SERVICE_CONFIG } from '../AppConfig/appconfig.service';
 import axios from 'axios';
 import { Entity } from '../model/p1Request/Entity';
+import {  Router } from '@angular/router';
 
 
 @Injectable({
@@ -14,8 +13,7 @@ export class UserService {
 
 
   constructor(
-    @Inject(APP_SERVICE_CONFIG) private config: AppConfig,
-    private http: HttpClient) {
+    private http: HttpClient, private router:Router) {
      }
 
 
@@ -28,7 +26,7 @@ export class UserService {
     const headers = { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'};
     if(descriptionFile===undefined && exampleFile===undefined){
       request = request + "</obrazacA1>";
-      axios.post('/api/a1',request, {headers}).then(response => {console.log(response)});
+      axios.post('/api/a1',request, {headers}).then(response => {console.log(response);this.router.navigate(["/userProfile"]);});
     }else{
       if(descriptionFile !==undefined){
         const formData = new FormData();
@@ -43,12 +41,15 @@ export class UserService {
               request = request + "</obrazacA1>";
               axios.post('/api/a1',request, {headers}).then(response =>{
                 console.log(response);
+                this.router.navigate(["/userProfile"]);
+
               });
             });
           }else{
             request = request + "</obrazacA1>";
             axios.post('/api/a1',request, {headers}).then(resposne =>{
               console.log(resposne);
+              this.router.navigate(["/userProfile"]);
             });
           }
         })
@@ -60,6 +61,7 @@ export class UserService {
           request = request + "</obrazacA1>";
           axios.post('/api/a1',request, {headers}).then(response =>{
             console.log(response);
+            this.router.navigate(["/userProfile"]);
           });
         });
       }

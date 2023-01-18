@@ -1,18 +1,23 @@
 package com.users.existdb;
 
+import com.users.model.user.User;
 import com.users.util.XUpdateTemplate;
 import com.users.util.ExistDBAuthenticationUtilities;
+import com.users.util.exception.customExceptions.ObjectNotFoundException;
+import com.users.util.exception.customExceptions.UserAlreadyExistsException;
 import org.exist.xmldb.EXistResource;
 import org.springframework.stereotype.Service;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.*;
-import org.xmldb.api.modules.CollectionManagementService;
-import org.xmldb.api.modules.XMLResource;
-import org.xmldb.api.modules.XQueryService;
-import org.xmldb.api.modules.XUpdateQueryService;
+import org.xmldb.api.modules.*;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.OutputKeys;
+import javax.xml.transform.stream.StreamSource;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -167,4 +172,64 @@ public class ExistDBManager {
         return resources;
     }
 
+    public User getUserByEmail(String email, boolean existing) throws XMLDBException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        openConnection();
+        Collection collection = null;
+        User user = null;
+        try {
+            // get the collection
+            collection = DatabaseManager.getCollection(ExistDBAuthenticationUtilities.loadProperties().uri + "/db/users",
+                    ExistDBAuthenticationUtilities.loadProperties().user,
+                    ExistDBAuthenticationUtilities.loadProperties().password);
+            if (collection == null) {
+                collection = getOrCreateCollection("/db/users");
+            }
+            collection.setProperty(OutputKeys.INDENT, "yes");
+
+
+            // get an instance of xpath query service
+            XPathQueryService xpathService = (XPathQueryService) collection.getService("XPathQueryService", "1.0");
+            xpathService.setProperty("indent", "yes");
+
+            // make the service aware of namespaces, using the default one
+            xpathService.setNamespace("users", "http://users.com/model/user");
+
+            String xpathExp = "//users:user[users:email[text()='"+email+"']]";
+
+            // execute xpath expression
+            System.out.println("[INFO] Invoking XPath query service for: " + xpathExp);
+            ResourceSet result = xpathService.query(xpathExp);
+
+            // handle the results
+            System.out.println("[INFO] Handling the results... ");
+
+            ResourceIterator i = result.getIterator();
+            Resource res = i.nextResource();
+
+            if (existing && res == null){
+                throw new ObjectNotFoundException("User with provided email does not exist.");
+            }
+            if (!existing && res != null){
+                throw new UserAlreadyExistsException("User with provided email already exists.");
+            }
+            if (!existing && res == null){
+                return null;
+            }
+            JAXBContext context = JAXBContext.newInstance(User.class);
+            Unmarshaller u = context.createUnmarshaller();
+            System.out.println(res.getContent());
+            String str = res.getContent().toString();
+            user = (User) u.unmarshal(new StreamSource(new StringReader(str)));
+            ((EXistResource)res).freeResources();
+
+
+        } catch (XMLDBException e) {
+            throw new ObjectNotFoundException("XMLDB User with provided email does not exist.");
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection(collection, null);
+        }
+        return user;
+    }
 }

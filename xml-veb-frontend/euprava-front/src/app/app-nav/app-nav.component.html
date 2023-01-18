@@ -1,7 +1,7 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      <div style="margin-left: 2%; font-size: 25px;cursor: pointer;display: flex; flex-direction: row;" routerLink="userProfile">
+      <div style="margin-left: 2%; font-size: 25px;cursor: pointer;display: flex; flex-direction: row;" (click)="navigateToProfile()">
         <img src="favicon.ico" style="height: 50px; width: 60px; margin-right:8%" />
         <div style="padding-top: 10%;">
           <span style="font-family: 'Times New Roman', Times, serif;">EUprava</span>
@@ -10,10 +10,10 @@
       </div>
       <span class="example-spacer"></span>
       <div>
-        <button mat-button [matMenuTriggerFor]="menu">Ime Prezime</button>
+        <button mat-button [matMenuTriggerFor]="menu">{{rola}} {{email}}</button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item routerLink="user-requests">Moji Zahtevi</button>
-          <button mat-menu-item>Odjava</button>
+          <button mat-menu-item (click)="navigateToProfile()" *ngIf="isClient()">Moji Zahtevi</button>
+          <button mat-menu-item (click)="logout()">Odjava</button>
         </mat-menu>
       </div>
     </mat-toolbar>

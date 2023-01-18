@@ -102,6 +102,25 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <version>0.14.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <schemaDirectory>${project.basedir}/src/main/resources/data/schemas</schemaDirectory>
+                    <schemaIncludes>
+                        <include>*.xsd</include>
+                    </schemaIncludes>
+                    <generateDirectory>${project.basedir}/src/main/java</generateDirectory>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

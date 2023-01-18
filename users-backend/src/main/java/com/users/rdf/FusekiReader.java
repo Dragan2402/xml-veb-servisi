@@ -1,6 +1,7 @@
 package com.users.rdf;
 
-import com.euprava.euprava.util.FusekiAuthenticationUtilities;
+
+import com.users.util.FusekiAuthenticationUtilities;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.ResultSet;

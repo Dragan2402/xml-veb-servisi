@@ -1,6 +1,7 @@
 package com.users.rdf;
 
-import com.euprava.euprava.util.FusekiAuthenticationUtilities;
+
+import com.users.util.FusekiAuthenticationUtilities;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;

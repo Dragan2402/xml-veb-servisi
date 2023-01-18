@@ -1,6 +1,6 @@
 package com.users.transformation;
 
-import com.euprava.euprava.model.a1sertifikat.ObrazacA1;
+
 import org.springframework.stereotype.Component;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -25,7 +25,7 @@ public class HTMLTransformer {
 
     static {
 
-        shemaLocationRegistry.put(ObrazacA1.class, "src/main/resources/data/xsl_fo/a1-fo.xsl");
+        //shemaLocationRegistry.put(ObrazacA1.class, "src/main/resources/data/xsl_fo/a1-fo.xsl");
     }
 
     public HTMLTransformer(){
