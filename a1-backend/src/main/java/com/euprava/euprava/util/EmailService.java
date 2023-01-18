@@ -20,7 +20,7 @@ public class EmailService {
     }
 
     @Async
-    public void sendEmailWithAttachment(String to, String pathToAttachment) {
+    public void sendEmailWithAttachment(String to, File file) {
         try {
             MimeMessage message = emailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -28,8 +28,7 @@ public class EmailService {
             helper.setTo(to);
             helper.setSubject("Podnesen zahtjev");
             helper.setText("Postovani,\n\nVas zahtjev je uspjesno podnesen. U prilogu vam saljemo pdf kopiju vaseg zahtjeva.\n\nVasa Euprava.");
-            File pdfAttachment = new File(pathToAttachment);
-            helper.addAttachment("zahtjev.pdf", pdfAttachment);
+            helper.addAttachment("zahtjev.pdf", file);
 
             emailSender.send(message);
         } catch (MessagingException e) {

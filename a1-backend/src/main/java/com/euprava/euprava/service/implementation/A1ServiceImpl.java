@@ -113,10 +113,7 @@ public class A1ServiceImpl implements IA1Service {
             XMLResource resource = a1RequestRepository.loadXmlResource("/db/a1","id_"+request.getId());
             byte[] out = metadataExtractor.extractMetadataFromXmlContent(resource.getContent().toString());
             FusekiWriter.saveRDF(new ByteArrayInputStream(out), "a1Sertifikat");
-
-            String pathToPdf = generatePDF(String.valueOf(request.getId()));
-
-            emailService.sendEmailWithAttachment(request.getPodnosilac().getEmail().getValue(), pathToPdf);
+            emailService.sendEmailWithAttachment(request.getPodnosilac().getEmail().getValue(), getPDFFileById(String.valueOf(request.getId())));
 
             return request;
 
@@ -154,20 +151,6 @@ public class A1ServiceImpl implements IA1Service {
             System.out.println(exception.getMessage());
             return "";
         }
-    }
-
-    @Override
-    public String generatePDF(String id) throws Exception {
-        String path_pdf = "src/main/resources/data/gen/pdf/" + id + ".pdf";
-        return xslfoTransformer.generatePDF(a1RequestRepository.getObrazacAsStringById(id), "src/main/resources/data/xsl_fo/a1-fo.xsl", path_pdf);
-    }
-
-    @Override
-    public String generateXHTML(String id) throws Exception {
-        String path_html = "src/main/resources/data/gen/html/" + id + ".html";
-        String temp_file_path = "src/main/resources/data/gen/temp.xml";
-        a1RequestRepository.saveTempXml(id, temp_file_path);
-        return htmlTransformer.generateHTML(temp_file_path,"src/main/resources/data/xslt/a1.xsl", path_html);
     }
 
     @Override
@@ -237,17 +220,15 @@ public class A1ServiceImpl implements IA1Service {
 
     @Override
     public File getPDFFileById(String id) throws Exception {
-        ObrazacA1 document = this.getObrazacById(id);
-        String path_pdf = "src/main/resources/data/gen/pdf/" + document.getId() + ".pdf";
-        return new File(path_pdf);
+        String document = a1RequestRepository.getObrazacAsStringById(id);
+        return xslfoTransformer.getPdfFile(document,"src/main/resources/data/xsl_fo/a1-fo.xsl","src/main/resources/data/gen/pdf/temp.pdf");
     }
 
     @Override
     public File getHTMLFileById(String id) throws Exception {
-        ObrazacA1 document = this.getObrazacById(id);
-        generateXHTML(String.valueOf(document.getId()));
-        String path_html = "src/main/resources/data/gen/html/" + document.getId() + ".html";
-        return new File(path_html);
+        a1RequestRepository.saveTempXml(id);
+        String path_html = "src/main/resources/data/gen/html/temp.html";
+        return new File(htmlTransformer.generateHTML("src/main/resources/data/gen/temp.xml","src/main/resources/data/xslt/a1.xsl", path_html));
     }
 
     @Override

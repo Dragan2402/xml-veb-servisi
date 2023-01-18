@@ -67,7 +67,7 @@ public class A1RequestRepository {
         return resource;
     }
 
-    public void saveTempXml(String id, String temp_file_path) throws Exception {
+    public void saveTempXml(String id) throws Exception {
         JAXBContext context = JAXBContext.newInstance("com.euprava.euprava.model.a1sertifikat");
         Marshaller marshaller = context.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);

@@ -24,10 +24,6 @@ public interface IA1Service {
 
     String uploadExampleFile(MultipartFile file);
 
-    String generatePDF(String id) throws  Exception;
-
-    String generateXHTML(String id) throws Exception;
-
     List<ObrazacA1> searchByParam(String param) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException;
 
     List<ObrazacA1> searchMetadataByParam(String param) throws Exception;
