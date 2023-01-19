@@ -12,7 +12,7 @@ import { saveAs } from 'file-saver';
 })
 export class UserProfileComponent implements OnInit {
 
-  displayedColumns: string[] = ['id','submitterName' ,'type', 'submitDate', 'status', 'pdf', 'html' ];
+  displayedColumns: string[] = ['id','submitterName' ,'type', 'submitDate', 'status', 'pdf', 'html' ,'rjesenje'];
 
   requests:RequestResponse[];
 
@@ -98,6 +98,16 @@ export class UserProfileComponent implements OnInit {
   downloadPDF(request:RequestResponse){
     this.userService.downloadPDF(request.id).subscribe(data => {
       saveAs(data, 'a1_'+request.id+ '.pdf');});
+  }
+
+  getRjesenje(request:RequestResponse){
+    this.userService.downloadRjesenjeByRequestId(request.id).subscribe((response:any) => {
+      const url = window.URL.createObjectURL(response);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = "rjesenje.pdf";
+      link.click();
+  });
   }
 
 

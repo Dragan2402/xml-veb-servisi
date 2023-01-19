@@ -44,7 +44,7 @@ export class HandleRequestComponent implements OnInit {
       this.employeService.createRjesenje(requestBody).subscribe({
         next:(v) =>{
           xml2js.parseString(v, (err, result) => {
-            this.employeService.approveRequest(this.request.id,result["codeResponse"]["code"][0]).subscribe();
+            this.employeService.approveRequest(this.request.id,result["createRjesenjeResponse"]["code"][0],result["createRjesenjeResponse"]["id"][0]).subscribe();
             this.dialogRef.close();
           });
         }
@@ -57,8 +57,10 @@ export class HandleRequestComponent implements OnInit {
       requestBody = requestBody+ '<slucaj>Odbijanje</slucaj><obrazlozenje>'+this.reason+'</obrazlozenje></rjesenje>';
       this.employeService.createRjesenje(requestBody).subscribe({
         next:(v)=>{
-          this.employeService.declineRequest(this.request.id).subscribe();
-          this.dialogRef.close();
+          xml2js.parseString(v, (err, result) => {
+            this.employeService.declineRequest(this.request.id,result["createRjesenjeResponse"]["id"][0]).subscribe();
+            this.dialogRef.close();
+          });
         }
       })
     }

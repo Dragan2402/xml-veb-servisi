@@ -165,7 +165,7 @@ public class ExistDBManager {
         return resources;
     }
 
-    public void updateRequestToApproved(String collectionUri, String documentId, int code) throws XMLDBException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public void updateRequestToApproved(String collectionUri, String documentId, int code, long idRjesenja) throws XMLDBException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         openConnection();
         Collection collection = null;
         XMLResource resource =  null;
@@ -180,14 +180,14 @@ public class ExistDBManager {
             xupdateService.setProperty("indent", "yes");
 
             xupdateService.updateResource(documentId, String.format(XUpdateTemplate.getUpdateExpression("http://euprava.euprava.com/model/a1Sertifikat"), "/obrazacA1/Status", "Odobren"));
-            String xmlFragment = "<Broj_Prijave>"+code+"</Broj_Prijave>";
+            String xmlFragment = "<Broj_Prijave>"+code+"</Broj_Prijave><Id_Rjesenja>"+idRjesenja+"</Id_Rjesenja>";
             xupdateService.updateResource(documentId, String.format(XUpdateTemplate.getInsertAfterExpresson("http://euprava.euprava.com/model/a1Sertifikat"), "/obrazacA1/Status", xmlFragment));
         } catch (Exception e) {
             closeConnection(collection, resource);
         }
     }
 
-    public void updateRequestToDeclined(String collectionUri, String documentId) throws XMLDBException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public void updateRequestToDeclined(String collectionUri, String documentId, long idRjesenja) throws XMLDBException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         openConnection();
         Collection collection = null;
         XMLResource resource =  null;
@@ -200,8 +200,9 @@ public class ExistDBManager {
 
             XUpdateQueryService xupdateService = (XUpdateQueryService) collection.getService("XUpdateQueryService", "1.0");
             xupdateService.setProperty("indent", "yes");
-
+            String xmlFragment = "<Id_Rjesenja>"+idRjesenja+"</Id_Rjesenja>";
             xupdateService.updateResource(documentId, String.format(XUpdateTemplate.getUpdateExpression("http://euprava.euprava.com/model/a1Sertifikat"), "/obrazacA1/Status", "Odbijen"));
+            xupdateService.updateResource(documentId, String.format(XUpdateTemplate.getInsertAfterExpresson("http://euprava.euprava.com/model/a1Sertifikat"), "/obrazacA1/Status", xmlFragment));
 
         } catch (Exception e) {
             closeConnection(collection, resource);

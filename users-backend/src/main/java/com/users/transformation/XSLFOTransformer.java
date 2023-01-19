@@ -4,6 +4,7 @@ import org.apache.fop.apps.FOUserAgent;
 import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.MimeConstants;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
 
@@ -37,7 +38,7 @@ public class XSLFOTransformer {
         transformerFactory = new TransformerFactoryImpl();
     }
 
-    public String generatePDF(String xmlContent, String XSL_FILE, String OUTPUT_FILE) throws Exception {
+    public ByteArrayResource generatePDF(String xmlContent, String XSL_FILE) throws Exception {
 
 
         System.out.println("[INFO] " + XSLFOTransformer.class.getSimpleName());
@@ -72,22 +73,8 @@ public class XSLFOTransformer {
         // Start XSLT transformation and FOP processing
         xslFoTransformer.transform(source, res);
 
-        // Generate PDF file
-        File pdfFile = new File(OUTPUT_FILE);
-        if (!pdfFile.getParentFile().exists()) {
-            System.out.println("[INFO] A new directory is created: " + pdfFile.getParentFile().getAbsolutePath() + ".");
-            pdfFile.getParentFile().mkdir();
-        }
 
-        OutputStream out = new BufferedOutputStream(new FileOutputStream(pdfFile));
-        out.write(outStream.toByteArray());
-
-        System.out.println("[INFO] File \"" + pdfFile.getCanonicalPath() + "\" generated successfully.");
-        out.close();
-
-        System.out.println("[INFO] End.");
-
-        return OUTPUT_FILE;
+        return new ByteArrayResource(outStream.toByteArray());
 
     }
 

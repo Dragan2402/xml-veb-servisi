@@ -99,4 +99,12 @@ export class UserService {
     // const headers = { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'};
     return this.http.get(`/api/p1/${documentId}`, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
   }
+
+  downloadRjesenjeByRequestId(id:number){
+    const options = {
+        headers: new HttpHeaders().append('Content-Type', 'application/pdf'),
+        responseType: 'blob' as 'json'
+    };
+    return this.http.get(`/rjesenje/getRjesenjePdf?requestId=`+id, options);
+  }
 }

@@ -26,6 +26,11 @@ export class EmployeeService {
     return this.http.post("/api/a1/searchMetadataByLogicalParams",body, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}})
   }
 
+  getRequestsByReference(param:string){
+    const body = "<searchRequest><param>"+param+"</param></searchRequest>";
+    return this.http.post("/api/a1/searchEmployeeByReference",body, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}})
+  }
+
   getRequests(){
     return this.http.get("/api/a1/getRequests",{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
   }
@@ -38,12 +43,12 @@ export class EmployeeService {
     return this.http.post("/rjesenje",body, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}})
   }
 
-  approveRequest(id:number, code:number){
-    return this.http.get("/api/a1/approveRequest?id="+id+"&code="+code,{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
+  approveRequest(id:number, code:number,rjesenjeId:number){
+    return this.http.get("/api/a1/approveRequest?id="+id+"&code="+code+"&idRjesenja="+rjesenjeId,{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
   }
 
-  declineRequest(id:number){
-    return this.http.get("/api/a1/declineRequest?id="+id,{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
+  declineRequest(id:number,rjesenjeId:number){
+    return this.http.get("/api/a1/declineRequest?id="+id+"&idRjesenja="+rjesenjeId,{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
   }
 
   getRdf(id: number) {
@@ -52,6 +57,14 @@ export class EmployeeService {
         responseType: 'blob' as 'json'
     };
     return this.http.get(`/api/a1/getRdfMetadata?id=`+id, options);
+  }
+
+  downloadRjesenjeByRequestId(id:number){
+    const options = {
+        headers: new HttpHeaders().append('Content-Type', 'application/pdf'),
+        responseType: 'blob' as 'json'
+    };
+    return this.http.get(`/rjesenje/getRjesenjePdf?requestId=`+id, options);
   }
 
   getJson(id: number) {

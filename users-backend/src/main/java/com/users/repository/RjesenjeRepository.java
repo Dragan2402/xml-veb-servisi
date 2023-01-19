@@ -6,6 +6,8 @@ import com.users.util.SchemaValidationHandler;
 import com.users.util.exception.customExceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.xmldb.api.base.Resource;
+import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
 
 import javax.xml.XMLConstants;
@@ -15,10 +17,8 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.OutputStream;
-import java.io.StringReader;
+import java.io.*;
+import java.util.List;
 
 @Repository
 public class RjesenjeRepository {
@@ -51,4 +51,9 @@ public class RjesenjeRepository {
         unmarshaller.setEventHandler(new SchemaValidationHandler());
         return (Rjesenje) unmarshaller.unmarshal(new StringReader(resource.getContent().toString()));
     }
+
+    public List<Resource> getObrazacByQuery(String collection, String namespace, String query) throws XMLDBException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        return existDBManager.executeQuery(collection, namespace, query);
+    }
+
 }

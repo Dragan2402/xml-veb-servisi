@@ -23,8 +23,6 @@ export class EmployeeProfileComponent implements OnInit {
 
   filter :string = '';
 
-  filterMeta:string = '';
-
   constructor(private employeeService : EmployeeService,public matDialog: MatDialog) {
 
   }
@@ -66,10 +64,10 @@ export class EmployeeProfileComponent implements OnInit {
   }
 
   searchFilterMeta(){
-    if(this.filterMeta.length > 0 ){
+    if(this.filter.length > 0 ){
       this.loaded = false;
       this.requests = [];
-      this.employeeService.getRequestsByMeta(this.filterMeta).subscribe({
+      this.employeeService.getRequestsByMeta(this.filter).subscribe({
         next:(res) =>{
           xml2js.parseString(res, (err, result) => {
             const responseArray = result["a1ResponseList"]["a1Response"] as Array<Object>;
@@ -85,6 +83,16 @@ export class EmployeeProfileComponent implements OnInit {
         }
       });
     }
+  }
+
+  getRjesenje(request:RequestResponse){
+    this.employeeService.downloadRjesenjeByRequestId(request.id).subscribe((response:any) => {
+      const url = window.URL.createObjectURL(response);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = "rjesenje.pdf";
+      link.click();
+  });
   }
 
   clear(){
@@ -166,5 +174,27 @@ export class EmployeeProfileComponent implements OnInit {
   downloadHTML(request:any){
     this.employeeService.downloadHTML(request.id).subscribe(data => {
       saveAs(data, 'a1_'+request.id+ '.html');});
+  }
+
+  searchReference(){
+    if(this.filter.length>0){
+      this.loaded = false;
+      this.requests = [];
+      this.employeeService.getRequestsByReference(this.filter).subscribe({
+        next:(res) =>{
+          xml2js.parseString(res, (err, result) => {
+            const responseArray = result["a1ResponseList"]["a1Response"] as Array<Object>;
+            if(responseArray === undefined){
+              this.loaded = true;
+              return;
+            }
+            responseArray.forEach((element: any) => {
+              this.requests.push({'id':element["id"][0],'submitterName':element["submitterName"][0], 'status':element["status"][0],'submitDate':element["submitDate"][0],'type':element["type"][0]} as RequestResponse);
+            });
+            this.loaded = true;
+         });
+        }
+      });
+    }
   }
 }

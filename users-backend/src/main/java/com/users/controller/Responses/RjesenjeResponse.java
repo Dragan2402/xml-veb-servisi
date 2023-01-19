@@ -1,9 +1,9 @@
-package com.euprava.euprava.controller.Responses;
+package com.users.controller.Responses;
 
 import javax.xml.bind.annotation.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "a1response", propOrder = {
+@XmlType(name = "rjesenjeResponse", propOrder = {
         "id",
         "submitterName",
         "type",
@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.*;
         "status"
 })
 @XmlRootElement
-public class A1Response {
+public class RjesenjeResponse {
 
     @XmlElement(name = "id", required = true)
     private long id;
@@ -28,9 +28,9 @@ public class A1Response {
     @XmlElement(name = "status", required = true)
     private String status;
 
-    public A1Response(){};
+    public RjesenjeResponse(){};
 
-    public A1Response(long id,String submitterName, String type, String submitDate, String status) {
+    public RjesenjeResponse(long id,String submitterName, String type, String submitDate, String status) {
         this.id = id;
         this.submitterName = submitterName;
         this.type = type;

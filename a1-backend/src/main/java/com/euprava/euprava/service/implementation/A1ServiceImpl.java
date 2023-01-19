@@ -247,14 +247,14 @@ public class A1ServiceImpl implements IA1Service {
     }
 
     @Override
-    public ObrazacA1 approveRequest(String id, int code) throws Exception {
-        a1RequestRepository.approveRequest("/db/a1", "id_" + id, code);
+    public ObrazacA1 approveRequest(String id, int code, long idRjesenja) throws Exception {
+        a1RequestRepository.approveRequest("/db/a1", "id_" + id, code, idRjesenja);
         return getObrazacById(id);
     }
 
     @Override
-    public ObrazacA1 declineRequest(String id) throws Exception {
-        a1RequestRepository.declineRequest("/db/a1", "id_" + id);
+    public ObrazacA1 declineRequest(String id, long idRjesenja) throws Exception {
+        a1RequestRepository.declineRequest("/db/a1", "id_" + id, idRjesenja);
         return getObrazacById(id);
     }
 
@@ -320,6 +320,19 @@ public class A1ServiceImpl implements IA1Service {
         List<Resource> resources = a1RequestRepository.getObrazacByQuery("/db/a1", "http://euprava.euprava.com/model/a1Sertifikat", formattedXQueryExpression);
 
         return getNumberResponseFromResources(resources);
+    }
+
+    @Override
+    public List<A1Response> searchEmployeeByReference(String param) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException {
+        String queryPath = "src/main/resources/data/xquery/reference.xqy";
+        byte[] encoded = Files.readAllBytes(Paths.get(queryPath));
+        String xqueryExpression = new String(encoded, StandardCharsets.UTF_8);
+        String formattedXQueryExpression = String.format(xqueryExpression, param);
+        System.out.println(formattedXQueryExpression);
+
+        List<Resource> resources = a1RequestRepository.getObrazacByQuery("/db/a1", "http://euprava.euprava.com/model/a1Sertifikat", formattedXQueryExpression);
+
+        return getResponseListFromResource(resources);
     }
 
     private NumberResponse getNumberResponseFromResources(List<Resource> resources) throws JAXBException, XMLDBException, SAXException {

@@ -37,9 +37,9 @@ public interface IA1Service {
 
     File getHTMLFileById(String id) throws Exception;
 
-    ObrazacA1 approveRequest(String id, int code) throws Exception;
+    ObrazacA1 approveRequest(String id, int code, long idRjesenja) throws Exception;
 
-    ObrazacA1 declineRequest(String id) throws Exception;
+    ObrazacA1 declineRequest(String id, long idRjesenja) throws Exception;
 
     List<A1Response> getClientRequests(long clientId) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException;
 
@@ -50,4 +50,6 @@ public interface IA1Service {
     List<A1Response> getRequests() throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException;
 
     NumberResponse getNumberOfRequests(String start, String end) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException;
+
+    List<A1Response> searchEmployeeByReference(String param) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException;
 }

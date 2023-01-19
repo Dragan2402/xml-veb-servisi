@@ -49,13 +49,13 @@ public class A1Controller {
         return new ResponseEntity<>(new A1ResponseList(a1Service.getRequests()), HttpStatus.OK);
     }
     @GetMapping(value= "approveRequest",produces = {"application/xml"})
-    public ResponseEntity<ObrazacA1> approveRequest(@RequestParam("id") String id, @RequestParam("code") int code) throws Exception {
-        return new ResponseEntity<>(a1Service.approveRequest(id, code), HttpStatus.OK);
+    public ResponseEntity<ObrazacA1> approveRequest(@RequestParam("id") String id, @RequestParam("code") int code, @RequestParam("idRjesenja") long idRjesenja) throws Exception {
+        return new ResponseEntity<>(a1Service.approveRequest(id, code, idRjesenja), HttpStatus.OK);
     }
 
     @GetMapping(value= "declineRequest",produces = {"application/xml"})
-    public ResponseEntity<ObrazacA1> declineRequest(@RequestParam("id") String id) throws Exception {
-        return new ResponseEntity<>(a1Service.declineRequest(id), HttpStatus.OK);
+    public ResponseEntity<ObrazacA1> declineRequest(@RequestParam("id") String id, @RequestParam("idRjesenja") long idRjesenja) throws Exception {
+        return new ResponseEntity<>(a1Service.declineRequest(id, idRjesenja), HttpStatus.OK);
     }
 
     @GetMapping(value= "getNumberOfRequestsForReport",produces = {"application/xml"})
@@ -100,6 +100,11 @@ public class A1Controller {
     @PostMapping(value = "searchEmployeeByParam", produces = {"application/xml"})
     public ResponseEntity<A1ResponseList> searchEmployeeByParam( @RequestBody SearchRequest request) throws Exception{
         return new ResponseEntity<>(new A1ResponseList(a1Service.searchEmployeeByParam(request.getParam())), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "searchEmployeeByReference", produces = {"application/xml"})
+    public ResponseEntity<A1ResponseList> searchEmployeeByReference( @RequestBody SearchRequest request) throws Exception{
+        return new ResponseEntity<>(new A1ResponseList(a1Service.searchEmployeeByReference(request.getParam())), HttpStatus.OK);
     }
 
     @PostMapping(value = "searchMetadataByParam", produces = {"application/xml"})
