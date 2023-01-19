@@ -31,7 +31,7 @@ public class ExistDBAuthenticationUtilities {
             host = props.getProperty("conn.host").trim();
             port = Integer.parseInt(props.getProperty("conn.port"));
 
-            uri = "xmldb:exist://localhost:8081/exist/xmlrpc";
+            uri = "xmldb:exist://localhost:8085/exist/xmlrpc";
 
             driver = props.getProperty("conn.driver").trim();
         }

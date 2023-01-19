@@ -1,0 +1,21 @@
+<div class="main-div">
+  <div style="margin-top: 5%;">
+    <mat-radio-group class="submitter-radio-group" [(ngModel)]="approve" style="display: flex;flex-direction: row;margin-top: 2%;margin-bottom: 1%;">
+      <mat-radio-button style="margin-right: 7%;" [value]=true>Odobriti</mat-radio-button>
+      <mat-radio-button [value]=false style="margin-left: 7%;">Odbiti</mat-radio-button>
+    </mat-radio-group>
+  </div>
+
+  <div style="margin-top: 5%;width: 100%;">
+    <mat-form-field appearance="fill" style="width: 100%;" *ngIf="approve">
+      <input matInput placeholder="Unesite sifru dokumenta" [(ngModel)]="code" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" style="width: 100%;" *ngIf="!approve">
+      <textarea height="300px" matInput placeholder="Unesite razlog odbijanja" [(ngModel)]="reason" required></textarea>
+    </mat-form-field>
+  </div>
+
+  <div style="margin-top: auto;">
+    <button mat-raised-button color="primary" (click)="submit()">Potvrdi</button>
+  </div>
+</div>

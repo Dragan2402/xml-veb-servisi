@@ -116,6 +116,15 @@ export class A1FormComponent implements OnInit {
     let request = '';
 
     request = request + this.GetHeader();
+
+    const clientId = localStorage.getItem("id");
+    if(clientId === null){
+      console.log("CLIENT NOT SIGNED IN");
+      return;
+    }
+
+    request = request + "<Id_Klijenta>"+clientId+"</Id_Klijenta>";
+
     const submitter = this.isLegalSubmitter? this.GetLegalSubmitter(): this.GetIndividualSubmitter();
 
     if(submitter === null){

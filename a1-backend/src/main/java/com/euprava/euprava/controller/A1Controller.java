@@ -1,6 +1,9 @@
 package com.euprava.euprava.controller;
 
 import com.euprava.euprava.controller.Requests.SearchRequest;
+import com.euprava.euprava.controller.Responses.A1Response;
+import com.euprava.euprava.controller.Responses.A1ResponseList;
+import com.euprava.euprava.controller.Responses.NumberResponse;
 import com.euprava.euprava.controller.Responses.SearchResponse;
 import com.euprava.euprava.model.a1sertifikat.ObrazacA1;
 import com.euprava.euprava.service.IA1Service;
@@ -9,6 +12,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,14 +39,28 @@ public class A1Controller {
         return new ResponseEntity<>(a1Service.getObrazacById(id), HttpStatus.OK);
     }
 
+    @GetMapping(value = "getClientRequests", produces = {"application/xml"})
+    public ResponseEntity<A1ResponseList> getClientRequests(@RequestParam("clientId") long clientId) throws Exception{
+        return new ResponseEntity<>(new A1ResponseList(a1Service.getClientRequests(clientId)), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "getRequests", produces = {"application/xml"})
+    public ResponseEntity<A1ResponseList> getRequests() throws Exception{
+        return new ResponseEntity<>(new A1ResponseList(a1Service.getRequests()), HttpStatus.OK);
+    }
     @GetMapping(value= "approveRequest",produces = {"application/xml"})
-    public ResponseEntity<ObrazacA1> approveRequest(@RequestParam("id") String id) throws Exception {
-        return new ResponseEntity<>(a1Service.approveRequest(id), HttpStatus.OK);
+    public ResponseEntity<ObrazacA1> approveRequest(@RequestParam("id") String id, @RequestParam("code") int code, @RequestParam("idRjesenja") long idRjesenja) throws Exception {
+        return new ResponseEntity<>(a1Service.approveRequest(id, code, idRjesenja), HttpStatus.OK);
     }
 
     @GetMapping(value= "declineRequest",produces = {"application/xml"})
-    public ResponseEntity<ObrazacA1> declineRequest(@RequestParam("id") String id) throws Exception {
-        return new ResponseEntity<>(a1Service.declineRequest(id), HttpStatus.OK);
+    public ResponseEntity<ObrazacA1> declineRequest(@RequestParam("id") String id, @RequestParam("idRjesenja") long idRjesenja) throws Exception {
+        return new ResponseEntity<>(a1Service.declineRequest(id, idRjesenja), HttpStatus.OK);
+    }
+
+    @GetMapping(value= "getNumberOfRequestsForReport",produces = {"application/xml"})
+    public ResponseEntity<NumberResponse> getNumberOfRequestsForReport(@RequestParam("start") String start, @RequestParam("end") String end) throws Exception {
+        return new ResponseEntity<>(a1Service.getNumberOfRequests(start, end), HttpStatus.OK);
     }
 
     @PostMapping(produces = {"application/xml"})
@@ -59,15 +77,6 @@ public class A1Controller {
         return new ResponseEntity<>(fileName,HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "generatePdf")
-    public void generatePdf(@RequestParam("id") String id) throws Exception{
-        this.a1Service.generatePDF(id);
-    }
-
-    @GetMapping(value = "generateXHTML")
-    public void generateXHTML(@RequestParam("id") String id) throws Exception{
-        this.a1Service.generateXHTML(id);
-    }
 
     @PostMapping(value = "/uploadExampleFile",produces = "text/plain")
     public ResponseEntity<String> uploadExampleFile(@RequestBody MultipartFile file)  {
@@ -83,19 +92,50 @@ public class A1Controller {
         return new ResponseEntity<>(new SearchResponse(a1Service.searchByParam(request.getParam())), HttpStatus.OK);
     }
 
+    @PostMapping(value = "searchClientByParam", produces = {"application/xml"})
+    public ResponseEntity<A1ResponseList> searchClientByParam(@RequestParam("clientId") long clientId, @RequestBody SearchRequest request) throws Exception{
+        return new ResponseEntity<>(new A1ResponseList(a1Service.searchClientByParam(clientId, request.getParam())), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "searchEmployeeByParam", produces = {"application/xml"})
+    public ResponseEntity<A1ResponseList> searchEmployeeByParam( @RequestBody SearchRequest request) throws Exception{
+        return new ResponseEntity<>(new A1ResponseList(a1Service.searchEmployeeByParam(request.getParam())), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "searchEmployeeByReference", produces = {"application/xml"})
+    public ResponseEntity<A1ResponseList> searchEmployeeByReference( @RequestBody SearchRequest request) throws Exception{
+        return new ResponseEntity<>(new A1ResponseList(a1Service.searchEmployeeByReference(request.getParam())), HttpStatus.OK);
+    }
+
     @PostMapping(value = "searchMetadataByParam", produces = {"application/xml"})
     public ResponseEntity<SearchResponse> searchMetadataByParam(@RequestBody SearchRequest request) throws Exception{
         return new ResponseEntity<>(new SearchResponse(a1Service.searchMetadataByParam(request.getParam())), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/searchMetadataByLogicalParams", produces = {"application/xml"})
-    public ResponseEntity<SearchResponse> searchMetadataByLogicalParams(@RequestParam(name="search") String search) throws Exception {
-        return new ResponseEntity<>(new SearchResponse(a1Service.searchMetadataByLogicalParams(search)), HttpStatus.OK);
+    @PostMapping(value = "/searchMetadataByLogicalParams", produces = {"application/xml"})
+    public ResponseEntity<A1ResponseList> searchMetadataByLogicalParams(@RequestBody SearchRequest request) throws Exception {
+        return new ResponseEntity<>(new A1ResponseList(a1Service.searchMetadataByLogicalParams(request.getParam())), HttpStatus.OK);
     }
 
     @GetMapping(value = "metadataByIdAndType")
     public ResponseEntity<String> getMetadataByIdAndType(@RequestParam(name = "id") String id, @RequestParam(name = "type") String type) throws IOException {
         return new ResponseEntity<>(a1Service.getMetadata(id, type), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "getRdfMetadata", produces = "application/rdf+xml")
+    public ResponseEntity<String> getRdfMetadataById(@RequestParam(name = "id") String id) throws IOException {
+        String result = a1Service.getMetadata(id,"N-TRIPLE");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDispositionFormData("attachment", "file.rdf");
+        return new ResponseEntity<>(result, headers, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "getJsonMetadata", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getJsonMetadataById(@RequestParam(name = "id") String id) throws IOException {
+        String result = a1Service.getMetadata(id,"RDF/JSON");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDispositionFormData("attachment", "file.json");
+        return new ResponseEntity<>(result, headers, HttpStatus.OK);
     }
 
     @GetMapping("/downloadPDFById")

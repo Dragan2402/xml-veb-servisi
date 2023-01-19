@@ -1,0 +1,30 @@
+<div>
+  <div class="register-div">
+
+    <mat-radio-group class="submitter-radio-group" [(ngModel)]="isClient" style="display: flex;flex-direction: row;margin-top: 2%;margin-bottom: 1%;">
+      <mat-radio-button style="margin-right: 7%;" [value]=true>Klijent</mat-radio-button>
+      <mat-radio-button [value]=false style="margin-left: 7%;">Sluzbenik</mat-radio-button>
+    </mat-radio-group>
+
+    <mat-form-field appearance="fill" style="margin-bottom: 2%;">
+      <input matInput placeholder="Unesite vasu email adresu" [formControl]="email" required>
+      <mat-error *ngIf="email.invalid">{{getEmailErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="margin-bottom: 2%;">
+      <input matInput placeholder="Unesite vasu lozinku" [formControl]="password" type="password" required>
+      <mat-error *ngIf="password.invalid">{{getPasswordErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="margin-bottom: 2%;">
+      <input matInput placeholder="Unesite vase ime" [formControl]="firstName" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="margin-bottom: 2%;">
+      <input matInput placeholder="Unesite vase prezime" [formControl]="lastName" required>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="signUp()" style="margin-left: 20%;margin-right: 20%;">Registracija</button>
+  </div>
+
+</div>

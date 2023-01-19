@@ -1,5 +1,6 @@
 package com.euprava.euprava.util.exception;
 
+import com.euprava.euprava.util.exception.customExceptions.InvalidRequestException;
 import com.euprava.euprava.util.exception.customExceptions.ObjectNotFoundException;
 import com.euprava.euprava.util.exception.customExceptions.UnsupportedTypeException;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(UnsupportedTypeException.class)
     public ResponseEntity<ExceptionResponse> handleUnsupportedTypeException(UnsupportedTypeException exc, WebRequest request){
+        ExceptionResponse response = new ExceptionResponse();
+        response.setMessage(exc.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(InvalidRequestException.class)
+    public ResponseEntity<ExceptionResponse> handleInvalidRequestException(InvalidRequestException exc, WebRequest request){
         ExceptionResponse response = new ExceptionResponse();
         response.setMessage(exc.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);

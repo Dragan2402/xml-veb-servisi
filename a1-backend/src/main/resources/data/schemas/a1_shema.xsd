@@ -13,13 +13,19 @@
                         </xs:restriction>
                     </xs:simpleType>
                 </xs:element>
+                <xs:element name="Id_Klijenta">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:long">
+                            <xs:minInclusive value="1"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
                 <xs:element name="Podnosilac" type="a1:TPodnosilac"/>
                 <xs:element minOccurs="0" name="Punomocnik" type="a1:TOsoba"/>
                 <xs:element name="Djelo" type="a1:TDjelo"/>
                 <xs:element name="Potpis" type="xs:string"/>
                 <xs:element minOccurs="0" name="Sifra_Opisa" type="xs:string"/>
                 <xs:element minOccurs="0" name="Sifra_Primjera" type="xs:string"/>
-                <xs:element name="Broj_Prijave" type="xs:positiveInteger"/>
                 <xs:element name="Datum_Podnosenja">
                     <xs:complexType>
                         <xs:simpleContent>
@@ -39,6 +45,14 @@
                             </xs:extension>
                         </xs:simpleContent>
                     </xs:complexType>
+                </xs:element>
+                <xs:element name="Broj_Prijave" type="xs:positiveInteger" minOccurs="0"/>
+                <xs:element minOccurs="0" name="Id_Rjesenja">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:long">
+                            <xs:minInclusive value="1"/>
+                        </xs:restriction>
+                    </xs:simpleType>
                 </xs:element>
             </xs:sequence>
             <xs:attribute name="about"/>
@@ -202,7 +216,7 @@
     <xs:simpleType name="Status_Zahtjeva">
         <xs:restriction base="xs:string">
             <xs:enumeration value="Podnesen"/>
-            <xs:enumeration value="Prihvacen"/>
+            <xs:enumeration value="Odobren"/>
             <xs:enumeration value="Odbijen"/>
         </xs:restriction>
     </xs:simpleType>

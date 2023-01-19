@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rjesenje xmlns="http://users.com/model/rjesenje"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://users.com/model/rjesenje file:/C:/Users/draga/OneDrive/Dokumenti/4.%20Godina/XML%20i%20Web%20Servisi/Projekat/xml-veb-servisi/users-backend/src/main/resources/data/schemas/rjesenje.xsd">
+    <id>1</id>
+    <id_zahtjeva>123</id_zahtjeva>
+    <tip_zahtjeva>A1</tip_zahtjeva>
+    <slucaj>Odbijanje</slucaj>
+    <datum>2023-02-23</datum>
+    <ime_sluzbenika>Pero</ime_sluzbenika>
+    <prezime_sluzbenika>Peric</prezime_sluzbenika>
+    <obrazlozenje>Nedovoljna komunikacija</obrazlozenje>
+</rjesenje>

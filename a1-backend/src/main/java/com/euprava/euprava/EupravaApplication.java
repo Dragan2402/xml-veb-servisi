@@ -21,13 +21,13 @@ public class EupravaApplication {
 
         SpringApplication.run(EupravaApplication.class, args);
 
-        Dataset ds = DatasetFactory.createTxnMem() ;
-        FusekiServer fusekiServer = FusekiServer.create()
-                .port(3031)
-                .add("/a1",ds)
-                .build();
-        FusekiLogging.setLogging();
-        fusekiServer.start();
+//        Dataset ds = DatasetFactory.createTxnMem() ;
+//        FusekiServer fusekiServer = FusekiServer.create()
+//                .port(3031)
+//                .add("/a1",ds)
+//                .build();
+//        FusekiLogging.setLogging();
+//        fusekiServer.start();
     }
 
 }

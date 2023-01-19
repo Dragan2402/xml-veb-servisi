@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import {FormControl, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../authentication/authentication.service';
 
 @Component({
   selector: 'euprava-login',
@@ -16,13 +17,15 @@ export class LoginComponent implements OnInit {
 
   hide: boolean = true;
 
-  constructor(private route: Router) { }
+  constructor(private route: Router, private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
   }
 
   login(){
-    this.route.navigate(['/userProfile']);
+    if(this.email.valid && this.password.valid){
+      this.authenticationService.login(<string>this.email.value,<string> this.password.value).subscribe();
+    }
   }
 
   getEmailErrorMessage() {

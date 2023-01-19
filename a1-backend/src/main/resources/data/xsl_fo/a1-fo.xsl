@@ -305,9 +305,11 @@
                                 Status: <xsl:value-of select="b:obrazacA1/b:Status"/>
                             </fo:block>
                             <fo:block text-align="center">
-                                <fo:inline>
-                                    Broj prijave: <xsl:value-of select="b:obrazacA1/b:Broj_Prijave"/>
-                                </fo:inline>
+                                <xsl:if test="b:obrazacA1/b:Broj_Prijave">
+                                    <fo:inline>
+                                        Broj prijave: <xsl:value-of select="b:obrazacA1/b:Broj_Prijave"/>
+                                    </fo:inline>
+                                </xsl:if>
                                 <fo:inline padding-left="10%" padding-right="10%">
                                     Potpis: <xsl:value-of select="b:obrazacA1/b:Potpis"/>
                                 </fo:inline>

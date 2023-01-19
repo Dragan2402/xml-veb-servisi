@@ -1,5 +1,7 @@
 package com.euprava.euprava.service;
 
+import com.euprava.euprava.controller.Responses.A1Response;
+import com.euprava.euprava.controller.Responses.NumberResponse;
 import com.euprava.euprava.model.a1sertifikat.ObrazacA1;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
@@ -23,15 +25,11 @@ public interface IA1Service {
 
     String uploadExampleFile(MultipartFile file);
 
-    String generatePDF(String id) throws  Exception;
-
-    String generateXHTML(String id) throws Exception;
-
     List<ObrazacA1> searchByParam(String param) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException;
 
     List<ObrazacA1> searchMetadataByParam(String param) throws Exception;
 
-    List<ObrazacA1> searchMetadataByLogicalParams(String search) throws Exception;
+    List<A1Response> searchMetadataByLogicalParams(String search) throws Exception;
 
     String getMetadata(String id, String type) throws IOException;
 
@@ -39,7 +37,19 @@ public interface IA1Service {
 
     File getHTMLFileById(String id) throws Exception;
 
-    ObrazacA1 approveRequest(String id) throws Exception;
+    ObrazacA1 approveRequest(String id, int code, long idRjesenja) throws Exception;
 
-    ObrazacA1 declineRequest(String id) throws Exception;
+    ObrazacA1 declineRequest(String id, long idRjesenja) throws Exception;
+
+    List<A1Response> getClientRequests(long clientId) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException;
+
+    List<A1Response> searchClientByParam(long clientId, String param) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException;
+
+    List<A1Response> searchEmployeeByParam(String param) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException;
+
+    List<A1Response> getRequests() throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException;
+
+    NumberResponse getNumberOfRequests(String start, String end) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException;
+
+    List<A1Response> searchEmployeeByReference(String param) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException;
 }

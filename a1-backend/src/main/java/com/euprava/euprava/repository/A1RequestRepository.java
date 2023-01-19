@@ -67,7 +67,7 @@ public class A1RequestRepository {
         return resource;
     }
 
-    public void saveTempXml(String id, String temp_file_path) throws Exception {
+    public void saveTempXml(String id) throws Exception {
         JAXBContext context = JAXBContext.newInstance("com.euprava.euprava.model.a1sertifikat");
         Marshaller marshaller = context.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
@@ -81,11 +81,11 @@ public class A1RequestRepository {
         return existDBManager.executeQuery(collection, namespace, query);
     }
 
-    public void approveRequest(String collection, String documentId) throws XMLDBException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        existDBManager.updateRequestToApproved(collection,documentId);
+    public void approveRequest(String collection, String documentId,int code, long idRjesenja) throws XMLDBException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        existDBManager.updateRequestToApproved(collection,documentId, code, idRjesenja);
     }
 
-    public void declineRequest(String collectionUri, String documentId) throws XMLDBException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        existDBManager.updateRequestToDeclined(collectionUri, documentId);
+    public void declineRequest(String collectionUri, String documentId, long idRjesenja) throws XMLDBException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        existDBManager.updateRequestToDeclined(collectionUri, documentId, idRjesenja);
     }
 }
