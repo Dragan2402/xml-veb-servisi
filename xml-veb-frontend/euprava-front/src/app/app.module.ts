@@ -42,6 +42,8 @@ import { EmployeeProfileComponent } from './employee-profile/employee-profile.co
 import { SnackbarComponent } from './snackbar/snackbar.component';
 import {MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS} from '@angular/material/snack-bar';
 import { HandleRequestComponent } from './employee-profile/handle-request/handle-request.component';
+import { MetadataDownloadComponent } from './employee-profile/metadata-download/metadata-download.component';
+import { ReportComponent } from './employee-profile/report/report.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +66,9 @@ import { HandleRequestComponent } from './employee-profile/handle-request/handle
     RegisterComponent,
     EmployeeProfileComponent,
     SnackbarComponent,
-    HandleRequestComponent
+    HandleRequestComponent,
+    MetadataDownloadComponent,
+    ReportComponent
   ],
   imports: [
     BrowserModule,

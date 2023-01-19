@@ -1,6 +1,7 @@
 package com.euprava.euprava.service;
 
 import com.euprava.euprava.controller.Responses.A1Response;
+import com.euprava.euprava.controller.Responses.NumberResponse;
 import com.euprava.euprava.model.a1sertifikat.ObrazacA1;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
@@ -28,7 +29,7 @@ public interface IA1Service {
 
     List<ObrazacA1> searchMetadataByParam(String param) throws Exception;
 
-    List<ObrazacA1> searchMetadataByLogicalParams(String search) throws Exception;
+    List<A1Response> searchMetadataByLogicalParams(String search) throws Exception;
 
     String getMetadata(String id, String type) throws IOException;
 
@@ -47,4 +48,6 @@ public interface IA1Service {
     List<A1Response> searchEmployeeByParam(String param) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException;
 
     List<A1Response> getRequests() throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException;
+
+    NumberResponse getNumberOfRequests(String start, String end) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException;
 }

@@ -1,0 +1,27 @@
+<div style="width: 100%;;display: flex;flex-direction: column;align-items: center;padding-top: 5%;">
+  <mat-form-field appearance="fill" style="width: 100%;">
+    <mat-label>Unesite raspon</mat-label>
+    <mat-date-range-input [rangePicker]="picker">
+      <input matStartDate placeholder="Pocetni datum" [(ngModel)]="startDate">
+      <input matEndDate placeholder="Krajnji datum" [(ngModel)]="endDate">
+    </mat-date-range-input>
+    <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+  <button mat-raised-button color="primary" style="margin-top: 5%;" (click)="generate()">Generisi</button>
+  <div  id="pdfDIV" style="display: flex; flex-direction: column;">
+    <div>
+      Podnesenih: {{waiting}}
+    </div>
+    <div>
+      Odobrenih: {{approved}}
+    </div>
+    <div>
+      Odbijenih: {{declined}}
+    </div>
+    <div>
+      Ukupno: {{total}}
+    </div>
+  </div>
+</div>

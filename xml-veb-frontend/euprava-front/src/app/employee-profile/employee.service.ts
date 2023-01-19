@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -21,8 +21,17 @@ export class EmployeeService {
     return this.http.post("/api/a1/searchEmployeeByParam",body, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}})
   }
 
+  getRequestsByMeta(param:string){
+    const body = "<searchRequest><param>"+param+"</param></searchRequest>";
+    return this.http.post("/api/a1/searchMetadataByLogicalParams",body, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}})
+  }
+
   getRequests(){
     return this.http.get("/api/a1/getRequests",{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
+  }
+
+  getCountOfRequests(start:string, end:string){
+    return this.http.get(`/api/a1/getNumberOfRequestsForReport?start=${start}&&end=${end}`,{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
   }
 
   createRjesenje(body:string){
@@ -35,5 +44,21 @@ export class EmployeeService {
 
   declineRequest(id:number){
     return this.http.get("/api/a1/declineRequest?id="+id,{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
+  }
+
+  getRdf(id: number) {
+    const options = {
+        headers: new HttpHeaders().append('Content-Type', 'application/rdf+xml'),
+        responseType: 'blob' as 'json'
+    };
+    return this.http.get(`/api/a1/getRdfMetadata?id=`+id, options);
+  }
+
+  getJson(id: number) {
+    const options = {
+        headers: new HttpHeaders().append('Content-Type', 'application/json'),
+        responseType: 'blob' as 'json'
+    };
+    return this.http.get(`/api/a1/getJsonMetadata?id=`+id, options);
   }
 }
