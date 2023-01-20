@@ -11,24 +11,29 @@ package com.euprava.p1.model;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for anonymous complex type.
+ * <p>Java class for TPronalazac complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType&gt;
+ * &lt;complexType name="TPronalazac"&gt;
  *   &lt;complexContent&gt;
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *     &lt;extension base="{http://euprava.com/p1/model}TLice"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="Na_srpskom" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
- *         &lt;element name="Na_engleskom" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="Ime" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="Prezime"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;pattern value="[A-ZŠĐČĆŽ]+"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
  *       &lt;/sequence&gt;
- *     &lt;/restriction&gt;
+ *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
  * </pre>
@@ -36,64 +41,65 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "naSrpskom",
-    "naEngleskom"
+@XmlType(name = "TPronalazac", propOrder = {
+    "ime",
+    "prezime"
 })
-@XmlRootElement(name = "Naziv_pronalaska")
-public class NazivPronalaska {
+public class TPronalazac
+    extends TLice
+{
 
-    @XmlElement(name = "Na_srpskom", required = true)
-    protected String naSrpskom;
-    @XmlElement(name = "Na_engleskom", required = true)
-    protected String naEngleskom;
+    @XmlElement(name = "Ime", required = true)
+    protected String ime;
+    @XmlElement(name = "Prezime", required = true)
+    protected String prezime;
 
     /**
-     * Gets the value of the naSrpskom property.
+     * Gets the value of the ime property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getNaSrpskom() {
-        return naSrpskom;
+    public String getIme() {
+        return ime;
     }
 
     /**
-     * Sets the value of the naSrpskom property.
+     * Sets the value of the ime property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setNaSrpskom(String value) {
-        this.naSrpskom = value;
+    public void setIme(String value) {
+        this.ime = value;
     }
 
     /**
-     * Gets the value of the naEngleskom property.
+     * Gets the value of the prezime property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getNaEngleskom() {
-        return naEngleskom;
+    public String getPrezime() {
+        return prezime;
     }
 
     /**
-     * Sets the value of the naEngleskom property.
+     * Sets the value of the prezime property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setNaEngleskom(String value) {
-        this.naEngleskom = value;
+    public void setPrezime(String value) {
+        this.prezime = value;
     }
 
 }

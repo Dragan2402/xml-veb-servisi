@@ -16,15 +16,15 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for TPodnosilac complex type.
+ * <p>Java class for TPunomocnik complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="TPodnosilac"&gt;
+ * &lt;complexType name="TPunomocnik"&gt;
  *   &lt;complexContent&gt;
  *     &lt;extension base="{http://euprava.com/p1/model}TLice"&gt;
- *       &lt;attribute name="pronalazac" use="required" type="{http://www.w3.org/2001/XMLSchema}boolean" /&gt;
+ *       &lt;attribute name="tip" use="required" type="{http://euprava.com/p1/model}TTip_punomocnika" /&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
@@ -33,32 +33,40 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TPodnosilac")
+@XmlType(name = "TPunomocnik")
 @XmlSeeAlso({
-    TFizickiPodnosilac.class,
-    TPravniPodnosilac.class
+    TFizickiPunomocnik.class,
+    TPravniPunomocnik.class
 })
-public abstract class TPodnosilac
+public abstract class TPunomocnik
     extends TLice
 {
 
-    @XmlAttribute(name = "pronalazac", required = true)
-    protected boolean pronalazac;
+    @XmlAttribute(name = "tip", required = true)
+    protected TTipPunomocnika tip;
 
     /**
-     * Gets the value of the pronalazac property.
+     * Gets the value of the tip property.
      * 
+     * @return
+     *     possible object is
+     *     {@link TTipPunomocnika }
+     *     
      */
-    public boolean isPronalazac() {
-        return pronalazac;
+    public TTipPunomocnika getTip() {
+        return tip;
     }
 
     /**
-     * Sets the value of the pronalazac property.
+     * Sets the value of the tip property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link TTipPunomocnika }
+     *     
      */
-    public void setPronalazac(boolean value) {
-        this.pronalazac = value;
+    public void setTip(TTipPunomocnika value) {
+        this.tip = value;
     }
 
 }

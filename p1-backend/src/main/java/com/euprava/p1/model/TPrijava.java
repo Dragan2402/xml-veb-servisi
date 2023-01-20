@@ -11,19 +11,19 @@ package com.euprava.p1.model;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>Java class for anonymous complex type.
+ * <p>Java class for TPrijava complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType&gt;
+ * &lt;complexType name="TPrijava"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
@@ -34,8 +34,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *             &lt;/restriction&gt;
  *           &lt;/simpleType&gt;
  *         &lt;/element&gt;
- *         &lt;element name="Datum_prijema" type="{http://www.w3.org/2001/XMLSchema}date"/&gt;
- *         &lt;element name="Priznati_datum_podnosenja" type="{http://www.w3.org/2001/XMLSchema}date"/&gt;
+ *         &lt;element name="Datum_podnosenja" type="{http://www.w3.org/2001/XMLSchema}date"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -45,22 +44,21 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
+@XmlType(name = "TPrijava", propOrder = {
     "brojPrijave",
-    "datumPrijema",
-    "priznatiDatumPodnosenja"
+    "datumPodnosenja"
 })
-@XmlRootElement(name = "Popunjava_zavod")
-public class PopunjavaZavod {
+@XmlSeeAlso({
+    RanijaPrijava.class,
+    PovezanaPrijava.class
+})
+public class TPrijava {
 
     @XmlElement(name = "Broj_prijave", required = true)
     protected String brojPrijave;
-    @XmlElement(name = "Datum_prijema", required = true)
+    @XmlElement(name = "Datum_podnosenja", required = true)
     @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar datumPrijema;
-    @XmlElement(name = "Priznati_datum_podnosenja", required = true)
-    @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar priznatiDatumPodnosenja;
+    protected XMLGregorianCalendar datumPodnosenja;
 
     /**
      * Gets the value of the brojPrijave property.
@@ -87,51 +85,27 @@ public class PopunjavaZavod {
     }
 
     /**
-     * Gets the value of the datumPrijema property.
+     * Gets the value of the datumPodnosenja property.
      * 
      * @return
      *     possible object is
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getDatumPrijema() {
-        return datumPrijema;
+    public XMLGregorianCalendar getDatumPodnosenja() {
+        return datumPodnosenja;
     }
 
     /**
-     * Sets the value of the datumPrijema property.
+     * Sets the value of the datumPodnosenja property.
      * 
      * @param value
      *     allowed object is
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setDatumPrijema(XMLGregorianCalendar value) {
-        this.datumPrijema = value;
-    }
-
-    /**
-     * Gets the value of the priznatiDatumPodnosenja property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link XMLGregorianCalendar }
-     *     
-     */
-    public XMLGregorianCalendar getPriznatiDatumPodnosenja() {
-        return priznatiDatumPodnosenja;
-    }
-
-    /**
-     * Sets the value of the priznatiDatumPodnosenja property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link XMLGregorianCalendar }
-     *     
-     */
-    public void setPriznatiDatumPodnosenja(XMLGregorianCalendar value) {
-        this.priznatiDatumPodnosenja = value;
+    public void setDatumPodnosenja(XMLGregorianCalendar value) {
+        this.datumPodnosenja = value;
     }
 
 }
