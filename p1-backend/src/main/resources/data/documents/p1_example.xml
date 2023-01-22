@@ -57,6 +57,10 @@
             <Prezime>RAJAČIĆ</Prezime>
         </Punomocnik>
         <Nacin_dostavljanja>Papirna_forma</Nacin_dostavljanja>
+        <Povezana_prijava tip="Dopunska_prijava">
+            <Broj_prijave>1/22</Broj_prijave>
+            <Datum_podnosenja>2022-01-10</Datum_podnosenja>
+        </Povezana_prijava>
         <Zahtev_za_priznanje_prava_prvenstva>
             <Ranija_prijava oznaka_drzave="RS">
                 <Broj_prijave>3/22</Broj_prijave>

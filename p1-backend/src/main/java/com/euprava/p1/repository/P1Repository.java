@@ -5,6 +5,7 @@ import com.euprava.p1.repository.exist.ExistManager;
 import org.exist.http.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
@@ -54,6 +55,24 @@ public class P1Repository {
 
         unmarshaller.setSchema(schema);
         return (ObrazacP1) unmarshaller.unmarshal(new StringReader(resource.getContent().toString()));
+    }
+
+    public String findByIdAsString(String documentId) throws XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, NotFoundException {
+        XMLResource resource = existManager.load(COLLECTION_ID, documentId);
+        if (resource == null) {
+            throw new NotFoundException("Document with id [" + documentId + "] not found.");
+        }
+
+        return (String) resource.getContent();
+    }
+
+    public Node findByIdAsNode(String documentId) throws XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, NotFoundException {
+        XMLResource resource = existManager.load(COLLECTION_ID, documentId);
+        if (resource == null) {
+            throw new NotFoundException("Document with id [" + documentId + "] not found.");
+        }
+
+        return resource.getContentAsDOM();
     }
 
     public String getLastId() throws XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
