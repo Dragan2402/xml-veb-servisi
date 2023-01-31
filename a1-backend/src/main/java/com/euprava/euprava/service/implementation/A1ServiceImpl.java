@@ -218,7 +218,7 @@ public class A1ServiceImpl implements IA1Service {
             } else if (tempRequest.getPodnosilac() instanceof TFizickiPodnosilac) {
                 submitterName = ((TFizickiPodnosilac) tempRequest.getPodnosilac()).getPodaciOsoba().getIme() + " " + ((TFizickiPodnosilac) tempRequest.getPodnosilac()).getPodaciOsoba().getPrezime();
             }
-            A1Response response = new A1Response(tempRequest.getId(), submitterName, "A1", tempRequest.getDatumPodnosenja().getValue().toString(), tempRequest.getStatus().getValue().toString());
+            A1Response response = new A1Response(tempRequest.getId(), submitterName, tempRequest.getPodnosilac().getEmail().getValue(),"A1", tempRequest.getDatumPodnosenja().getValue().toString(), tempRequest.getStatus().getValue().toString());
             responseList.add(response);
         }
         return responseList;
@@ -364,7 +364,7 @@ public class A1ServiceImpl implements IA1Service {
             } else if (tempRequest.getPodnosilac() instanceof TFizickiPodnosilac) {
                 submitterName = ((TFizickiPodnosilac) tempRequest.getPodnosilac()).getPodaciOsoba().getIme() + " " + ((TFizickiPodnosilac) tempRequest.getPodnosilac()).getPodaciOsoba().getPrezime();
             }
-            A1Response response = new A1Response(tempRequest.getId(), submitterName, "A1", tempRequest.getDatumPodnosenja().getValue().toString(), tempRequest.getStatus().getValue().toString());
+            A1Response response = new A1Response(tempRequest.getId(), submitterName, tempRequest.getPodnosilac().getEmail().getValue(), "A1", tempRequest.getDatumPodnosenja().getValue().toString(), tempRequest.getStatus().getValue().toString());
             responseList.add(response);
         }
         return responseList;
