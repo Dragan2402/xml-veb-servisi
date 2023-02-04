@@ -1,5 +1,6 @@
 package com.users.controller;
 
+import com.users.controller.Requests.EmailRequest;
 import com.users.controller.Responses.CreateRjesenjeResponse;
 import com.users.controller.Responses.RjesenjeResponse;
 
@@ -22,6 +23,11 @@ public class RjesenjeController {
     @PostMapping(produces = {"application/xml"})
     public ResponseEntity<CreateRjesenjeResponse> create(@RequestBody Rjesenje rjesenje) throws Exception {
         return new ResponseEntity<>(rjesenjeService.create(rjesenje), HttpStatus.CREATED);
+    }
+
+    @PutMapping(value = "sendEmail", produces = {"application/xml"})
+    public void sendEmail(@RequestBody EmailRequest request) throws Exception {
+        rjesenjeService.sendEmail(request.getEmail(), request.getId());
     }
 
     @GetMapping(value = "getRjesenjePdf")

@@ -33,7 +33,7 @@ export class EmployeeProfileComponent implements OnInit {
         xml2js.parseString(res, (err, result) => {
           const responseArray = result["a1ResponseList"]["a1Response"] as Array<Object>;
           responseArray.forEach((element: any) => {
-            this.requests.push({'id':element["id"][0],'submitterName':element["submitterName"][0], 'status':element["status"][0],'submitDate':element["submitDate"][0],'type':element["type"][0]} as RequestResponse);
+            this.requests.push({'id':element["id"][0],'email':element["email"][0] ,'submitterName':element["submitterName"][0], 'status':element["status"][0],'submitDate':element["submitDate"][0],'type':element["type"][0]} as RequestResponse);
           });
           this.loaded = true;
        });
@@ -54,7 +54,7 @@ export class EmployeeProfileComponent implements OnInit {
               return;
             }
             responseArray.forEach((element: any) => {
-              this.requests.push({'id':element["id"][0],'submitterName':element["submitterName"][0], 'status':element["status"][0],'submitDate':element["submitDate"][0],'type':element["type"][0]} as RequestResponse);
+              this.requests.push({'id':element["id"][0],'email':element["email"][0],'submitterName':element["submitterName"][0], 'status':element["status"][0],'submitDate':element["submitDate"][0],'type':element["type"][0]} as RequestResponse);
             });
             this.loaded = true;
          });
@@ -76,7 +76,7 @@ export class EmployeeProfileComponent implements OnInit {
               return;
             }
             responseArray.forEach((element: any) => {
-              this.requests.push({'id':element["id"][0],'submitterName':element["submitterName"][0], 'status':element["status"][0],'submitDate':element["submitDate"][0],'type':element["type"][0]} as RequestResponse);
+              this.requests.push({'id':element["id"][0],'email':element["email"][0], 'submitterName':element["submitterName"][0], 'status':element["status"][0],'submitDate':element["submitDate"][0],'type':element["type"][0]} as RequestResponse);
             });
             this.loaded = true;
          });
@@ -104,7 +104,7 @@ export class EmployeeProfileComponent implements OnInit {
         xml2js.parseString(res, (err, result) => {
           const responseArray = result["a1ResponseList"]["a1Response"] as Array<Object>;
           responseArray.forEach((element: any) => {
-            this.requests.push({'id':element["id"][0],'submitterName':element["submitterName"][0], 'status':element["status"][0],'submitDate':element["submitDate"][0],'type':element["type"][0]} as RequestResponse);
+            this.requests.push({'id':element["id"][0],'email':element["email"][0], 'submitterName':element["submitterName"][0], 'status':element["status"][0],'submitDate':element["submitDate"][0],'type':element["type"][0]} as RequestResponse);
           });
           this.loaded = true;
        });
@@ -189,7 +189,7 @@ export class EmployeeProfileComponent implements OnInit {
               return;
             }
             responseArray.forEach((element: any) => {
-              this.requests.push({'id':element["id"][0],'submitterName':element["submitterName"][0], 'status':element["status"][0],'submitDate':element["submitDate"][0],'type':element["type"][0]} as RequestResponse);
+              this.requests.push({'id':element["id"][0],'email':element["email"][0], 'submitterName':element["submitterName"][0], 'status':element["status"][0],'submitDate':element["submitDate"][0],'type':element["type"][0]} as RequestResponse);
             });
             this.loaded = true;
          });
