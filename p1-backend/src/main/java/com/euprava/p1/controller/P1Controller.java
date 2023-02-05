@@ -16,6 +16,7 @@ import org.xml.sax.SAXException;
 import org.xmldb.api.base.XMLDBException;
 
 import javax.xml.bind.JAXBException;
+import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.IOException;
@@ -30,9 +31,9 @@ public class P1Controller {
     private P1Service p1Service;
 
     @PostMapping(produces = {"application/xml"})
-    public ResponseEntity<Void> postObrazacP1(@RequestBody ObrazacP1 obrazacP1) throws JAXBException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
-        p1Service.createObrazacP1(obrazacP1);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<String> postObrazacP1(@RequestBody ObrazacP1 obrazacP1) throws JAXBException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, DatatypeConfigurationException, NotFoundException, IOException, TransformerException {
+        String documentId = p1Service.createObrazacP1(obrazacP1);
+        return new ResponseEntity<>(documentId, HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/{documentId}", produces = {"application/xml"})
@@ -42,16 +43,48 @@ public class P1Controller {
     }
 
     @GetMapping(value = "/{documentId}/pdf")
-    public ResponseEntity<Void> getObrazacP1AsPDF(@PathVariable String documentId) throws IOException, DocumentException, XMLDBException, NotFoundException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+    public ResponseEntity<Resource> getAsPDF(@PathVariable String documentId) throws IOException, DocumentException, XMLDBException, NotFoundException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         File obrazacP1PDFFile = p1Service.retrieveObrazacP1AsPDF(documentId);
-//        byte[] obrazacP1PDFBytes = Files.readAllBytes(obrazacP1PDFFile.toPath());
+        if (obrazacP1PDFFile == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_PDF);
-//        headers.setContentDispositionFormData("filename", "p1.pdf");
-//        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDispositionFormData("attachment", "obrazac_P-1_" + documentId + ".pdf");
 
-//        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=p1_" + documentId + ".pdf");
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new FileSystemResource(obrazacP1PDFFile), headers, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{documentId}/html")
+    public ResponseEntity<Resource> getAsHTML(@PathVariable String documentId) throws IOException, XMLDBException, NotFoundException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+        File obrazacP1HTMLFile = p1Service.retrieveObrazacP1AsHTML(documentId);
+        if (obrazacP1HTMLFile == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDispositionFormData("attachment", "obrazac_P-1_" + documentId + ".html");
+
+        return new ResponseEntity<>(new FileSystemResource(obrazacP1HTMLFile), headers, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/metadata/{documentId}/rdf", produces = "application/rdf+xml")
+    public ResponseEntity<String> getMetadataAsRDF(@PathVariable String documentId) throws IOException {
+        String obrazacP1RDFMetadata = p1Service.retrieveObrazacP1MetadataAsRDF(documentId);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDispositionFormData("attachment", "obrazac_P-1_" + documentId + "metadata.rdf");
+
+        return new ResponseEntity<>(obrazacP1RDFMetadata, headers, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/metadata/{documentId}/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getMetadataAsJSON(@PathVariable String documentId) throws IOException {
+        String obrazacP1JSONMetadata = p1Service.retrieveObrazacP1MetadataAsJSON(documentId);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDispositionFormData("attachment", "obrazac_P-1_" + documentId + "metadata.json");
+
+        return new ResponseEntity<>(obrazacP1JSONMetadata, headers, HttpStatus.OK);
     }
 }

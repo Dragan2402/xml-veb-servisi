@@ -14,34 +14,34 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for TTip_punomocnika.
+ * <p>Java class for TStatus.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="TTip_punomocnika"&gt;
+ * &lt;simpleType name="TStatus"&gt;
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
- *     &lt;enumeration value="Punomocnik_za_zastupanje"/&gt;
- *     &lt;enumeration value="Punomocnik_za_prijem_pismena"/&gt;
- *     &lt;enumeration value="Zajednicki_predstavnik"/&gt;
+ *     &lt;enumeration value="Podnesen"/&gt;
+ *     &lt;enumeration value="Odobren"/&gt;
+ *     &lt;enumeration value="Odbijen"/&gt;
  *   &lt;/restriction&gt;
  * &lt;/simpleType&gt;
  * </pre>
  * 
  */
-@XmlType(name = "TTip_punomocnika")
+@XmlType(name = "TStatus")
 @XmlEnum
-public enum TTipPunomocnika {
+public enum TStatus {
 
-    @XmlEnumValue("Punomocnik_za_zastupanje")
-    PUNOMOCNIK_ZA_ZASTUPANJE("Punomocnik_za_zastupanje"),
-    @XmlEnumValue("Punomocnik_za_prijem_pismena")
-    PUNOMOCNIK_ZA_PRIJEM_PISMENA("Punomocnik_za_prijem_pismena"),
-    @XmlEnumValue("Zajednicki_predstavnik")
-    ZAJEDNICKI_PREDSTAVNIK("Zajednicki_predstavnik");
+    @XmlEnumValue("Podnesen")
+    PODNESEN("Podnesen"),
+    @XmlEnumValue("Odobren")
+    ODOBREN("Odobren"),
+    @XmlEnumValue("Odbijen")
+    ODBIJEN("Odbijen");
     private final String value;
 
-    TTipPunomocnika(String v) {
+    TStatus(String v) {
         value = v;
     }
 
@@ -49,8 +49,8 @@ public enum TTipPunomocnika {
         return value;
     }
 
-    public static TTipPunomocnika fromValue(String v) {
-        for (TTipPunomocnika c: TTipPunomocnika.values()) {
+    public static TStatus fromValue(String v) {
+        for (TStatus c: TStatus.values()) {
             if (c.value.equals(v)) {
                 return c;
             }

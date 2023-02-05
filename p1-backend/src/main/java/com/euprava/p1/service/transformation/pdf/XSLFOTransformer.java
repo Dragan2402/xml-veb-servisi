@@ -19,9 +19,9 @@ public class XSLFOTransformer {
     private FopFactory fopFactory;
     private TransformerFactory transformerFactory;
 
-    private static final String XSL_FILE = "p1-backend/src/main/resources/data/pdf/p1_fo.xsl";
-    private static final String OUTPUT_FILE = "p1-backend/src/main/resources/data/pdf/p1_output.pdf";
-    private static final String XCONF_FILE = "/p1-backend/src/main/resources/data/pdf/fop.xconf";
+    private static final String XSL_FILE = "src/main/resources/data/pdf/p1_fo.xsl";
+    private static final String OUTPUT_FILE = "src/main/resources/data/pdf/p1_output.pdf";
+    private static final String XCONF_FILE = "src/main/resources/data/pdf/fop.xconf";
 
     public XSLFOTransformer() throws IOException, SAXException {
         fopFactory = FopFactory.newInstance(new File(XCONF_FILE));

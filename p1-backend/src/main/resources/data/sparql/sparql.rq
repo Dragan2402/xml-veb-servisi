@@ -1,0 +1,3 @@
+SELECT * FROM <http://localhost:3031/p1/data/p1_metadata> where {
+    ?
+}

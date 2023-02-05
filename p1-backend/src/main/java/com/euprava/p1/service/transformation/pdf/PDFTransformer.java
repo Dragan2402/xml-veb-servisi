@@ -19,9 +19,9 @@ public class PDFTransformer {
     private static DocumentBuilderFactory documentFactory;
     private static TransformerFactory transformerFactory;
 
-    private static final String XSL_FILE = "p1-backend/src/main/resources/data/pdf/p1.xsl";
-    public static final String HTML_FILE = "p1-backend/src/main/resources/data/pdf/p1.html";
-    private static final String OUTPUT_FILE = "p1-backend/src/main/resources/data/pdf/p1.pdf";
+    private static final String XSL_FILE = "src/main/resources/data/pdf/p1.xsl";
+    public static final String HTML_FILE = "src/main/resources/data/pdf/p1.html";
+    private static final String PDF_FILE = "src/main/resources/data/pdf/p1.pdf";
 
     static {
         documentFactory = DocumentBuilderFactory.newInstance();
@@ -32,7 +32,7 @@ public class PDFTransformer {
         transformerFactory = TransformerFactory.newInstance();
     }
 
-    public void generateHTML(Node xmlDocument) throws FileNotFoundException {
+    public File generateHTML(Node xmlDocument) throws FileNotFoundException {
         try {
             StreamSource transformSource = new StreamSource(new File(XSL_FILE));
 
@@ -45,19 +45,24 @@ public class PDFTransformer {
             StreamResult result = new StreamResult(new FileOutputStream(HTML_FILE));
             transformer.transform(source, result);
 
+            return new File(HTML_FILE);
         } catch (TransformerFactoryConfigurationError | TransformerException e) {
-            e.printStackTrace();
+            return null;
         }
     }
 
     public File generatePDF(Node xmlDocument) throws IOException, DocumentException {
-        generateHTML(xmlDocument);
+        File htmlFile = generateHTML(xmlDocument);
+        if (htmlFile == null) {
+            return null;
+        }
 
         Document document = new Document();
-        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(OUTPUT_FILE));
+        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(PDF_FILE));
         document.open();
         XMLWorkerHelper.getInstance().parseXHtml(writer, document, new FileInputStream(HTML_FILE));
         document.close();
-        return new File(OUTPUT_FILE);
+
+        return new File(PDF_FILE);
     }
 }

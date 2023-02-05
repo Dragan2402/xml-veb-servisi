@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Obrazac_P1 xmlns="http://euprava.com/p1/model"
+<Obrazac_P1 xmlns="http://p1.euprava.com/model"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://euprava.com/p1/model ../schemas/p1_schema.xsd">
+    xsi:schemaLocation="http://p1.euprava.com/model ../schemas/p1_schema.xsd">
     <Popunjava_zavod>
         <Broj_prijave>1/23</Broj_prijave>
         <Datum_prijema>2023-01-19</Datum_prijema>
