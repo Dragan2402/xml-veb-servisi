@@ -22,8 +22,7 @@ public class Z1ServiceImpl implements Z1Service {
         File file = resource.getFile();
         JAXBContext context = JAXBContext.newInstance(ZahtevZaPriznanjeZiga.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
-        ZahtevZaPriznanjeZiga z1 = (ZahtevZaPriznanjeZiga) unmarshaller.unmarshal(file);
-        return z1;
+        return (ZahtevZaPriznanjeZiga) unmarshaller.unmarshal(file);
     }
 
 }
