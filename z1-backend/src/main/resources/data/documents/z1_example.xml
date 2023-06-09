@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zahtev_za_priznanje_ziga xmlns="http://euprava.com/z1/model"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://euprava.com/z1/model file:/C:/Users/Andrej/Desktop/Untitled1.xsd">
+    <podnosilac xsi:type='TFizickoLice'>
+        <adresa>
+            <ulica>Bulevar Oslobodjenja</ulica>
+            <broj>115</broj>
+            <postanski_broj>21000</postanski_broj>
+            <mesto>Novi Sad</mesto>
+            <drzava>Srbija</drzava>
+        </adresa>
+        <kontakt>
+            <telefon>0654898476</telefon>
+            <email>marko@gmail.com</email>
+            <faks></faks>
+        </kontakt>
+        <ime>Marko</ime>
+        <prezime>Markovic</prezime>
+    </podnosilac>
+    <punomocnik xsi:type='TPravnoLice'>
+        <adresa>
+            <ulica>Novosadskog sajma</ulica>
+            <broj>41</broj>
+            <postanski_broj>21000</postanski_broj>
+            <mesto>Novi Sad</mesto>
+            <drzava>Srbija</drzava>
+        </adresa>
+        <kontakt>
+            <telefon>0646849521</telefon>
+            <email>peric@gmail.com</email>
+            <faks></faks>
+        </kontakt>
+        <poslovno_ime>Peric Reisen DOO</poslovno_ime>
+    </punomocnik>
+    <zig>
+        <tip_ziga>individualni_zig</tip_ziga>
+        <znak>
+            <tip_znaka>graficki_znak</tip_znaka>
+            <boja_znaka>Crvena</boja_znaka>
+            <opis_znaka>Zanimljiv znak</opis_znaka>
+        </znak>
+        <brojevi_klasa_robe>
+            <broj>4</broj>
+        </brojevi_klasa_robe>
+        <zatrazeno_pravo_prvenstva></zatrazeno_pravo_prvenstva>
+        <broj_prijave_ziga>423</broj_prijave_ziga>
+        <datum_podnosenja>2022-12-12</datum_podnosenja>
+    </zig>
+    <placene_takse></placene_takse>
+    <prilozi></prilozi>
+</zahtev_za_priznanje_ziga>
