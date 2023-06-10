@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {UserService} from "../user.service";
 
 const EMPTY_PERSON = {
   Ime: "",
@@ -29,7 +30,7 @@ export class Z1FormComponent implements OnInit {
   Zahtev_za_priznanje_ziga: FormGroup;
   checkboxValues: any;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private userService: UserService) {
     this.checkboxValues = Array.from(Array(46), (_, i) => i.toString());
     this.Zahtev_za_priznanje_ziga = this.formBuilder.group({
 
@@ -148,31 +149,52 @@ export class Z1FormComponent implements OnInit {
   }
 
   dodajBrojKlaseRobe(value: string) {
-    const list = this.Zahtev_za_priznanje_ziga.value['Brojevi_klasa_robe']
-    list?.includes(value) ? list.splice(list?.indexOf(value), 1) : list?.push(value)
+    const list = this.Zahtev_za_priznanje_ziga.value['Brojevi_klasa_robe']['Broj_klase_robe']
+    list?.includes(value) ? list?.splice(list?.indexOf(value), 1) : list?.push(value)
   }
 
-  convertObjectToXml(obj: any) {
-    let xml = '';
+  convertToXML(data: any) {
+    let xml = '<Z1 xmlns="http://euprava.com/z1/model"';
+    xml += ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"';
+    xml += ' xsi:schemaLocation="http://euprava.com/z1/model ../schemas/z1_schema.xsd">';
 
-    for (let key in obj) {
-      if (typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
-        xml += `<${key}>${this.convertObjectToXml(obj[key])}</${key}>`;
-      } else {
-        xml += `<${key}>${obj[key]}</${key}>`;
-      }
+    function createXML(obj: any) {
+      Object.entries(obj).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          value.forEach((item) => {
+            xml += `<${key}>${item}</${key}>`;
+          });
+        } else if (typeof value === 'object') {
+          xml += `<${key}>`;
+          createXML(value);
+          xml += `</${key}>`;
+        } else {
+          xml += `<${key}>${value}</${key}>`;
+        }
+      });
     }
 
+    createXML(data);
+    xml += '</Z1>';
     return xml;
   }
 
+
+
   submitForm() {
     const request = this.Zahtev_za_priznanje_ziga.value
+    if (!this.Zahtev_za_priznanje_ziga.valid) {
+      console.log('INVALID FORM')
+      console.log(request)
+      return
+    }
     delete request['Vise_podnosilaca']
     if (!request['Podnosilac']) request['Podnosilac'] = structuredClone(EMPTY_PERSON)
     if (!request['Zajednicki_predstavnik']) request['Zajednicki_predstavnik'] = structuredClone(EMPTY_PERSON)
-    const final = { Z1: request }
-    console.log(this.convertObjectToXml(final));
+    request['Status'] = 'PODNESEN'
+    this.userService.submitZ1Request(this.convertToXML(request))
+    console.log(this.convertToXML(request))
+    console.log(request)
   }
 
 }

@@ -107,4 +107,12 @@ export class UserService {
     };
     return this.http.get(`/rjesenje/getRjesenjePdf?requestId=`+id, options);
   }
+
+  submitZ1Request(request: any) {
+    const headers = { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'};
+    axios.post('/api/z1', request, {headers}).then(response =>{
+      console.log(response);
+      this.router.navigate(["/userProfile"]);
+    });
+  }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Z1 xmlns="http://euprava.com/z1/model"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://euprava.com/z1/model file:/C:/Users/Andrej/Desktop/Untitled1.xsd">
+    xsi:schemaLocation="http://euprava.com/z1/model ../schemas/z1_schema.xsd">
 
     <Podnosilac>
         <Ime>John</Ime>
