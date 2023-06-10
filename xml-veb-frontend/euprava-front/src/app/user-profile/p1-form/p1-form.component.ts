@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {UserService} from "../user.service";
 
 declare const Xonomy: any;
 
@@ -11,7 +12,7 @@ declare const Xonomy: any;
 export class P1FormComponent implements OnInit {
   Zahtev_za_priznanje_patenta: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private userService: UserService) {
 
     this.Zahtev_za_priznanje_patenta = this.formBuilder.group({
 
@@ -205,9 +206,11 @@ export class P1FormComponent implements OnInit {
   }
 
   submitForm() {
+    console.log(this.Zahtev_za_priznanje_patenta);
     if (this.Zahtev_za_priznanje_patenta.valid) {
       let zahtev: String = this.buildXMLZahtevZaPriznanjePatenta();
       console.log(zahtev);
+      this.userService.submitP1Request(zahtev);
     }
   }
 
@@ -220,7 +223,7 @@ export class P1FormComponent implements OnInit {
     zahtevZaPriznanjePatenta += this.buildPronalazac();
     zahtevZaPriznanjePatenta += this.buildPunomocnik();
     zahtevZaPriznanjePatenta += this.buildAdresaZaDostavljanje();
-    zahtevZaPriznanjePatenta += this.buildNacinDostavljanja();
+    zahtevZaPriznanjePatenta += `\t<Nacin_dostavljanja>${this.Zahtev_za_priznanje_patenta.value['Nacin_dostavljanja']}</Nacin_dostavljanja>\n`
     zahtevZaPriznanjePatenta += this.buildPovezanaPrijava();
     zahtevZaPriznanjePatenta += this.buildZahtevZaPriznanjePravaPrvenstva();
 
@@ -229,107 +232,127 @@ export class P1FormComponent implements OnInit {
   }
 
   buildNazivPronalaska(): string {
-    let nazivPronalaska = '<Naziv_pronalaska>\n'
+    let nazivPronalaska: string = '\t<Naziv_pronalaska>\n'
 
-    nazivPronalaska += this.buildNaSrpskom();
-    nazivPronalaska += this.buildNaEngleskom();
+    nazivPronalaska += `\t\t<Na_srpskom>${this.Zahtev_za_priznanje_patenta.value['Naziv_pronalaska']['Na_srpskom']}</Na_srpskom>\n`;
+    nazivPronalaska += `\t\t<Na_engleskom>${this.Zahtev_za_priznanje_patenta.value['Naziv_pronalaska']['Na_engleskom']}</Na_engleskom>\n`;
 
-    nazivPronalaska += '</Naziv_pronalaska>\n'
+    nazivPronalaska += '\t</Naziv_pronalaska>\n'
     return nazivPronalaska;
   }
 
   buildPodnosilac(): string {
-    // <Podnosilac pronalazac="false" xsi:type="TPravni_podnosilac">
-    //   <Adresa>
-    //     <Ulica>Glavna</Ulica>
-    //   <Broj>23</Broj>
-    //   <Postanski_broj>11080</Postanski_broj>
-    //   <Mesto>Zemun</Mesto>
-    //   <Drzava>Srbija</Drzava>
-    //   </Adresa>
-    //   <Kontakt>
-    //   <Broj_telefona>011/2194-492</Broj_telefona>
-    //   <E_posta>br_assistant@gmail.com</E_posta>
-    // <Broj_faksa>011/2194-492</Broj_faksa>
-    // </Kontakt>
-    // <Poslovno_ime>BRAKING ASSISTANT</Poslovno_ime>
-    // </Podnosilac>
-
     let pronalazac: boolean = this.Zahtev_za_priznanje_patenta.value['Podnosilac']['pronalazac'];
     let tPodnosilac: string = this.Zahtev_za_priznanje_patenta.value['Podnosilac']['TPodnosilac'];
-    let podnosilac: string = `<Podnosilac pronalazac="${pronalazac}" xsi:type="${tPodnosilac}">\n`;
+    let podnosilac: string = `\t<Podnosilac pronalazac="${pronalazac}" xsi:type="${tPodnosilac}">\n`;
 
-    podnosilac += this.buildPodnosilacAdresa();
-    podnosilac += this.buildPodnosilacKontakt();
+    podnosilac += this.buildAdresa('Podnosilac');
+    podnosilac += this.buildKontakt('Podnosilac');
 
     if (tPodnosilac == 'TFizicki_podnosilac') {
-      podnosilac += this.buildFizickiPodnosilac();
+      podnosilac += `\t\t<Ime>${this.Zahtev_za_priznanje_patenta.value['Podnosilac']['Ime']}</Ime>\n`;
+      podnosilac += `\t\t<Prezime>${this.Zahtev_za_priznanje_patenta.value['Podnosilac']['Prezime']}</Prezime>\n`;
+      podnosilac += `\t\t<Drzavljanstvo>${this.Zahtev_za_priznanje_patenta.value['Podnosilac']['Drzavljanstvo']}</Drzavljanstvo>\n`;
     } else {
-      podnosilac += this.buildPravniPodnosilac();
+      podnosilac += `\t\t<Poslovno_ime>${this.Zahtev_za_priznanje_patenta.value['Podnosilac']['Poslovno_ime']}</Poslovno_ime>\n`;
     }
 
-    podnosilac += '</Podnosilac>\n';
+    podnosilac += '\t</Podnosilac>\n';
     return podnosilac;
   }
 
   buildPronalazac(): string {
-    return '';
+    if (this.Zahtev_za_priznanje_patenta.value['Podnosilac']['pronalazac'] || this.Zahtev_za_priznanje_patenta.value['Pronalazac']['ne_zeli_da_bude_naveden']) {
+      return '';
+    }
+
+    let pronalazac: string = `\t<Pronalazac>\n`;
+
+    pronalazac += this.buildAdresa('Pronalazac');
+    pronalazac += this.buildKontakt('Pronalazac');
+    pronalazac += `\t\t<Ime>${this.Zahtev_za_priznanje_patenta.value['Pronalazac']['Ime']}</Ime>\n`;
+    pronalazac += `\t\t<Prezime>${this.Zahtev_za_priznanje_patenta.value['Pronalazac']['Prezime']}</Prezime>\n`;
+
+    pronalazac += '\t</Pronalazac>\n';
+    return pronalazac;
   }
 
   buildPunomocnik(): string {
-    return '';
+    let tip: string = this.Zahtev_za_priznanje_patenta.value['Punomocnik']['tip'];
+    let tPunomocnik: string = this.Zahtev_za_priznanje_patenta.value['Punomocnik']['TPunomocnik'];
+    let punomocnik: string = `\t<Punomocnik tip="${tip}" xsi:type="${tPunomocnik}">\n`;
+
+    punomocnik += this.buildAdresa('Punomocnik');
+    punomocnik += this.buildKontakt('Punomocnik');
+
+    if (tPunomocnik == 'TFizicki_punomocnik') {
+      punomocnik += `\t\t<Ime>${this.Zahtev_za_priznanje_patenta.value['Punomocnik']['Ime']}</Ime>\n`;
+      punomocnik += `\t\t<Prezime>${this.Zahtev_za_priznanje_patenta.value['Punomocnik']['Prezime']}</Prezime>\n`;
+    } else {
+      punomocnik += `\t\t<Poslovno_ime>${this.Zahtev_za_priznanje_patenta.value['Punomocnik']['Poslovno_ime']}</Poslovno_ime>\n`;
+    }
+
+    punomocnik += '\t</Punomocnik>\n';
+    return punomocnik;
   }
 
   buildAdresaZaDostavljanje(): string {
-    return '';
-  }
+    if (this.Zahtev_za_priznanje_patenta.value['Adresa_za_dostavljanje']['podrazumevana_adresa']) {
+      return '';
+    }
 
-  buildNacinDostavljanja(): string {
-    return '';
+    let adresaZaDostavljanje: string = `\t<Adresa_za_dostavljanje>\n`;
+
+    adresaZaDostavljanje += this.buildAdresa('Adresa_za_dostavljanje');
+
+    adresaZaDostavljanje += '\t</Adresa_za_dostavljanje>\n';
+    return adresaZaDostavljanje;
   }
 
   buildPovezanaPrijava(): string {
-    return '';
+    if (this.Zahtev_za_priznanje_patenta.value['osnovna_prijava']) {
+      return '';
+    }
+
+    let tip = this.Zahtev_za_priznanje_patenta.value['Povezana_prijava']['tip'];
+    let povezanaPrijava: string = `\t<Povezana_prijava tip="${tip}">\n`;
+
+    povezanaPrijava += `\t\t<Broj_prijave>${this.Zahtev_za_priznanje_patenta.value['Povezana_prijava']['Broj_prijave']}</Broj_prijave>\n`;
+    povezanaPrijava += `\t\t<Datum_podnosenja>${this.Zahtev_za_priznanje_patenta.value['Povezana_prijava']['Datum_podnosenja']}</Datum_podnosenja>\n`;
+
+    povezanaPrijava += '\t</Povezana_prijava>\n';
+    return povezanaPrijava;
   }
 
   buildZahtevZaPriznanjePravaPrvenstva(): string {
     return '';
   }
 
-  buildNaSrpskom(): string {
-    let naSrpskom: string = '<Na_srpskom>';
+  buildAdresa(parent: string): string {
+    let adresa: string = '\t\t<Adresa>\n';
 
-    naSrpskom += this.Zahtev_za_priznanje_patenta.value['Naziv_pronalaska']['Na_srpskom'];
+    adresa += `\t\t\t<Ulica>${this.Zahtev_za_priznanje_patenta.value[parent]['Adresa']['Ulica']}</Ulica>\n`;
+    adresa += `\t\t\t<Broj>${this.Zahtev_za_priznanje_patenta.value[parent]['Adresa']['Broj']}</Broj>\n`;
+    adresa += `\t\t\t<Postanski_broj>${this.Zahtev_za_priznanje_patenta.value[parent]['Adresa']['Postanski_broj']}</Postanski_broj>\n`;
+    adresa += `\t\t\t<Mesto>${this.Zahtev_za_priznanje_patenta.value[parent]['Adresa']['Mesto']}</Mesto>\n`;
+    if (parent == 'Podnosilac' || parent == 'Pronalazac') {
+      adresa += `\t\t\t<Drzava>${this.Zahtev_za_priznanje_patenta.value[parent]['Adresa']['Drzava']}</Drzava>\n`;
+    }
 
-    naSrpskom += '</Na_srpskom>\n';
-    return naSrpskom
-  }
-
-  buildNaEngleskom() {
-    let naEngleskom: string = '<Na_engleskom>';
-
-    naEngleskom += this.Zahtev_za_priznanje_patenta.value['Naziv_pronalaska']['Na_engleskom'];
-
-    naEngleskom += '</Na_engleskom>\n';
-    return naEngleskom
-  }
-
-  buildPodnosilacAdresa(): string {
-    let adresa: string = '<Adresa>\n';
-
-    adresa += '</Adresa>\n';
+    adresa += '\t\t</Adresa>\n';
     return adresa
   }
 
-  buildPodnosilacKontakt(): string {
-    return '';
-  }
+  buildKontakt(parent: string): string {
+    let kontakt: string = '\t\t<Kontakt>\n';
 
-  buildFizickiPodnosilac(): string {
-    return '';
-  }
+    kontakt += `\t\t\t<Broj_telefona>${this.Zahtev_za_priznanje_patenta.value[parent]['Kontakt']['Broj_telefona']}</Broj_telefona>\n`;
+    kontakt += `\t\t\t<E_posta>${this.Zahtev_za_priznanje_patenta.value[parent]['Kontakt']['E_posta']}</E_posta>\n`;
+    if (parent == 'Podnosilac' || parent == 'Pronalazac') {
+      kontakt += `\t\t\t<Broj_faksa>${this.Zahtev_za_priznanje_patenta.value[parent]['Kontakt']['Broj_faksa']}</Broj_faksa>\n`;
+    }
 
-  buildPravniPodnosilac(): string {
-    return '';
+    kontakt += '\t\t</Kontakt>\n';
+    return kontakt
   }
 }

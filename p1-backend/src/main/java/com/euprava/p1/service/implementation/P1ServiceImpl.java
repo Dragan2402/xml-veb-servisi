@@ -3,7 +3,6 @@ package com.euprava.p1.service.implementation;
 import com.euprava.p1.model.*;
 import com.euprava.p1.repository.P1Repository;
 import com.euprava.p1.repository.fuseki.FusekiReader;
-import com.euprava.p1.repository.fuseki.MetadataExtractor;
 import com.euprava.p1.service.P1Service;
 import com.euprava.p1.service.transformation.pdf.PDFTransformer;
 import com.itextpdf.text.DocumentException;
@@ -36,7 +35,10 @@ public class P1ServiceImpl implements P1Service {
 
 
     @Override
-    public String createObrazacP1(ObrazacP1 obrazacP1) throws JAXBException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, DatatypeConfigurationException, NotFoundException, IOException, TransformerException {
+    public String createObrazacP1(ZahtevZaPriznanjePatenta zahtev) throws JAXBException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, DatatypeConfigurationException, NotFoundException, IOException, TransformerException {
+        ObrazacP1 obrazacP1 = new ObrazacP1();
+        obrazacP1.setZahtevZaPriznanjePatenta(zahtev);
+
         String documentId = generateDocumentId();
 
         DatatypeFactory df = DatatypeFactory.newInstance();

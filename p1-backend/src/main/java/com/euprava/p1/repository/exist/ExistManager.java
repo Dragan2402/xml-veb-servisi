@@ -45,20 +45,6 @@ public class ExistManager {
     }
 
     public XMLResource load(String collectionUri, String documentId) throws XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
-//        openConnection();
-//        Collection collection = null;
-//        XMLResource resource = null;
-//
-//        try {
-//            collection = DatabaseManager.getCollection(authMgr.getUri() + collectionUri, authMgr.getUser(), authMgr.getPassword());
-//            collection.setProperty(OutputKeys.INDENT, "yes");
-//            resource = (XMLResource) collection.getResource(documentId);
-//        } finally {
-//            if (collection != null) {
-//                collection.close();
-//            }
-//        }
-//        return resource;
         openConnection();
         Collection collection = null;
         XMLResource resource =  null;

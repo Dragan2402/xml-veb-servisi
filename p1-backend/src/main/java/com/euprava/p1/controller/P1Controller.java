@@ -38,8 +38,8 @@ public class P1Controller {
 //    }
 
     @PostMapping(produces = {"application/xml"})
-    public ResponseEntity<Void> postZahtevZaPriznanjePatenta(@RequestBody ZahtevZaPriznanjePatenta zahtev) {
-        System.out.println(zahtev.getNazivPronalaska().getNaSrpskom().getValue());
+    public ResponseEntity<Void> postZahtevZaPriznanjePatenta(@RequestBody ZahtevZaPriznanjePatenta zahtev) throws DatatypeConfigurationException, JAXBException, XMLDBException, NotFoundException, IOException, ClassNotFoundException, InvocationTargetException, TransformerException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+        p1Service.createObrazacP1(zahtev);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
