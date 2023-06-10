@@ -171,7 +171,7 @@ export class Z1FormComponent implements OnInit {
     delete request['Vise_podnosilaca']
     if (!request['Podnosilac']) request['Podnosilac'] = structuredClone(EMPTY_PERSON)
     if (!request['Zajednicki_predstavnik']) request['Zajednicki_predstavnik'] = structuredClone(EMPTY_PERSON)
-    const final = { Zahtev_za_priznanje_ziga: request }
+    const final = { Z1: request }
     console.log(this.convertObjectToXml(final));
   }
 

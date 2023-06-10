@@ -2,7 +2,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
            targetNamespace="http://euprava.com/z1/model" xmlns:z1="http://euprava.com/z1/model">
 
-    <xs:element name="Zahtev_za_priznanje_ziga">
+    <xs:element name="Z1">
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="Podnosilac" type="z1:Lice"/>
