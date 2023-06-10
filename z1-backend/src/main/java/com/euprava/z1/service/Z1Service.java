@@ -1,5 +1,6 @@
 package com.euprava.z1.service;
 
+
 import com.euprava.z1.model.ZahtevZaPriznanjeZiga;
 
 import javax.xml.bind.JAXBException;

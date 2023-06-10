@@ -12,6 +12,7 @@ import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.IOException;
 
+
 @Service
 public class Z1ServiceImpl implements Z1Service {
 
@@ -22,7 +23,8 @@ public class Z1ServiceImpl implements Z1Service {
         File file = resource.getFile();
         JAXBContext context = JAXBContext.newInstance(ZahtevZaPriznanjeZiga.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
-        return (ZahtevZaPriznanjeZiga) unmarshaller.unmarshal(file);
+        ZahtevZaPriznanjeZiga zahtevZaPriznanjeZiga = (ZahtevZaPriznanjeZiga) unmarshaller.unmarshal(file);
+        return zahtevZaPriznanjeZiga;
     }
 
 }
