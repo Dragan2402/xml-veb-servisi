@@ -1,6 +1,7 @@
 package com.euprava.p1.controller;
 
 import com.euprava.p1.model.ObrazacP1;
+import com.euprava.p1.model.ZahtevZaPriznanjePatenta;
 import com.euprava.p1.service.P1Service;
 import com.itextpdf.text.DocumentException;
 import org.exist.http.NotFoundException;
@@ -30,10 +31,16 @@ public class P1Controller {
     @Autowired
     private P1Service p1Service;
 
+//    @PostMapping(produces = {"application/xml"})
+//    public ResponseEntity<String> postObrazacP1(@RequestBody ObrazacP1 obrazacP1) throws JAXBException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, DatatypeConfigurationException, NotFoundException, IOException, TransformerException {
+//        String documentId = p1Service.createObrazacP1(obrazacP1);
+//        return new ResponseEntity<>(documentId, HttpStatus.CREATED);
+//    }
+
     @PostMapping(produces = {"application/xml"})
-    public ResponseEntity<String> postObrazacP1(@RequestBody ObrazacP1 obrazacP1) throws JAXBException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, DatatypeConfigurationException, NotFoundException, IOException, TransformerException {
-        String documentId = p1Service.createObrazacP1(obrazacP1);
-        return new ResponseEntity<>(documentId, HttpStatus.CREATED);
+    public ResponseEntity<Void> postZahtevZaPriznanjePatenta(@RequestBody ZahtevZaPriznanjePatenta zahtev) throws DatatypeConfigurationException, JAXBException, XMLDBException, NotFoundException, IOException, ClassNotFoundException, InvocationTargetException, TransformerException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+        p1Service.createObrazacP1(zahtev);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/{documentId}", produces = {"application/xml"})

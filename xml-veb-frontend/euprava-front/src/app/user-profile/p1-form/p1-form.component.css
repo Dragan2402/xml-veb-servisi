@@ -10,6 +10,10 @@
   margin-top: 15px;
 }
 
+.bottom-margin {
+  margin-bottom: 30px;
+}
+
 .right-padding {
   margin-right: 2%;
 }
@@ -22,6 +26,12 @@
 
 .column-third {
   width: 32%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.column-two-thirds {
+  width: 66%;
   display: inline-block;
   vertical-align: top;
 }
@@ -48,10 +58,20 @@ mat-checkbox, mat-radio-group {
   margin-bottom: 15px;
 }
 
-mat-radio-button {
-  width: 50%;
-}
-
 mat-card-actions {
   text-align: center;
+}
+
+mat-card-actions button {
+  width: 8em;
+  height: 2.5em;
+  font-size: 1.25em;
+}
+
+.mat-radio-label {
+  white-space: normal;
+}
+
+.mat-radio-label-content {
+  white-space: normal;
 }

@@ -68,11 +68,12 @@ export class UserService {
     }
   }
 
-  sendXml(entity: string) {
+  submitP1Request(request: String) {
     const headers = { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'};
-    axios.post("/api/p1", entity, {headers})
-    .then(response =>{
+    axios.post('/api/p1', request, {headers})
+      .then(response => {
         console.log(response.data);
+        this.router.navigate(["/userProfile"]);
       });
   }
 

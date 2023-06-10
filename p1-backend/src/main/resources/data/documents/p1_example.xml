@@ -57,6 +57,12 @@
             <Ime>Jovan</Ime>
             <Prezime>RAJAČIĆ</Prezime>
         </Punomocnik>
+        <Adresa_za_dostavljanje>
+            <Ulica>blbl</Ulica>
+            <Broj>44</Broj>
+            <Postanski_broj>21000</Postanski_broj>
+            <Mesto>Novi Sad</Mesto>
+        </Adresa_za_dostavljanje>
         <Nacin_dostavljanja>Papirna_forma</Nacin_dostavljanja>
         <Povezana_prijava tip="Dopunska_prijava">
             <Broj_prijave>1/22</Broj_prijave>
