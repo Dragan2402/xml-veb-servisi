@@ -1,8 +1,5 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { Entity } from 'src/app/model/p1Request/Entity';
-import { UserService } from '../user.service';
-import { XonomyService } from './xonomy.service';
+import { Component, OnInit } from '@angular/core';
+import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 
 declare const Xonomy: any;
 
@@ -11,43 +8,127 @@ declare const Xonomy: any;
   templateUrl: './p1-form.component.html',
   styleUrls: ['./p1-form.component.css']
 })
-export class P1FormComponent implements OnInit, AfterViewInit {
-  xonomyService: XonomyService;
-  userService: UserService;
-  documentId = new FormControl<string>('',[Validators.required]);
-  loadedXml: string;
+export class P1FormComponent implements OnInit {
+  Zahtev_za_priznanje_patenta: FormGroup;
 
-  constructor(xonomyService: XonomyService, userService: UserService) {
-    this.xonomyService = xonomyService;
-    this.userService = userService;
-    this.loadedXml = "";
-  }
+  constructor(private formBuilder: FormBuilder) {
 
-  ngOnInit(): void {
-  }
+    this.Zahtev_za_priznanje_patenta = this.formBuilder.group({
 
-  ngAfterViewInit() {
-    let element = document.getElementById("editor");
-    let specification = this.xonomyService.p1Specification;
+      Naziv_pronalaska: this.formBuilder.group({
+        Na_srpskom: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ],
+        Na_engleskom: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ]
+      }),
 
-    let template = `<Obrazac_P1 xmlns="http://euprava.com/p1/model"><Popunjava_zavod><Broj_prijave>2/22</Broj_prijave><Datum_prijema>2022-11-30+01:00</Datum_prijema><Priznati_datum_podnosenja>2022-11-30+01:00</Priznati_datum_podnosenja></Popunjava_zavod><Zahtev_za_priznanje_patenta><Naziv_pronalaska><Na_srpskom>Automatski sistemi kočenja</Na_srpskom><Na_engleskom>Autonomous braking system</Na_engleskom></Naziv_pronalaska><Podnosilac_prijave><Podnosilac_je_pronalazac>false</Podnosilac_je_pronalazac><Lice xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TPravni_podnosilac"><Adresa><Ulica>Glavna</Ulica><Broj>23</Broj><Postanski_broj>11080</Postanski_broj><Mesto>Zemun</Mesto><Drzava>Srbija</Drzava></Adresa><Kontakt_informacije><Broj_telefona>011/2194-492</Broj_telefona><Broj_faksa>011/2194-492</Broj_faksa></Kontakt_informacije><Poslovno_ime>BRAKING ASSISSTANT</Poslovno_ime></Lice></Podnosilac_prijave><Pronalazac><Pronalazac_nije_naveden>false</Pronalazac_nije_naveden><Lice><Adresa><Ulica>4. Sremski Bataljon</Ulica><Broj>10</Broj><Postanski_broj>11080</Postanski_broj><Mesto>Zemun</Mesto><Drzava>Srbija</Drzava></Adresa><Kontakt_informacije><Broj_telefona>066/936-8575</Broj_telefona><Broj_faksa></Broj_faksa></Kontakt_informacije><Ime>Dragutin</Ime><Prezime>ILIĆ</Prezime></Lice></Pronalazac><Punomocnik_ili_predstavnik><Tip>Punomocnik_za_prijem_pismena</Tip><Lice xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TFizicko_lice"><Adresa><Ulica>4. Sremski bataljon</Ulica><Broj>6</Broj><Postanski_broj>11080</Postanski_broj><Mesto>Zemun</Mesto></Adresa><Kontakt_informacije><Broj_telefona>066/936-8581</Broj_telefona></Kontakt_informacije><Ime>Jovan</Ime><Prezime>RAJAČIĆ</Prezime></Lice></Punomocnik_ili_predstavnik><Adresa_za_dostavljanje><Broj>0</Broj><Postanski_broj>0</Postanski_broj></Adresa_za_dostavljanje><Nacin_dostavljanja>Papirni_dokument</Nacin_dostavljanja><Povezana_prijava/><Zahtev_za_priznanje_prava_prvenstva><Ranija_prijava><Datum_podnosenja_ranije_prijave>2021-12-12+01:00</Datum_podnosenja_ranije_prijave><Broj_ranije_prijave>3/21</Broj_ranije_prijave><Oznaka_drzave_ili_organizacije>rs</Oznaka_drzave_ili_organizacije></Ranija_prijava><Ranija_prijava><Datum_podnosenja_ranije_prijave>2021-12-12+01:00</Datum_podnosenja_ranije_prijave><Broj_ranije_prijave>4/21</Broj_ranije_prijave><Oznaka_drzave_ili_organizacije>rs</Oznaka_drzave_ili_organizacije></Ranija_prijava></Zahtev_za_priznanje_prava_prvenstva></Zahtev_za_priznanje_patenta></Obrazac_P1>`
+      Podnosilac: this.formBuilder.group({
+        pronalazac: [false],
+        TPodnosilac: ["TFizicki_podnosilac"],
+        Ime: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž]+$/) ] ],
+        Prezime: ['', [ Validators.required, Validators.pattern(/^[A-ZŠĐČĆŽ]+$/) ] ],
+        Drzavljanstvo: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ],
+        Poslovno_ime: ['', [ Validators.required, Validators.pattern(/^[A-ZŠĐČĆŽ ]+$/) ] ],
+        Adresa: this.formBuilder.group({
 
-    Xonomy.render(template, element, specification);
-  }
+          Ulica: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ],
+          Broj: ['', [ Validators.required, Validators.pattern(/^[1-9][0-9]*$/) ] ],
+          Postanski_broj: ['', [ Validators.required, Validators.pattern(/^[1-9][0-9]*$/), this.rangeValidator ] ],
+          Mesto: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ],
+          Drzava: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ]
 
-  save() {
-    let text: string = Xonomy.harvest();
-    this.userService.sendXml(text);
-  }
+        }),
+        Kontakt: this.formBuilder.group({
 
-  load() {
-    let id: string | null | undefined = this.documentId.value;
-    id = id?.replace(/\//g, "-");
-    this.userService.loadXml(id).subscribe((data: string) => {
-      this.loadedXml = data;
-      let element = document.getElementById("xml-view");
-      let specification = this.xonomyService.p1Specification;
-      Xonomy.render(this.loadedXml, element, specification);
+          Broj_telefona: ['', [ Validators.required ] ],
+          Broj_faksa: ['', [ Validators.required ] ],
+          E_posta: ['', [ Validators.required, Validators.email ] ]
+
+        })
+      }),
+
+      Pronalazac: this.formBuilder.group({
+        ne_zeli_da_bude_naveden: [false],
+        Ime: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž]+$/) ] ],
+        Prezime: ['', [ Validators.required, Validators.pattern(/^[A-ZŠĐČĆŽ]+$/) ] ],
+
+        Adresa: this.formBuilder.group({
+
+          Ulica: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ],
+          Broj: ['', [ Validators.required, Validators.pattern(/^[1-9][0-9]*$/) ] ],
+          Postanski_broj: ['', [ Validators.required, Validators.pattern(/^[1-9][0-9]*$/), this.rangeValidator ] ],
+          Mesto: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ],
+          Drzava: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ]
+
+        }),
+
+        Kontakt: this.formBuilder.group({
+
+          Broj_telefona: ['', [ Validators.required ] ],
+          Broj_faksa: ['', [ Validators.required ] ],
+          E_posta: ['', [ Validators.required, Validators.email ] ]
+
+        })
+      })
+
     });
+
+    this.updateAllValidators();
+  }
+
+  ngOnInit() {
+
+  }
+
+  rangeValidator(control: AbstractControl): ValidationErrors | null {
+    const value = Number(control.value);
+
+    if (value >= 11000 && value <= 40000) {
+      return null;
+    } else {
+      return { range: true };
+    }
+  }
+
+  updateAllValidators() {
+    this.updatePodnosilacValidators();
+    this.updatePronalazacValidators();
+  }
+
+  updatePodnosilacValidators() {
+    if (this.Zahtev_za_priznanje_patenta.value['Podnosilac']['TPodnosilac'] == 'TFizicki_podnosilac') {
+      this.Zahtev_za_priznanje_patenta.get('Podnosilac')?.get('Ime')?.enable();
+      this.Zahtev_za_priznanje_patenta.get('Podnosilac')?.get('Prezime')?.enable();
+      this.Zahtev_za_priznanje_patenta.get('Podnosilac')?.get('Drzavljanstvo')?.enable();
+      this.Zahtev_za_priznanje_patenta.get('Podnosilac')?.get('Poslovno_ime')?.disable();
+    } else {
+      this.Zahtev_za_priznanje_patenta.get('Podnosilac')?.get('Ime')?.disable();
+      this.Zahtev_za_priznanje_patenta.get('Podnosilac')?.get('Prezime')?.disable();
+      this.Zahtev_za_priznanje_patenta.get('Podnosilac')?.get('Drzavljanstvo')?.disable();
+      this.Zahtev_za_priznanje_patenta.get('Podnosilac')?.get('Poslovno_ime')?.enable();
+    }
+  }
+
+  updatePronalazacValidators() {
+    console.log(this.Zahtev_za_priznanje_patenta.value['Pronalazac']);
+    if (this.Zahtev_za_priznanje_patenta.value['Podnosilac']['pronalazac'] == true) {
+      this.Zahtev_za_priznanje_patenta.get('Pronalazac')?.disable();
+    } else {
+      this.Zahtev_za_priznanje_patenta.get('Pronalazac')?.enable();
+
+      if (this.Zahtev_za_priznanje_patenta.value['Pronalazac']['ne_zeli_da_bude_naveden'] == true) {
+        this.Zahtev_za_priznanje_patenta.get('Pronalazac')?.get('Ime')?.disable();
+        this.Zahtev_za_priznanje_patenta.get('Pronalazac')?.get('Prezime')?.disable();
+        this.Zahtev_za_priznanje_patenta.get('Pronalazac')?.get('Adresa')?.disable();
+        this.Zahtev_za_priznanje_patenta.get('Pronalazac')?.get('Kontakt')?.disable();
+      } else {
+        this.Zahtev_za_priznanje_patenta.get('Pronalazac')?.get('Ime')?.enable();
+        this.Zahtev_za_priznanje_patenta.get('Pronalazac')?.get('Prezime')?.enable();
+        this.Zahtev_za_priznanje_patenta.get('Pronalazac')?.get('Adresa')?.enable();
+        this.Zahtev_za_priznanje_patenta.get('Pronalazac')?.get('Kontakt')?.enable();
+      }
+    }
+  }
+
+  submitForm() {
+    console.log(this.Zahtev_za_priznanje_patenta);
   }
 }

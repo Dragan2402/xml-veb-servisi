@@ -1,17 +1,154 @@
-<div id="editor"></div>
+<form class="form-div" [formGroup]="Zahtev_za_priznanje_patenta" (ngSubmit)="submitForm()">
 
-<mat-card>
-  <mat-card-content>
-    <button mat-raised-button color="primary" (click)="save()">Save</button>
-  </mat-card-content>
+  <div style="background-color: #3F51B5;">
 
-  <mat-form-field >
-    <input matInput placeholder="Broj prijave" [formControl]="documentId" required>
-  </mat-form-field>
+    <mat-card>
+      <mat-card-title>Zahtev za priznanje patenta</mat-card-title>
 
-  <mat-card-content>
-    <button mat-raised-button color="primary" (click)="load()">Load</button>
-  </mat-card-content>
-</mat-card>
+      <mat-card-subtitle>Naziv pronalaska</mat-card-subtitle>
+      <mat-card-content formGroupName="Naziv_pronalaska">
+        <mat-form-field >
+          <input matInput placeholder="Na srpskom jeziku" formControlName="Na_srpskom" required>
+          </mat-form-field>
+        <mat-form-field >
+          <input matInput placeholder="Na engleskom jeziku" formControlName="Na_engleskom" required>
+        </mat-form-field>
+      </mat-card-content>
 
-<div id="xml-view"></div>
+      <mat-card-subtitle>Podnosilac prijave</mat-card-subtitle>
+      <mat-card-content formGroupName="Podnosilac">
+        <mat-checkbox formControlName="pronalazac" (change)="updatePronalazacValidators()">Podnosilac prijave je i pronalazač</mat-checkbox>
+        <mat-radio-group formControlName="TPodnosilac" (change)="updatePodnosilacValidators()">
+          <mat-radio-button class="column-half" [value]="'TFizicki_podnosilac'">Fizički podnosilac</mat-radio-button>
+          <mat-radio-button class="column-half" [value]="'TPravni_podnosilac'">Pravni podnosilac</mat-radio-button>
+        </mat-radio-group>
+
+        <div class="top-margin">
+          <div class="column-third right-padding">
+            <mat-form-field *ngIf="Zahtev_za_priznanje_patenta.value['Podnosilac']['TPodnosilac'] == 'TFizicki_podnosilac'">
+              <input matInput placeholder="Ime" formControlName="Ime" required>
+            </mat-form-field>
+            <mat-form-field *ngIf="Zahtev_za_priznanje_patenta.value['Podnosilac']['TPodnosilac'] == 'TFizicki_podnosilac'">
+              <input matInput placeholder="Prezime (upisati velikim slovima)" formControlName="Prezime" required>
+            </mat-form-field>
+            <mat-form-field *ngIf="Zahtev_za_priznanje_patenta.value['Podnosilac']['TPodnosilac'] == 'TFizicki_podnosilac'">
+              <input matInput placeholder="Državljanstvo" formControlName="Drzavljanstvo" required>
+            </mat-form-field>
+            <mat-form-field *ngIf="Zahtev_za_priznanje_patenta.value['Podnosilac']['TPodnosilac'] == 'TPravni_podnosilac'">
+              <input matInput placeholder="Poslovno ime (upisati velikim slovima)" formControlName="Poslovno_ime" required>
+            </mat-form-field>
+          </div>
+
+          <div class="column-third right-padding" formGroupName="Adresa">
+            <mat-form-field>
+              <input matInput placeholder="Ulica" formControlName="Ulica" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Broj" formControlName="Broj" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Poštanski broj" formControlName="Postanski_broj" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Mesto" formControlName="Mesto" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Država" formControlName="Drzava" required>
+            </mat-form-field>
+          </div>
+
+          <div class="column-third" formGroupName="Kontakt">
+            <mat-form-field>
+              <input matInput placeholder="Broj telefona" formControlName="Broj_telefona" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Broj faksa" formControlName="Broj_faksa" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="E-pošta" formControlName="E_posta" required>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <div *ngIf="Zahtev_za_priznanje_patenta.value['Podnosilac']['pronalazac'] == false">
+        <mat-card-subtitle>Pronalazač</mat-card-subtitle>
+        <mat-card-content formGroupName="Pronalazac">
+          <mat-checkbox formControlName="ne_zeli_da_bude_naveden" (change)="updatePronalazacValidators()">Pronalazač ne želi da bude naveden</mat-checkbox>
+
+          <div class="top-margin" *ngIf="Zahtev_za_priznanje_patenta.value['Pronalazac']['ne_zeli_da_bude_naveden'] == false">
+            <div class="column-third right-padding">
+              <mat-form-field>
+                <input matInput placeholder="Ime" formControlName="Ime" required>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput placeholder="Prezime (upisati velikim slovima)" formControlName="Prezime" required>
+              </mat-form-field>
+            </div>
+
+            <div class="column-third right-padding" formGroupName="Adresa">
+              <mat-form-field>
+                <input matInput placeholder="Ulica" formControlName="Ulica" required>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput placeholder="Broj" formControlName="Broj" required>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput placeholder="Poštanski broj" formControlName="Postanski_broj" required>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput placeholder="Mesto" formControlName="Mesto" required>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput placeholder="Država" formControlName="Drzava" required>
+              </mat-form-field>
+            </div>
+
+            <div class="column-third" formGroupName="Kontakt">
+              <mat-form-field>
+                <input matInput placeholder="Broj telefona" formControlName="Broj_telefona" required>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput placeholder="Broj faksa" formControlName="Broj_faksa" required>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput placeholder="E-pošta" formControlName="E_posta" required>
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-card-content>
+      </div>
+
+      <mat-card-subtitle>
+        <mat-checkbox>Ne postoji punomoćnik ili zajednički predstavnik</mat-checkbox>
+        <mat-checkbox>Punomoćnik za zastupanje</mat-checkbox>
+        <mat-checkbox>Punomoćnik za prijem pismena</mat-checkbox>
+        <mat-checkbox>Zajednički predstavnik</mat-checkbox>
+      </mat-card-subtitle>
+
+      <mat-card-actions>
+        <button mat-button type="submit">Pošalji zahtev</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+</form>
+
+
+<!--<div id="editor"></div>-->
+
+<!--<mat-card>-->
+<!--  <mat-card-content>-->
+<!--    <button mat-raised-button color="primary" (click)="save()">Save</button>-->
+<!--  </mat-card-content>-->
+
+<!--  <mat-form-field >-->
+<!--    <input matInput placeholder="Broj prijave" [formControl]="documentId" required>-->
+<!--  </mat-form-field>-->
+
+<!--  <mat-card-content>-->
+<!--    <button mat-raised-button color="primary" (click)="load()">Load</button>-->
+<!--  </mat-card-content>-->
+<!--</mat-card>-->
+
+<!--<div id="xml-view"></div>-->

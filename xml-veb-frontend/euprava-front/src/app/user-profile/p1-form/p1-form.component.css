@@ -1,0 +1,57 @@
+.form-div{
+  display: flex;
+  flex-direction: column;
+  margin-left: 20%;
+  margin-top: 15px;
+  margin-right: 20%;
+}
+
+.top-margin {
+  margin-top: 15px;
+}
+
+.right-padding {
+  margin-right: 2%;
+}
+
+.column-half {
+  width: 49%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.column-third {
+  width: 32%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+mat-card {
+  margin: 15px;
+  padding: 30px;
+}
+
+mat-card-title {
+  padding-bottom: 30px;
+}
+
+mat-card-subtitle {
+  font-size: 1.5em;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-checkbox, mat-radio-group {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+mat-radio-button {
+  width: 50%;
+}
+
+mat-card-actions {
+  text-align: center;
+}
