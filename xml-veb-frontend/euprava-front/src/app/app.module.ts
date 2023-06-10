@@ -44,6 +44,7 @@ import {MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS} from '@angular/materia
 import { HandleRequestComponent } from './employee-profile/handle-request/handle-request.component';
 import { MetadataDownloadComponent } from './employee-profile/metadata-download/metadata-download.component';
 import { ReportComponent } from './employee-profile/report/report.component';
+import {Z1FormComponent} from "./user-profile/z1-form/z1-form.component";
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { ReportComponent } from './employee-profile/report/report.component';
     AuthorComponent,
     AuthorFormModalComponent,
     P1FormComponent,
+    Z1FormComponent,
     RegisterComponent,
     EmployeeProfileComponent,
     SnackbarComponent,

@@ -75,6 +75,10 @@ export class UserProfileComponent implements OnInit {
     this.route.navigate(['/p1-form']);
   }
 
+  createZ1Request() {
+    this.route.navigate(['/z1-form'])
+  }
+
   clear(){
     this.filter = '';
     this.loaded = false;
