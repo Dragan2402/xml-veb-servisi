@@ -1,6 +1,7 @@
 package com.euprava.z1.service.implementation;
 
 import com.euprava.z1.controller.response.Z1Response;
+import com.euprava.z1.controller.response.Z1ResponseList;
 import com.euprava.z1.model.Z1;
 import com.euprava.z1.repository.Z1Repository;
 import com.euprava.z1.service.Z1Service;
@@ -75,6 +76,14 @@ public class Z1ServiceImpl implements Z1Service {
     public File retrieveZ1AsHTML(String documentId) throws XMLDBException, NotFoundException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, FileNotFoundException {
         Node documentNode = z1Repository.findByIdAsNode(documentId);
         return pdfTransformer.generateHTML(documentNode);
+    }
+
+    @Override
+    public Z1ResponseList retrieveZ1ResponseListByText(String text) throws XMLDBException, JAXBException {
+        if (text.equals("")) text = "en";
+        String xPathExp = "/*[contains(., '" + text + "')]";
+        List<Z1Response> list = z1Repository.searchByText(xPathExp);
+        return new Z1ResponseList(list);
     }
 
     private Z1 unmarshallXMLResource(XMLResource resource) throws JAXBException, XMLDBException {

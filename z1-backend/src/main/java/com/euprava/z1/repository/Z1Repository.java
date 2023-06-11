@@ -1,14 +1,16 @@
 package com.euprava.z1.repository;
 
+import com.euprava.z1.controller.response.Z1Response;
 import com.euprava.z1.model.Z1;
 import com.euprava.z1.repository.exist.ExistManager;
 import lombok.RequiredArgsConstructor;
 import org.exist.http.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 import org.xmldb.api.base.Resource;
+import org.xmldb.api.base.ResourceIterator;
+import org.xmldb.api.base.ResourceSet;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
 
@@ -22,6 +24,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -67,5 +70,20 @@ public class Z1Repository {
         }
 
         return resource.getContentAsDOM();
+    }
+
+    public List<Z1Response> searchByText(String xPathExp) throws XMLDBException, JAXBException {
+        ResourceSet result = existManager.retrieve(COLLECTION_ID, xPathExp);
+        List<Z1Response> list = new ArrayList<>();
+        ResourceIterator iter = result.getIterator();
+        while (iter.hasMoreResources()) {
+            XMLResource resource = (XMLResource) iter.nextResource();
+            long id = Long.parseLong(resource.getId().split("_")[0]);
+            JAXBContext context = JAXBContext.newInstance(Z1.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            Z1 z1 = (Z1) unmarshaller.unmarshal(resource.getContentAsDOM());
+            list.add(new Z1Response(z1, id));
+        }
+        return list;
     }
 }
