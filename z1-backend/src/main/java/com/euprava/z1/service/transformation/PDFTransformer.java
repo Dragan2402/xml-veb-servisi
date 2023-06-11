@@ -50,7 +50,10 @@ public class PDFTransformer {
     }
 
     public File generatePDF(Node xmlDocument) throws Exception {
-        generateHTML(xmlDocument);
+        File htmlFile = generateHTML(xmlDocument);
+        if (htmlFile == null) {
+            return null;
+        }
         HtmlConverter.convertToPdf(new File(HTML_FILE), new File(PDF_FILE));
         return new File(PDF_FILE);
     }

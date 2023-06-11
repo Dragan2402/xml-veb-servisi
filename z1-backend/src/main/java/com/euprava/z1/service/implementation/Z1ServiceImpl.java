@@ -20,6 +20,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.namespace.QName;
 import javax.xml.transform.TransformerException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
@@ -68,6 +69,12 @@ public class Z1ServiceImpl implements Z1Service {
     public File retrieveZ1AsPDF(String documentId) throws Exception {
         Node documentNode = z1Repository.findByIdAsNode(documentId);
         return pdfTransformer.generatePDF(documentNode);
+    }
+
+    @Override
+    public File retrieveZ1AsHTML(String documentId) throws XMLDBException, NotFoundException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, FileNotFoundException {
+        Node documentNode = z1Repository.findByIdAsNode(documentId);
+        return pdfTransformer.generateHTML(documentNode);
     }
 
     private Z1 unmarshallXMLResource(XMLResource resource) throws JAXBException, XMLDBException {

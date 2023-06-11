@@ -42,6 +42,17 @@ public class Z1Controller {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/{documentId}/html")
+    public ResponseEntity<Resource> getAsHTML(@PathVariable String documentId) throws IOException, XMLDBException, NotFoundException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+        File Z1HTMLFile = z1Service.retrieveZ1AsHTML(documentId);
+        if (Z1HTMLFile == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDispositionFormData("attachment", "Z1_" + documentId + ".html");
+        return new ResponseEntity<>(new FileSystemResource(Z1HTMLFile), headers, HttpStatus.OK);
+    }
+
     @GetMapping(value = "/{documentId}/pdf")
     public ResponseEntity<Resource> getAsPDF(@PathVariable String documentId) throws Exception {
         File obrazacP1PDFFile = z1Service.retrieveZ1AsPDF(documentId);
@@ -52,5 +63,4 @@ public class Z1Controller {
         headers.setContentDispositionFormData("attachment", "Z1_" + documentId + ".pdf");
         return new ResponseEntity<>(new FileSystemResource(obrazacP1PDFFile), headers, HttpStatus.OK);
     }
-
 }
