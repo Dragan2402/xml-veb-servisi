@@ -243,7 +243,7 @@
                 <mat-form-field>
                   <input matInput placeholder="Dvoslovna oznaka države, regionalne ili međunarodne organizacije" formControlName="oznaka_drzave" required>
                 </mat-form-field>
-                <button mat-raised-button color="primary" (click)="removeRanijaPrijava(i)">-</button>
+                <button mat-raised-button color="primary" *ngIf="Zahtev_za_priznanje_patenta.value['Zahtev_za_priznanje_prava_prvenstva']['Ranija_prijava'].length > 1" (click)="removeRanijaPrijava(i)">-</button>
               </div>
             </div>
           </div>

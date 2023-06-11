@@ -1,5 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from '@angular/forms';
 import {UserService} from "../user.service";
 
 @Component({
@@ -215,8 +223,10 @@ export class P1FormComponent implements OnInit {
   updateZahtevZaPriznanjePravaPrvenstva() {
     if (this.Zahtev_za_priznanje_patenta.value['podnosi_se_zahtev_za_priznanje_prava_prvenstva']) {
       this.Zahtev_za_priznanje_patenta.get('Zahtev_za_priznanje_prava_prvenstva')?.enable();
+      this.addRanijaPrijava();
     } else {
       this.Zahtev_za_priznanje_patenta.get('Zahtev_za_priznanje_prava_prvenstva')?.disable();
+      this.removeRanijaPrijava(0);
     }
   }
 
