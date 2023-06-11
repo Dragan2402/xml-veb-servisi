@@ -90,6 +90,16 @@ export class UserService {
     return this.http.get("/api/z1/getAllZ1",{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
   }
 
+  getAllOdobreniP1() {
+    let body = "en";
+    return this.http.post("/api/p1/search/odobren", body, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
+  }
+
+  getOdobreniP1ByText(filter: string) {
+    if (filter == "") filter = "en";
+    return this.http.post("/api/p1/search/odobren", filter, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
+  }
+
   downloadPDF(id:number){
     return this.http.get("/api/a1/downloadPDFById?id="+id, { responseType: 'blob' });
   }
@@ -102,11 +112,6 @@ export class UserService {
     const id = localStorage.getItem("id");
     const body = "<searchRequest><param>"+param+"</param></searchRequest>";
     return this.http.post("/api/a1/searchClientByParam?clientId="+id,body, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}})
-  }
-
-  loadXml(documentId: any) {
-    // const headers = { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'};
-    return this.http.get(`/api/p1/${documentId}`, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
   }
 
   downloadRjesenjeByRequestId(id:number){
