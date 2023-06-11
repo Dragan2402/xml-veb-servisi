@@ -113,6 +113,42 @@
         <tr mat-row *matRowDef="let request; columns: displayedColumnsZ1;" ></tr>
       </table>
     </div>
+
+    <div *ngIf="tableType === 'P1'" class="table-container">
+      <table mat-table [dataSource]="p1Requests" class="mat-elevation-z8" *ngIf="loadedP1" #table style="background-color: rgb(238, 238, 238);">
+        <ng-container matColumnDef="brojPrijave">
+          <th mat-header-cell *matHeaderCellDef  mat-sort-header>Broj prijave</th>
+          <td mat-cell *matCellDef="let request">{{request.brojPrijave}}</td>
+        </ng-container>
+        <ng-container matColumnDef="nazivPronalaska">
+          <th mat-header-cell *matHeaderCellDef  mat-sort-header>Naziv pronalaska</th>
+          <td mat-cell *matCellDef="let request">{{request.nazivPronalaska}}</td>
+        </ng-container>
+        <ng-container matColumnDef="podnosilac">
+          <th mat-header-cell *matHeaderCellDef  mat-sort-header>Podnosilac</th>
+          <td mat-cell *matCellDef="let request">{{request.podnosilac}}</td>
+        </ng-container>
+        <ng-container matColumnDef="priznatiDatumPodnosenja">
+          <th mat-header-cell *matHeaderCellDef  mat-sort-header>Datum podnošenja</th>
+          <td mat-cell *matCellDef="let request">{{request.priznatiDatumPodnosenja}}</td>
+        </ng-container>
+        <ng-container matColumnDef="pdf">
+          <th mat-header-cell *matHeaderCellDef>PDF</th>
+          <td mat-cell *matCellDef="let request">
+            <button type="button"   mat-button   (click)="downloadPDF(request)"><mat-icon>get_app</mat-icon></button>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="html">
+          <th mat-header-cell *matHeaderCellDef>HTML</th>
+          <td mat-cell *matCellDef="let request">
+            <button type="button"   mat-button  (click)="downloadHTML(request)"><mat-icon>get_app</mat-icon></button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsP1"></tr>
+        <tr mat-row *matRowDef="let request; columns: displayedColumnsP1;" ></tr>
+      </table>
+    </div>
+
   </div>
   <div class="services-div">
     <button mat-raised-button color="primary" (click)="createA1Request()" class="service-option">Podnesi obrazac A-1</button>
