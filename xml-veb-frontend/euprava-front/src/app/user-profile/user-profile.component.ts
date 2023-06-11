@@ -1,9 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { UserService } from './user.service';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {UserService} from './user.service';
 import * as xml2js from 'xml2js';
-import { RequestResponse } from '../model/a1Response';
-import { saveAs } from 'file-saver';
+import {RequestResponse} from '../model/a1Response';
+import {saveAs} from 'file-saver';
+
+export interface Z1Request {
+  id: string
+  podnosilac: string
+  punomocnik: string
+  status: string
+}
+
+export type TableType = 'A1' | 'P1' | 'Z1'
 
 @Component({
   selector: 'euprava-user-profile',
@@ -13,10 +22,14 @@ import { saveAs } from 'file-saver';
 export class UserProfileComponent implements OnInit {
 
   displayedColumns: string[] = ['id','submitterName' ,'type', 'submitDate', 'status', 'pdf', 'html' ,'rjesenje'];
+  displayedColumnsZ1: string[] = ['id','podnosilac' ,'punomocnik', 'status'];
 
-  requests:RequestResponse[];
+  requests: RequestResponse[];
+  z1Requests: Z1Request[];
+  tableType: TableType = 'A1'
 
   loaded : boolean = false;
+  loadedZ1 : boolean = false;
 
   id : Object = {};
 
@@ -24,6 +37,11 @@ export class UserProfileComponent implements OnInit {
 
   constructor(private route: Router, private userService: UserService) {
     this.requests = [];
+    this.z1Requests = [];
+  }
+
+  handleTableChange(value: TableType) {
+    this.tableType = value
   }
 
   ngOnInit(): void {
@@ -45,17 +63,17 @@ export class UserProfileComponent implements OnInit {
     this.userService.getAllZ1().subscribe({
       next:(res) =>{
         xml2js.parseString(res, (err, result) => {
-          const responseArray = result["z1ResponseList"]["ns2:Z1"] as Array<Object>;
+          const responseArray = result["z1ResponseList"]["z1Response"] as Array<Object>;
           if(responseArray === undefined){
-            this.loaded = true;
+            this.loadedZ1 = false;
             return;
           }
           responseArray.forEach((element: any) => {
-            // this.requests.push();
-            console.log(element)
+            const newElement = { id: element['id'][0], podnosilac: element['podnosilac'][0], punomocnik: element['punomocnik'][0], status: element['status'][0] }
+            this.z1Requests.push(newElement)
           });
         });
-        this.loaded = true;
+        this.loadedZ1 = true;
       }
     })
   }
@@ -152,4 +170,5 @@ export class UserProfileComponent implements OnInit {
       saveAs(data, 'a1_'+request.id+ '.html');});
   }
 
+  protected readonly crypto = crypto;
 }

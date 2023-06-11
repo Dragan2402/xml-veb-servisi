@@ -11,15 +11,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @XmlRootElement
-@XmlSeeAlso({Z1.class})
+@XmlSeeAlso({Z1Response.class})
 public class Z1ResponseList {
 
-    List<Z1> responses;
+    List<Z1Response> responses;
 
     public Z1ResponseList(){responses = new ArrayList<>();}
 
-    public Z1ResponseList(List<Z1> list){this.responses = list;}
+    public Z1ResponseList(List<Z1Response> list){this.responses = list;}
 
     @XmlAnyElement
-    public List<Z1> getResponses(){return this.responses;}
+    public List<Z1Response> getResponses(){return this.responses;}
+
+    @Override
+    public String toString() {
+        return "Z1ResponseList{" +
+                "responses=" + responses +
+                '}';
+    }
 }

@@ -1,5 +1,6 @@
 package com.euprava.z1.service.implementation;
 
+import com.euprava.z1.controller.response.Z1Response;
 import com.euprava.z1.model.Z1;
 import com.euprava.z1.repository.Z1Repository;
 import com.euprava.z1.service.Z1Service;
@@ -34,15 +35,16 @@ public class Z1ServiceImpl implements Z1Service {
     private final Z1Repository z1Repository;
 
     @Override
-    public List<Z1> getAllZ1() throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException, InvocationTargetException, NoSuchMethodException {
+    public List<Z1Response> getAllZ1() throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException, InvocationTargetException, NoSuchMethodException {
         String queryPath = "src/main/resources/data/xquery/all.xqy";
         byte[] encoded = Files.readAllBytes(Paths.get(queryPath));
         String xqueryExpression = new String(encoded, StandardCharsets.UTF_8);
         List<org.xmldb.api.base.Resource> resources = z1Repository.getObrazacByQuery("/db/z1", "http://euprava.euprava.com/model", xqueryExpression);
-        List<Z1> z1List = new ArrayList<>();
+        List<Z1Response> z1List = new ArrayList<>();
         for (org.xmldb.api.base.Resource resource : resources) {
+            long id = Long.parseLong(resource.getId().split("_")[0]);
             Z1 z1 = unmarshallXMLResource((XMLResource) resource);
-            z1List.add(z1);
+            z1List.add(new Z1Response(z1, id));
         }
         return z1List;
 
