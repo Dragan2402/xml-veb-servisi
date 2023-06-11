@@ -78,7 +78,7 @@
                     <div class="border-bot">
                         <p class="border-bot padded">
                             <strong>
-                                1. Podnosioci prijave:
+                                1. Podnosilac prijave:
                             </strong>
                         </p>
                         <table>
@@ -91,7 +91,7 @@
                                 <tr>
                                     <td class="name" rowspan="3" style="border-bottom: 0px">
                                         <xsl:choose>
-                                            <xsl:when test="//z1:Podnosilac/z1:Poslovno_ime">
+                                            <xsl:when test="string-length(//z1:Podnosilac/z1:Poslovno_ime) != 0">
                                                 <xsl:value-of select="//z1:Podnosilac/z1:Poslovno_ime"/>
                                             </xsl:when>
                                             <xsl:otherwise>
@@ -144,7 +144,7 @@
                                 <tr>
                                     <td class="name" rowspan="3" style="border-bottom: 0px">
                                         <xsl:choose>
-                                            <xsl:when test="//z1:Punomocnik/z1:Poslovno_ime">
+                                            <xsl:when test="string-length(//z1:Punomocnik/z1:Poslovno_ime) != 0">
                                                 <xsl:value-of select="//z1:Punomocnik/z1:Poslovno_ime"/>
                                             </xsl:when>
                                             <xsl:otherwise>
@@ -196,7 +196,7 @@
                             <tbody>
                                 <tr>
                                     <xsl:choose>
-                                        <xsl:when test="//z1:Zajednicki_predstavnik/z1:Poslovno_ime">
+                                        <xsl:when test="string-length(//z1:Zajednicki_predstavnik/z1:Poslovno_ime) != 0">
                                             <td class="name" rowspan="3" style="border-bottom: 0px">
                                                 <xsl:value-of select="//z1:Zajednicki_predstavnik/z1:Poslovno_ime"/>
                                             </td>
@@ -251,8 +251,7 @@
                             </tr>
                             <tr>
                                 <td style="padding-left: 20px">
-                                    <strong>a)</strong>
-                                    <xsl:value-of select="//z1:Tip_ziga"/>
+                                    <strong>a)</strong>&nbsp;<xsl:value-of select="//z1:Tip_ziga"/>
                                 </td>
                             </tr>
                             <tr>
@@ -350,9 +349,6 @@
                             </td>
                             <td rowspan="9">
                                 <div style="text-align: center; margin: 5px">
-                                    <h3>Z -
-                                        <xsl:value-of select="//z1:Primerak_znaka"/>
-                                    </h3>
                                 </div>
                             </td>
                         </tr>

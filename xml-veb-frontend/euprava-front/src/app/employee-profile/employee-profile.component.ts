@@ -61,7 +61,10 @@ export class EmployeeProfileComponent implements OnInit {
             return;
           }
           responseArray.forEach((element: any) => {
-            const newElement = { id: element['id'][0], podnosilac: element['podnosilac'][0], punomocnik: element['punomocnik'][0], status: element['status'][0] }
+            const zajednickiPredstavnik = element['zajednickiPredstavnik'][0].trim()
+            const jedanPodnosilac = element['podnosilac'][0].trim()
+            const podnosilac = jedanPodnosilac ? jedanPodnosilac : zajednickiPredstavnik
+            const newElement = { id: element['id'][0], podnosilac, punomocnik: element['punomocnik'][0], status: element['status'][0] }
             this.z1Requests.push(newElement)
           });
         });
@@ -138,7 +141,10 @@ export class EmployeeProfileComponent implements OnInit {
               return;
             }
             responseArray.forEach((element: any) => {
-              const newElement = { id: element['id'][0], podnosilac: element['podnosilac'][0], punomocnik: element['punomocnik'][0], status: element['status'][0] }
+              const zajednickiPredstavnik = element['zajednickiPredstavnik'][0].trim()
+              const jedanPodnosilac = element['podnosilac'][0].trim()
+              const podnosilac = jedanPodnosilac ? jedanPodnosilac : zajednickiPredstavnik
+              const newElement = { id: element['id'][0], podnosilac, punomocnik: element['punomocnik'][0], status: element['status'][0] }
               this.z1Requests.push(newElement)
             });
           });
@@ -243,7 +249,10 @@ export class EmployeeProfileComponent implements OnInit {
           }
           const temp: Z1Request[] = []
           responseArray.forEach((element: any) => {
-            const newElement = { id: element['id'][0], podnosilac: element['podnosilac'][0], punomocnik: element['punomocnik'][0], status: element['status'][0] }
+            const zajednickiPredstavnik = element['zajednickiPredstavnik'][0].trim()
+            const jedanPodnosilac = element['podnosilac'][0].trim()
+            const podnosilac = jedanPodnosilac ? jedanPodnosilac : zajednickiPredstavnik
+            const newElement = { id: element['id'][0], podnosilac, punomocnik: element['punomocnik'][0], status: element['status'][0] }
             temp.push(newElement)
           });
           this.z1Requests = temp
