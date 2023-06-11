@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { RequestResponse } from '../model/a1Response';
-import { EmployeeService } from './employee.service';
-import { saveAs } from 'file-saver';
+import {Component, OnInit} from '@angular/core';
+import {RequestResponse} from '../model/a1Response';
+import {EmployeeService} from './employee.service';
+import {saveAs} from 'file-saver';
 import * as xml2js from 'xml2js';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { HandleRequestComponent } from './handle-request/handle-request.component';
-import { MetadataDownloadComponent } from './metadata-download/metadata-download.component';
-import { ReportComponent } from './report/report.component';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {HandleRequestComponent} from './handle-request/handle-request.component';
+import {MetadataDownloadComponent} from './metadata-download/metadata-download.component';
+import {ReportComponent} from './report/report.component';
 import {P1Request, TableType, Z1Request} from "../user-profile/user-profile.component";
 import {UserService} from "../user-profile/user.service";
 
@@ -51,28 +51,138 @@ export class EmployeeProfileComponent implements OnInit {
        });
       }
     })
+
+    this.userService.getAllZ1().subscribe({
+      next:(res) =>{
+        xml2js.parseString(res, (err, result) => {
+          const responseArray = result["z1ResponseList"]["z1Response"] as Array<Object>;
+          if(responseArray === undefined){
+            this.loadedZ1 = false;
+            return;
+          }
+          responseArray.forEach((element: any) => {
+            const newElement = { id: element['id'][0], podnosilac: element['podnosilac'][0], punomocnik: element['punomocnik'][0], status: element['status'][0] }
+            this.z1Requests.push(newElement)
+          });
+        });
+        this.loadedZ1 = true;
+      }
+    })
+
+    this.userService.getAllP1().subscribe({
+      next:(res) =>{
+        xml2js.parseString(res, (err, result) => {
+          const responseArray = result["obrazacP1SearchResponseList"]["obrazacP1SearchResponse"] as Array<Object>;
+          if(responseArray === undefined){
+            this.loadedP1 = true;
+            return;
+          }
+          responseArray.forEach((element: any) => {
+            let podnosilac = "";
+
+            if (element['podnosilac'][0]['ns2:Poslovno_ime'] != undefined) {
+              podnosilac = element['podnosilac'][0]['ns2:Poslovno_ime'][0];
+
+            } else if (element['podnosilac'][0]['ns2:Ime'] != undefined && element['podnosilac'][0]['ns2:Prezime'] != undefined) {
+              podnosilac = element['podnosilac'][0]['ns2:Ime'] + " " + element['podnosilac'][0]['ns2:Prezime'];
+            }
+
+            const newElement: P1Request = {
+              brojPrijave: element['brojPrijave'][0],
+              nazivPronalaska: element['nazivPronalaska'][0]['ns2:Na_srpskom'][0]['_'],
+              podnosilac: podnosilac,
+              priznatiDatumPodnosenja: element['priznatiDatumPodnosenja'][0],
+              status: element['status'][0]['_']
+            }
+            this.p1Requests.push(newElement)
+          });
+          this.loadedP1 = true;
+        });
+      }
+    });
+
   }
 
   searchFilter(){
-    if(this.filter.length > 0 ){
-      this.loaded = false;
-      this.requests = [];
-      this.employeeService.getRequestsByParam(this.filter).subscribe({
+    if (this.tableType === 'A1') {
+      if(this.filter.length > 0 ){
+        this.loaded = false;
+        this.requests = [];
+        this.employeeService.getRequestsByParam(this.filter).subscribe({
+          next:(res) =>{
+            xml2js.parseString(res, (err, result) => {
+              const responseArray = result["a1ResponseList"]["a1Response"] as Array<Object>;
+              if(responseArray === undefined){
+                this.loaded = true;
+                return;
+              }
+              responseArray.forEach((element: any) => {
+                this.requests.push({'id':element["id"][0],'email':element["email"][0],'submitterName':element["submitterName"][0], 'status':element["status"][0],'submitDate':element["submitDate"][0],'type':element["type"][0]} as RequestResponse);
+              });
+              this.loaded = true;
+            });
+          }
+        });
+      }
+    }
+
+    else if (this.tableType === 'Z1' && this.filter !== '') {
+      this.loadedZ1 = false;
+      this.z1Requests = [];
+      this.userService.getFilteredZ1(this.filter).subscribe({
         next:(res) =>{
           xml2js.parseString(res, (err, result) => {
-            const responseArray = result["a1ResponseList"]["a1Response"] as Array<Object>;
+            const responseArray = result["z1ResponseList"]["z1Response"] as Array<Object>;
             if(responseArray === undefined){
-              this.loaded = true;
+              this.loadedZ1 = false;
               return;
             }
             responseArray.forEach((element: any) => {
-              this.requests.push({'id':element["id"][0],'email':element["email"][0],'submitterName':element["submitterName"][0], 'status':element["status"][0],'submitDate':element["submitDate"][0],'type':element["type"][0]} as RequestResponse);
+              const newElement = { id: element['id'][0], podnosilac: element['podnosilac'][0], punomocnik: element['punomocnik'][0], status: element['status'][0] }
+              this.z1Requests.push(newElement)
             });
-            this.loaded = true;
-         });
+          });
+          this.loadedZ1 = true;
         }
-      });
+      })
     }
+    else if (this.tableType == 'P1') {
+      this.loadedP1 = false;
+      this.p1Requests = [];
+      this.userService.getAllP1ByText(this.filter)
+        .subscribe({
+          next:(res) => {
+            xml2js.parseString(res, (err, result) => {
+              const responseArray = result["obrazacP1SearchResponseList"]["obrazacP1SearchResponse"] as Array<Object>;
+              if(responseArray === undefined){
+                this.loadedP1 = true;
+                return;
+              }
+              responseArray.forEach((element: any) => {
+                let podnosilac = "";
+
+                if (element['podnosilac'][0]['ns2:Poslovno_ime'] != undefined) {
+                  podnosilac = element['podnosilac'][0]['ns2:Poslovno_ime'][0];
+
+                } else if (element['podnosilac'][0]['ns2:Ime'] != undefined && element['podnosilac'][0]['ns2:Prezime'] != undefined) {
+                  podnosilac = element['podnosilac'][0]['ns2:Ime'] + " " + element['podnosilac'][0]['ns2:Prezime'];
+                }
+
+                const newElement: P1Request = {
+                  brojPrijave: element['brojPrijave'][0],
+                  nazivPronalaska: element['nazivPronalaska'][0]['ns2:Na_srpskom'][0]['_'],
+                  podnosilac: podnosilac,
+                  priznatiDatumPodnosenja: element['priznatiDatumPodnosenja'][0],
+                  status: element['status'][0]['_']
+                }
+                this.p1Requests.push(newElement)
+              });
+              this.loadedP1 = true;
+            });
+          }
+        });
+    }
+
   }
 
   searchFilterMeta(){
@@ -122,6 +232,59 @@ export class EmployeeProfileComponent implements OnInit {
        });
       }
     })
+
+    this.userService.getAllZ1().subscribe({
+      next:(res) =>{
+        xml2js.parseString(res, (err, result) => {
+          const responseArray = result["z1ResponseList"]["z1Response"] as Array<Object>;
+          if(responseArray === undefined){
+            this.loadedZ1 = false;
+            return;
+          }
+          const temp: Z1Request[] = []
+          responseArray.forEach((element: any) => {
+            const newElement = { id: element['id'][0], podnosilac: element['podnosilac'][0], punomocnik: element['punomocnik'][0], status: element['status'][0] }
+            temp.push(newElement)
+          });
+          this.z1Requests = temp
+        });
+        this.loadedZ1 = true;
+      }
+    })
+
+    this.userService.getAllOdobreniP1().subscribe({
+      next:(res) =>{
+        xml2js.parseString(res, (err, result) => {
+          const responseArray = result["obrazacP1SearchResponseList"]["obrazacP1SearchResponse"] as Array<Object>;
+          if(responseArray === undefined){
+            this.loadedP1 = true;
+            return;
+          }
+          const temp: P1Request[] = []
+          responseArray.forEach((element: any) => {
+            let podnosilac = "";
+
+            if (element['podnosilac'][0]['ns2:Poslovno_ime'] != undefined) {
+              podnosilac = element['podnosilac'][0]['ns2:Poslovno_ime'][0];
+
+            } else if (element['podnosilac'][0]['ns2:Ime'] != undefined && element['podnosilac'][0]['ns2:Prezime'] != undefined) {
+              podnosilac = element['podnosilac'][0]['ns2:Ime'] + " " + element['podnosilac'][0]['ns2:Prezime'];
+            }
+            const newElement: P1Request = {
+              brojPrijave: element['brojPrijave'][0],
+              nazivPronalaska: element['nazivPronalaska'][0]['ns2:Na_srpskom'][0]['_'],
+              podnosilac: podnosilac,
+              priznatiDatumPodnosenja: element['priznatiDatumPodnosenja'][0],
+              status: element['status'][0]['_']
+            }
+            temp.push(newElement)
+          });
+          this.p1Requests = temp
+        });
+        this.loadedP1 = true;
+      }
+    });
+
   }
 
   downloadPDF(request:RequestResponse){

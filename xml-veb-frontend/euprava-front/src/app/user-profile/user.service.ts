@@ -99,6 +99,11 @@ export class UserService {
     return this.http.post("/api/p1/search", body, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
   }
 
+  getAllP1ByText(filter: string) {
+    if (filter == "") filter = "en";
+    return this.http.post("/api/p1/search", filter, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
+  }
+
   getAllOdobreniP1() {
     let body = "en";
     return this.http.post("/api/p1/search/odobren", body, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});

@@ -17,6 +17,7 @@ export interface P1Request {
   nazivPronalaska: string
   podnosilac: string
   priznatiDatumPodnosenja: string
+  status: string
 }
 
 export type TableType = 'A1' | 'P1' | 'Z1'
@@ -82,7 +83,7 @@ export class UserProfileComponent implements OnInit {
           }
           responseArray.forEach((element: any) => {
             const newElement = { id: element['id'][0], podnosilac: element['podnosilac'][0], punomocnik: element['punomocnik'][0], status: element['status'][0] }
-            if (newElement.status !== 'PODNESEN') this.z1Requests.push(newElement)
+            if (newElement.status === 'ODOBREN') this.z1Requests.push(newElement)
           });
         });
         this.loadedZ1 = true;
@@ -111,7 +112,8 @@ export class UserProfileComponent implements OnInit {
               brojPrijave: element['brojPrijave'][0],
               nazivPronalaska: element['nazivPronalaska'][0]['ns2:Na_srpskom'][0]['_'],
               podnosilac: podnosilac,
-              priznatiDatumPodnosenja: element['priznatiDatumPodnosenja'][0]
+              priznatiDatumPodnosenja: element['priznatiDatumPodnosenja'][0],
+              status: element['status'][0]['_']
             }
             this.p1Requests.push(newElement)
           });
@@ -155,7 +157,7 @@ export class UserProfileComponent implements OnInit {
             }
             responseArray.forEach((element: any) => {
               const newElement = { id: element['id'][0], podnosilac: element['podnosilac'][0], punomocnik: element['punomocnik'][0], status: element['status'][0] }
-              if (newElement.status !== 'PODNESEN') this.z1Requests.push(newElement)
+              if (newElement.status === 'ODOBREN') this.z1Requests.push(newElement)
             });
           });
           this.loadedZ1 = true;
@@ -188,7 +190,8 @@ export class UserProfileComponent implements OnInit {
                   brojPrijave: element['brojPrijave'][0],
                   nazivPronalaska: element['nazivPronalaska'][0]['ns2:Na_srpskom'][0]['_'],
                   podnosilac: podnosilac,
-                  priznatiDatumPodnosenja: element['priznatiDatumPodnosenja'][0]
+                  priznatiDatumPodnosenja: element['priznatiDatumPodnosenja'][0],
+                  status: element['status'][0]['_']
                 }
                 this.p1Requests.push(newElement)
               });
@@ -243,7 +246,7 @@ export class UserProfileComponent implements OnInit {
           const temp: Z1Request[] = []
           responseArray.forEach((element: any) => {
             const newElement = { id: element['id'][0], podnosilac: element['podnosilac'][0], punomocnik: element['punomocnik'][0], status: element['status'][0] }
-            if (newElement.status !== 'PODNESEN') temp.push(newElement)
+            if (newElement.status === 'ODOBREN') temp.push(newElement)
           });
           this.z1Requests = temp
         });
@@ -273,7 +276,8 @@ export class UserProfileComponent implements OnInit {
               brojPrijave: element['brojPrijave'][0],
               nazivPronalaska: element['nazivPronalaska'][0]['ns2:Na_srpskom'][0]['_'],
               podnosilac: podnosilac,
-              priznatiDatumPodnosenja: element['priznatiDatumPodnosenja'][0]
+              priznatiDatumPodnosenja: element['priznatiDatumPodnosenja'][0],
+              status: element['status'][0]['_']
             }
             temp.push(newElement)
           });
