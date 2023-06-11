@@ -86,4 +86,9 @@ public class Z1Repository {
         }
         return list;
     }
+
+    public void updateStatus(String documentId, String newStatus) throws XMLDBException {
+        String contextXPath = "/Z1/Status";
+        existManager.update(COLLECTION_ID, documentId, contextXPath, newStatus);
+    }
 }

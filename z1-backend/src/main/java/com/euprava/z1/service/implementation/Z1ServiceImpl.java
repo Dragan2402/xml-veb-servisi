@@ -86,6 +86,16 @@ public class Z1ServiceImpl implements Z1Service {
         return new Z1ResponseList(list);
     }
 
+    @Override
+    public void setZ1StatusAsOdobren(String documentId) throws XMLDBException {
+        z1Repository.updateStatus(documentId, "ODOBREN");
+    }
+
+    @Override
+    public void setZ1StatusAsOdbijen(String documentId) throws XMLDBException {
+        z1Repository.updateStatus(documentId, "ODBIJEN");
+    }
+
     private Z1 unmarshallXMLResource(XMLResource resource) throws JAXBException, XMLDBException {
         JAXBContext context = JAXBContext.newInstance(Z1.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();

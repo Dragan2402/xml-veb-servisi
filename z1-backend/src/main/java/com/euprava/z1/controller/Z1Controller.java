@@ -68,4 +68,16 @@ public class Z1Controller {
         headers.setContentDispositionFormData("attachment", "Z1_" + documentId + ".pdf");
         return new ResponseEntity<>(new FileSystemResource(obrazacP1PDFFile), headers, HttpStatus.OK);
     }
+
+    @PutMapping(value = "/{documentId}/odobri")
+    public ResponseEntity<Void> approveZ1(@PathVariable String documentId) throws XMLDBException {
+        z1Service.setZ1StatusAsOdobren(documentId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/{documentId}/odbij")
+    public ResponseEntity<Void> declineZ1(@PathVariable String documentId) throws XMLDBException {
+        z1Service.setZ1StatusAsOdbijen(documentId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
