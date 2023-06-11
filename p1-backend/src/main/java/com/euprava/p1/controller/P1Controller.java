@@ -102,4 +102,16 @@ public class P1Controller {
         ObrazacP1SearchResponseList obrazacP1SearchResponseList = p1Service.retrieveObrazacP1SearchResponseListByTextAndStatusOdobren(queryText);
         return new ResponseEntity<>(obrazacP1SearchResponseList, HttpStatus.OK);
     }
+
+    @PutMapping(value = "/{documentId}/odobri")
+    public ResponseEntity<Void> approveObrazac(@PathVariable String documentId) throws XMLDBException {
+        p1Service.setObrazacP1StatusAsOdobren(documentId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/{documentId}/odbij")
+    public ResponseEntity<Void> declineObrazac(@PathVariable String documentId) throws XMLDBException {
+        p1Service.setObrazacP1StatusAsOdbijen(documentId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

@@ -13,6 +13,7 @@ import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.CollectionManagementService;
 import org.xmldb.api.modules.XMLResource;
 import org.xmldb.api.modules.XPathQueryService;
+import org.xmldb.api.modules.XUpdateQueryService;
 
 import javax.xml.transform.OutputKeys;
 import java.lang.reflect.InvocationTargetException;
@@ -20,9 +21,9 @@ import java.util.Arrays;
 
 @Component
 public class ExistManager {
-    private static final String TARGET_NAMESPACE = "http://euprava.com/p1/model";
-    private static final String UPDATE = "<xu:modifications version=\"1.0\" xmlns:xu=\"" + XUpdateProcessor.XUPDATE_NS + "\" xmlns=\"" + TARGET_NAMESPACE + "\">"
-            + "<xu:update select=\"%1$s\">%2$s</xu:update>"
+    private static final String TARGET_NAMESPACE = "http://p1.euprava.com/model";
+    private static final String UPDATE = "<xu:modifications version=\"1.0\" xmlns:xu=\"" + XUpdateProcessor.XUPDATE_NS
+            + "\" xmlns=\"" + TARGET_NAMESPACE + "\">" + "<xu:update select=\"%1$s\">%2$s</xu:update>"
             + "</xu:modifications>";
     private static final String APPEND = "<xu:modifications version=\"1.0\" xmlns:xu=\"" + XUpdateProcessor.XUPDATE_NS + "\" xmlns=\"" + TARGET_NAMESPACE + "\">"
             + "<xu:append select=\"%1$s\" child=\"last()\">%2$s</xu:append>"
@@ -30,6 +31,12 @@ public class ExistManager {
 
     @Autowired
     AuthenticationManager authMgr;
+
+    public void createConnection() throws XMLDBException {
+        Database db = new DatabaseImpl();
+        db.setProperty("create-database", "true");
+        DatabaseManager.registerDatabase(db);
+    }
 
     public void store(String collectionUri, String documentId, String xmlString) throws XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         openConnection();
@@ -153,9 +160,7 @@ public class ExistManager {
     }
 
     public ResourceSet retrieve(String collectionUri, String xPathExp) throws XMLDBException {
-        Database db = new DatabaseImpl();
-        db.setProperty("create-database", "true");
-        DatabaseManager.registerDatabase(db);
+        createConnection();
 
         Collection col = null;
         ResourceSet result;
@@ -171,5 +176,22 @@ public class ExistManager {
             }
         }
         return result;
+    }
+
+    public void update(String collectionUri, String documentId, String contextXPath, String patch) throws XMLDBException {
+        edit(collectionUri, documentId, contextXPath, patch, UPDATE);
+    }
+
+    public void append(String collectionUri, String documentId, String contextXPath, String patch) throws XMLDBException {
+        edit(collectionUri, documentId, contextXPath, patch, APPEND);
+    }
+
+    private void edit(String collectionUri, String documentId, String contextXPath, String patch, String update) throws XMLDBException {
+        createConnection();
+        try (Collection col = DatabaseManager.getCollection(authMgr.getUri() + collectionUri, authMgr.getUser(), authMgr.getPassword())) {
+            XUpdateQueryService service = (XUpdateQueryService) col.getService("XUpdateQueryService", "1.0");
+            service.setProperty("indent", "yes");
+            service.updateResource(documentId, String.format(update, contextXPath, patch));
+        }
     }
 }

@@ -25,4 +25,6 @@ public interface P1Service {
     String retrieveObrazacP1MetadataAsJSON(String documentId) throws IOException;
     ObrazacP1SearchResponseList retrieveObrazacP1SearchResponseListByText(String text) throws XMLDBException, JAXBException;
     ObrazacP1SearchResponseList retrieveObrazacP1SearchResponseListByTextAndStatusOdobren(String queryText) throws JAXBException, XMLDBException;
+    void setObrazacP1StatusAsOdobren(String documentId) throws XMLDBException;
+    void setObrazacP1StatusAsOdbijen(String documentId) throws XMLDBException;
 }
