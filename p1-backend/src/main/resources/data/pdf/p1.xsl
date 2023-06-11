@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE stylesheet [<!ENTITY nbsp "&#160;">]>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:p1="http://euprava.com/p1/model"
+                xmlns:p1="http://p1.euprava.com/model"
                 version="2.0">
     <xsl:template match="/">
         <html>
@@ -469,7 +469,7 @@
                             <xsl:otherwise>
                                 <tr>
                                     <td style="width: 10%;">
-                                        <strong><xsl:value-of select="position()"/>.</strong>
+                                        <strong><xsl:value-of select="position()+1"/>.</strong>
                                     </td>
                                     <td style="text-align: center;">&nbsp;</td>
                                     <td style="text-align: center;">&nbsp;</td>

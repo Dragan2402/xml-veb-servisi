@@ -135,13 +135,13 @@
         <ng-container matColumnDef="pdf">
           <th mat-header-cell *matHeaderCellDef>PDF</th>
           <td mat-cell *matCellDef="let request">
-            <button type="button"   mat-button   (click)="downloadPDF(request)"><mat-icon>get_app</mat-icon></button>
+            <button type="button"   mat-button   (click)="downloadP1PDF(request)"><mat-icon>get_app</mat-icon></button>
           </td>
         </ng-container>
         <ng-container matColumnDef="html">
           <th mat-header-cell *matHeaderCellDef>HTML</th>
           <td mat-cell *matCellDef="let request">
-            <button type="button"   mat-button  (click)="downloadHTML(request)"><mat-icon>get_app</mat-icon></button>
+            <button type="button"   mat-button  (click)="downloadP1HTML(request)"><mat-icon>get_app</mat-icon></button>
           </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumnsP1"></tr>
