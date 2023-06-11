@@ -19,7 +19,7 @@ export class EmployeeProfileComponent implements OnInit {
 
   displayedColumns: string[] = ['id','submitterName' ,'type', 'submitDate', 'status', 'pdf', 'html','metadata','handle' ];
   displayedColumnsZ1: string[] = ['id','podnosilac' ,'punomocnik', 'status', 'pdf', 'html', 'odobrenje', 'odbijanje'];
-  displayedColumnsP1: string[] = ['brojPrijave', 'nazivPronalaska', 'podnosilac', 'priznatiDatumPodnosenja', 'pdf', 'html', 'odobrenje', 'odbijanje'];
+  displayedColumnsP1: string[] = ['brojPrijave', 'nazivPronalaska', 'podnosilac', 'priznatiDatumPodnosenja', 'status', 'pdf', 'html', 'odobrenje', 'odbijanje'];
 
   requests:RequestResponse[] = [];
   z1Requests: Z1Request[] = [];
@@ -252,7 +252,7 @@ export class EmployeeProfileComponent implements OnInit {
       }
     })
 
-    this.userService.getAllOdobreniP1().subscribe({
+    this.userService.getAllP1().subscribe({
       next:(res) =>{
         xml2js.parseString(res, (err, result) => {
           const responseArray = result["obrazacP1SearchResponseList"]["obrazacP1SearchResponse"] as Array<Object>;
