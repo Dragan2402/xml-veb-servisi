@@ -5,11 +5,14 @@ import com.euprava.p1.repository.exist.ExistManager;
 import com.euprava.p1.repository.fuseki.FusekiWriter;
 import com.euprava.p1.repository.fuseki.MetadataExtractor;
 import lombok.RequiredArgsConstructor;
+import org.exist.Resource;
 import org.exist.http.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
+import org.xmldb.api.base.ResourceIterator;
+import org.xmldb.api.base.ResourceSet;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
 
@@ -23,6 +26,8 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -81,5 +86,20 @@ public class P1Repository {
 
     public String getLastId() throws XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         return existManager.getLastId(COLLECTION_ID);
+    }
+
+    public List<ObrazacP1> searchByText(String xPathExp) throws XMLDBException, JAXBException {
+        ResourceSet result = existManager.retrieve(COLLECTION_ID, xPathExp);
+
+        List<ObrazacP1> obrasci = new ArrayList<>();
+        ResourceIterator iter = result.getIterator();
+        while (iter.hasMoreResources()) {
+            XMLResource resource = (XMLResource) iter.nextResource();
+            JAXBContext context = JAXBContext.newInstance(ObrazacP1.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            obrasci.add((ObrazacP1) unmarshaller.unmarshal(resource.getContentAsDOM()));
+        }
+
+        return obrasci;
     }
 }

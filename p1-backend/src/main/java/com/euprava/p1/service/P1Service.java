@@ -1,5 +1,6 @@
 package com.euprava.p1.service;
 
+import com.euprava.p1.controller.Responses.ObrazacP1SearchResponseList;
 import com.euprava.p1.model.ObrazacP1;
 import com.euprava.p1.model.ZahtevZaPriznanjePatenta;
 import com.itextpdf.text.DocumentException;
@@ -22,4 +23,5 @@ public interface P1Service {
     File retrieveObrazacP1AsHTML(String documentId) throws XMLDBException, NotFoundException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, FileNotFoundException;
     String retrieveObrazacP1MetadataAsRDF(String documentId) throws IOException;
     String retrieveObrazacP1MetadataAsJSON(String documentId) throws IOException;
+    ObrazacP1SearchResponseList retrieveObrazacP1SearchResponseListByText(String text) throws XMLDBException, JAXBException;
 }

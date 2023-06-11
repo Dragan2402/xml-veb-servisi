@@ -1,5 +1,7 @@
 package com.euprava.p1.controller;
 
+import com.euprava.p1.controller.Responses.ObrazacP1SearchResponse;
+import com.euprava.p1.controller.Responses.ObrazacP1SearchResponseList;
 import com.euprava.p1.model.ObrazacP1;
 import com.euprava.p1.model.ZahtevZaPriznanjePatenta;
 import com.euprava.p1.service.P1Service;
@@ -22,7 +24,7 @@ import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.file.Files;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "api/p1")
@@ -30,12 +32,6 @@ import java.nio.file.Files;
 public class P1Controller {
     @Autowired
     private P1Service p1Service;
-
-//    @PostMapping(produces = {"application/xml"})
-//    public ResponseEntity<String> postObrazacP1(@RequestBody ObrazacP1 obrazacP1) throws JAXBException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, DatatypeConfigurationException, NotFoundException, IOException, TransformerException {
-//        String documentId = p1Service.createObrazacP1(obrazacP1);
-//        return new ResponseEntity<>(documentId, HttpStatus.CREATED);
-//    }
 
     @PostMapping(produces = {"application/xml"})
     public ResponseEntity<Void> postZahtevZaPriznanjePatenta(@RequestBody ZahtevZaPriznanjePatenta zahtev) throws DatatypeConfigurationException, JAXBException, XMLDBException, NotFoundException, IOException, ClassNotFoundException, InvocationTargetException, TransformerException, InstantiationException, IllegalAccessException, NoSuchMethodException {
@@ -93,5 +89,11 @@ public class P1Controller {
         headers.setContentDispositionFormData("attachment", "obrazac_P-1_" + documentId + "metadata.json");
 
         return new ResponseEntity<>(obrazacP1JSONMetadata, headers, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/search", produces = {"application/xml"})
+    public ResponseEntity<ObrazacP1SearchResponseList> searchByText(@RequestBody String queryText) throws XMLDBException, JAXBException {
+        ObrazacP1SearchResponseList obrazacP1SearchResponseList = p1Service.retrieveObrazacP1SearchResponseListByText(queryText);
+        return new ResponseEntity<>(obrazacP1SearchResponseList, HttpStatus.OK);
     }
 }
