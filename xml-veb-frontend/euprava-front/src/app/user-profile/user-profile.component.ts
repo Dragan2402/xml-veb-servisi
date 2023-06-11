@@ -262,6 +262,14 @@ export class UserProfileComponent implements OnInit {
       saveAs(data, 'a1_'+request.id+ '.pdf');});
   }
 
+  downloadP1PDF(request: P1Request){
+    let documentId = request.brojPrijave.split('/').join('-');
+    this.userService.downloadP1PDF(documentId)
+      .subscribe(data => {
+        saveAs(data, 'p1_' + documentId + '.pdf');
+      });
+  }
+
   getRjesenje(request:RequestResponse){
     this.userService.downloadRjesenjeByRequestId(request.id).subscribe((response:any) => {
       const url = window.URL.createObjectURL(response);
@@ -276,6 +284,14 @@ export class UserProfileComponent implements OnInit {
   downloadHTML(request:any){
     this.userService.downloadHTML(request.id).subscribe(data => {
       saveAs(data, 'a1_'+request.id+ '.html');});
+  }
+
+  downloadP1HTML(request: P1Request){
+    let documentId = request.brojPrijave.split('/').join('-');
+    this.userService.downloadP1HTML(documentId)
+      .subscribe(data => {
+        saveAs(data, 'p1_' + documentId + '.html');
+      });
   }
 
   protected readonly crypto = crypto;

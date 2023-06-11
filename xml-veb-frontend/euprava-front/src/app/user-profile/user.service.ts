@@ -104,8 +104,16 @@ export class UserService {
     return this.http.get("/api/a1/downloadPDFById?id="+id, { responseType: 'blob' });
   }
 
+  downloadP1PDF(documentId: string) {
+    return this.http.get(`/api/p1/${documentId}/pdf`, { responseType: 'blob' });
+  }
+
   downloadHTML(id:number){
     return this.http.get("/api/a1/downloadHTMLById?id="+id, { responseType: 'blob' });
+  }
+
+  downloadP1HTML(documentId: string){
+    return this.http.get(`/api/p1/${documentId}/html`, { responseType: 'blob' });
   }
 
   getClientRequestsByParam(param:string){
