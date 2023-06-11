@@ -4,9 +4,11 @@ import com.euprava.z1.controller.response.Z1Response;
 import com.euprava.z1.model.Z1;
 import com.euprava.z1.repository.Z1Repository;
 import com.euprava.z1.service.Z1Service;
+import com.euprava.z1.service.transformation.PDFTransformer;
 import lombok.RequiredArgsConstructor;
 import org.exist.http.NotFoundException;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
@@ -17,6 +19,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.namespace.QName;
 import javax.xml.transform.TransformerException;
+import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
@@ -33,6 +36,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Z1ServiceImpl implements Z1Service {
 
     private final Z1Repository z1Repository;
+    private final PDFTransformer pdfTransformer;
 
     @Override
     public List<Z1Response> getAllZ1() throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException, InvocationTargetException, NoSuchMethodException {
@@ -58,6 +62,12 @@ public class Z1ServiceImpl implements Z1Service {
         z1.getOtherAttributes().put(QName.valueOf("xsi:schemaLocation"), "http://euprava.com/z1/model ../schemas/z1_schema.xsd");
         z1Repository.save(documentId, z1);
         return documentId;
+    }
+
+    @Override
+    public File retrieveZ1AsPDF(String documentId) throws Exception {
+        Node documentNode = z1Repository.findByIdAsNode(documentId);
+        return pdfTransformer.generatePDF(documentNode);
     }
 
     private Z1 unmarshallXMLResource(XMLResource resource) throws JAXBException, XMLDBException {
