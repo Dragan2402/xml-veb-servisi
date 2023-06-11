@@ -19,7 +19,7 @@ export class EmployeeProfileComponent implements OnInit {
 
   displayedColumns: string[] = ['id','submitterName' ,'type', 'submitDate', 'status', 'pdf', 'html','metadata','handle' ];
   displayedColumnsZ1: string[] = ['id','podnosilac' ,'punomocnik', 'status', 'pdf', 'html', 'odobrenje', 'odbijanje'];
-  displayedColumnsP1: string[] = ['brojPrijave', 'nazivPronalaska', 'podnosilac', 'priznatiDatumPodnosenja', 'status', 'pdf', 'html', 'odobrenje', 'odbijanje'];
+  displayedColumnsP1: string[] = ['brojPrijave', 'nazivPronalaska', 'podnosilac', 'priznatiDatumPodnosenja', 'status', 'pdf', 'html', 'rdf', 'json', 'odobrenje', 'odbijanje'];
 
   requests:RequestResponse[] = [];
   z1Requests: Z1Request[] = [];
@@ -344,6 +344,22 @@ export class EmployeeProfileComponent implements OnInit {
     this.userService.downloadP1HTML(documentId)
       .subscribe(data => {
         saveAs(data, 'p1_' + documentId + '.html');
+      });
+  }
+
+  downloadP1RDF(request: P1Request) {
+    let documentId = request.brojPrijave.split('/').join('-');
+    this.userService.downloadP1RDF(documentId)
+      .subscribe(data => {
+        saveAs(data, 'p1_' + documentId + '.rdf');
+      });
+  }
+
+  downloadP1JSON(request: P1Request) {
+    let documentId = request.brojPrijave.split('/').join('-');
+    this.userService.downloadP1JSON(documentId)
+      .subscribe(data => {
+        saveAs(data, 'p1_' + documentId + '.json');
       });
   }
 

@@ -159,4 +159,12 @@ export class UserService {
       this.router.navigate(["/userProfile"]);
     });
   }
+
+  downloadP1RDF(documentId: string) {
+    return this.http.get(`/api/p1/metadata/${documentId}/rdf`, { responseType: 'blob' });
+  }
+
+  downloadP1JSON(documentId: string) {
+    return this.http.get(`/api/p1/metadata/${documentId}/json`, { responseType: 'blob' });
+  }
 }
