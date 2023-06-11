@@ -76,8 +76,8 @@ export class UserService {
     const headers = { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'};
     axios.post('/api/p1', request, {headers})
       .then(response => {
-        console.log(response.data);
-        this.router.navigate(["/userProfile"]);
+        console.log("SUCCESS");
+        // this.router.navigate(["/userProfile"]);
       });
   }
 

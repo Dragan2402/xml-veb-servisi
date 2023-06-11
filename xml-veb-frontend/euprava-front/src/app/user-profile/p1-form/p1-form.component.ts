@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {UserService} from "../user.service";
-
-declare const Xonomy: any;
 
 @Component({
   selector: 'euprava-p1-form',
@@ -113,6 +111,11 @@ export class P1FormComponent implements OnInit {
         tip: ['Dopunska_prijava'],
         Broj_prijave: ['1/22', [ Validators.required, Validators.pattern(/^[1-9]\d*\/\d{2}$/) ] ],
         Datum_podnosenja: ['2022-01-10', [ Validators.required, Validators.pattern(/^\d{4}-\d{2}-\d{2}$/) ] ]
+      }),
+
+      podnosi_se_zahtev_za_priznanje_prava_prvenstva: [false],
+      Zahtev_za_priznanje_prava_prvenstva: this.formBuilder.group({
+        Ranija_prijava: this.formBuilder.array([])
       })
 
     });
@@ -122,6 +125,10 @@ export class P1FormComponent implements OnInit {
 
   ngOnInit() {
 
+  }
+
+  get ranijaPrijavaControls() {
+    return this.Zahtev_za_priznanje_patenta.get('Zahtev_za_priznanje_prava_prvenstva.Ranija_prijava') as FormArray;
   }
 
   rangeValidator(control: AbstractControl): ValidationErrors | null {
@@ -140,6 +147,7 @@ export class P1FormComponent implements OnInit {
     this.updatePunomocnikValidators();
     this.updateAdresaZaDostavljanjeValidators();
     this.updatePovezanaPrijavaValidators();
+    this.updateZahtevZaPriznanjePravaPrvenstva();
   }
 
   updatePodnosilacValidators() {
@@ -157,7 +165,6 @@ export class P1FormComponent implements OnInit {
   }
 
   updatePronalazacValidators() {
-    console.log()
     if (this.Zahtev_za_priznanje_patenta.value['Podnosilac']['pronalazac'] == true) {
       this.Zahtev_za_priznanje_patenta.get('Pronalazac')?.disable();
     } else {
@@ -205,11 +212,31 @@ export class P1FormComponent implements OnInit {
     }
   }
 
+  updateZahtevZaPriznanjePravaPrvenstva() {
+    if (this.Zahtev_za_priznanje_patenta.value['podnosi_se_zahtev_za_priznanje_prava_prvenstva']) {
+      this.Zahtev_za_priznanje_patenta.get('Zahtev_za_priznanje_prava_prvenstva')?.enable();
+    } else {
+      this.Zahtev_za_priznanje_patenta.get('Zahtev_za_priznanje_prava_prvenstva')?.disable();
+    }
+  }
+
+  addRanijaPrijava() {
+    let ranijaPrijava = this.formBuilder.group({
+      Broj_prijave: ['', [ Validators.required, Validators.pattern(/^[1-9]\d*\/\d{2}$/) ] ],
+      Datum_podnosenja: ['', [ Validators.required, Validators.pattern(/^\d{4}-\d{2}-\d{2}$/) ] ],
+      oznaka_drzave: ['', [ Validators.required, Validators.pattern(/^[A-Z]{2}$/) ] ]
+    });
+
+    this.ranijaPrijavaControls.push(ranijaPrijava);
+  }
+
+  removeRanijaPrijava(index: number) {
+    this.ranijaPrijavaControls.removeAt(index);
+  }
+
   submitForm() {
-    console.log(this.Zahtev_za_priznanje_patenta);
     if (this.Zahtev_za_priznanje_patenta.valid) {
       let zahtev: String = this.buildXMLZahtevZaPriznanjePatenta();
-      console.log(zahtev);
       this.userService.submitP1Request(zahtev);
     }
   }
@@ -325,7 +352,19 @@ export class P1FormComponent implements OnInit {
   }
 
   buildZahtevZaPriznanjePravaPrvenstva(): string {
-    return '';
+    if (!this.Zahtev_za_priznanje_patenta.value['podnosi_se_zahtev_za_priznanje_prava_prvenstva']) {
+      return '';
+    }
+
+    let zahtevZaPriznanjePravaPrvenstva = '\t<Zahtev_za_priznanje_prava_prvenstva>\n'
+
+    let ranijePrijave = this.Zahtev_za_priznanje_patenta.value.Zahtev_za_priznanje_prava_prvenstva.Ranija_prijava;
+    for (let i = 0; i < ranijePrijave.length; i++) {
+      zahtevZaPriznanjePravaPrvenstva += this.buildRanijaPrijava(ranijePrijave[i]);
+    }
+
+    zahtevZaPriznanjePravaPrvenstva += '\t</Zahtev_za_priznanje_prava_prvenstva>\n';
+    return zahtevZaPriznanjePravaPrvenstva
   }
 
   buildAdresa(parent: string): string {
@@ -354,5 +393,15 @@ export class P1FormComponent implements OnInit {
 
     kontakt += '\t\t</Kontakt>\n';
     return kontakt
+  }
+
+  private buildRanijaPrijava(ranijePrijaveElement: any) {
+    let ranijaPrijava = `\t\t<Ranija_prijava oznaka_drzave="${ranijePrijaveElement['oznaka_drzave']}">\n`
+
+    ranijaPrijava += `\t\t\t<Broj_prijave>${ranijePrijaveElement['Broj_prijave']}</Broj_prijave>\n`;
+    ranijaPrijava += `\t\t\t<Datum_podnosenja>${ranijePrijaveElement['Datum_podnosenja']}</Datum_podnosenja>\n`;
+
+    ranijaPrijava += '\t\t</Ranija_prijava>\n'
+    return ranijaPrijava;
   }
 }
