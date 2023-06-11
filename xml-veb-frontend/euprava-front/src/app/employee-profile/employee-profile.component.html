@@ -94,7 +94,7 @@
         <td mat-cell *matCellDef="let request">{{request.punomocnik}}</td>
       </ng-container>
       <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Tip</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
         <td mat-cell *matCellDef="let request">{{request.status}}</td>
       </ng-container>
       <ng-container matColumnDef="pdf">
@@ -112,13 +112,13 @@
       <ng-container matColumnDef="odobrenje">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let request">
-          <button type="button" *ngIf="request.status === 'PODNESEN'" color="primary" style="width: 100px;"  mat-raised-button>Odobri</button>
+          <button type="button" *ngIf="request.status === 'PODNESEN'" color="primary" (click)="handleOdobriZ1(request.id)" style="width: 100px;"  mat-raised-button>Odobri</button>
         </td>
       </ng-container>
       <ng-container matColumnDef="odbijanje">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let request">
-          <button type="button" *ngIf="request.status === 'PODNESEN'" color="primary" style="width: 100px;"  mat-raised-button>Odbij</button>
+          <button type="button" *ngIf="request.status === 'PODNESEN'" color="primary" (click)="handleOdbijZ1(request.id)" style="width: 100px;"  mat-raised-button>Odbij</button>
         </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumnsZ1"></tr>
@@ -159,13 +159,13 @@
       <ng-container matColumnDef="odobrenje">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let request">
-          <button type="button" *ngIf="request.status === 'Podnesen'" color="primary" style="width: 100px;"  mat-raised-button>Odobri</button>
+          <button type="button" *ngIf="request.status === 'Podnesen'" (click)="handleOdobriP1(request.brojPrijave)" color="primary" style="width: 100px;"  mat-raised-button>Odobri</button>
         </td>
       </ng-container>
       <ng-container matColumnDef="odbijanje">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let request">
-          <button type="button" *ngIf="request.status === 'Podnesen'" color="primary" style="width: 100px;"  mat-raised-button>Odbij</button>
+          <button type="button" *ngIf="request.status === 'Podnesen'" (click)="handleOdbijP1(request.brojPrijave)" color="primary" style="width: 100px;"  mat-raised-button>Odbij</button>
         </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumnsP1"></tr>

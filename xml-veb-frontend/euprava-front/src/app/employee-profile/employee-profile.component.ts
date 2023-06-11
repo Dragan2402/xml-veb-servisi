@@ -287,6 +287,34 @@ export class EmployeeProfileComponent implements OnInit {
 
   }
 
+  handleOdobriZ1(documentId: string) {
+    this.employeeService.odobriZ1(documentId).subscribe({
+      next:(res) =>{
+        this.clear()
+      }})
+  }
+
+  handleOdbijZ1(documentId: string) {
+    this.employeeService.odbijZ1(documentId).subscribe({
+      next:(res) =>{
+        this.clear()
+      }})
+  }
+
+  handleOdobriP1(documentId: string) {
+    this.employeeService.odobriP1(documentId.split('/').join('-')).subscribe({
+      next:(res) =>{
+        this.clear()
+      }})
+  }
+
+  handleOdbijP1(documentId: string) {
+    this.employeeService.odbijP1(documentId.split('/').join('-')).subscribe({
+      next:(res) =>{
+        this.clear()
+      }})
+  }
+
   downloadPDF(request:RequestResponse){
     this.employeeService.downloadPDF(request.id).subscribe(data => {
       saveAs(data, 'a1_'+request.id+ '.pdf');});

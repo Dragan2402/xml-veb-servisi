@@ -8,6 +8,22 @@ export class EmployeeService {
 
   constructor(private http:HttpClient) { }
 
+  odobriZ1(documentId: string) {
+    return this.http.put(`/api/z1/${documentId}/odobri`, {});
+  }
+
+  odbijZ1(documentId: string) {
+    return this.http.put(`/api/z1/${documentId}/odbij`, {});
+  }
+
+  odobriP1(documentId: string) {
+    return this.http.put(`/api/p1/${documentId}/odobri`, {});
+  }
+
+  odbijP1(documentId: string) {
+    return this.http.put(`/api/p1/${documentId}/odbij`, {});
+  }
+
   downloadPDF(id:number){
     return this.http.get("/api/a1/downloadPDFById?id="+id, { responseType: 'blob' });
   }
