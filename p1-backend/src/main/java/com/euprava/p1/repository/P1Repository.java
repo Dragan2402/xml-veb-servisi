@@ -102,4 +102,9 @@ public class P1Repository {
 
         return obrasci;
     }
+
+    public void updateStatus(String documentId, String newStatus) throws XMLDBException {
+        String contextXPath = "/Obrazac_P1/Popunjava_zavod/Status";
+        existManager.update(COLLECTION_ID, documentId, contextXPath, newStatus);
+    }
 }

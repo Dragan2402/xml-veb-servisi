@@ -138,6 +138,16 @@ public class P1ServiceImpl implements P1Service {
         return new ObrazacP1SearchResponseList(searchResponses);
     }
 
+    @Override
+    public void setObrazacP1StatusAsOdobren(String documentId) throws XMLDBException {
+        p1Repository.updateStatus(documentId, "Odobren");
+    }
+
+    @Override
+    public void setObrazacP1StatusAsOdbijen(String documentId) throws XMLDBException {
+        p1Repository.updateStatus(documentId, "Odbijen");
+    }
+
     private String generateDocumentId() throws XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         String currentYear = Integer.toString(LocalDate.now().getYear());
         String currentYearCode = currentYear.substring(currentYear.length() - 2);
