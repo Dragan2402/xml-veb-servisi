@@ -1,6 +1,7 @@
 package com.euprava.z1.controller;
 
 
+import com.euprava.z1.controller.response.Z1ResponseList;
 import com.euprava.z1.model.Z1;
 import com.euprava.z1.service.Z1Service;
 import org.exist.http.NotFoundException;
@@ -30,10 +31,9 @@ public class Z1Controller {
         return new ResponseEntity<>(documentId, HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/{fileName}", produces = {"application/xml"})
-    public ResponseEntity<Z1> getZ1(@PathVariable String fileName) throws JAXBException, XMLDBException, NotFoundException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, SAXException, IOException {
-        Z1 z1 = z1Service.getZ1(fileName);
-        return new ResponseEntity<>(z1, HttpStatus.OK);
+    @GetMapping(value = "getAll", produces = {"application/xml"})
+    public ResponseEntity<Z1ResponseList> getAllZ1() throws JAXBException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, SAXException, IOException {
+        return new ResponseEntity<>(new Z1ResponseList(z1Service.getAllZ1()), HttpStatus.OK);
     }
 
 }

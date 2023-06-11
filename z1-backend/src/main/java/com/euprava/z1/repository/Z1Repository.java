@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
+import org.xmldb.api.base.Resource;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
 
@@ -21,6 +22,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -38,6 +40,11 @@ public class Z1Repository {
         marshaller.marshal(z1, os);
         existManager.store(COLLECTION_ID, documentId, os.toString());
     }
+
+    public List<Resource> getObrazacByQuery(String collection, String namespace, String query) throws XMLDBException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        return existManager.executeQuery(collection, namespace, query);
+    }
+
     public Z1 findById(String documentId) throws XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, NotFoundException, JAXBException, SAXException {
         XMLResource resource = existManager.load(COLLECTION_ID, documentId);
         if (resource == null) {

@@ -1,18 +1,21 @@
 package com.euprava.z1.repository.exist;
 
+import com.euprava.z1.util.ExistDBAuthenticationUtilities;
 import org.exist.xmldb.EXistResource;
 import org.exist.xupdate.XUpdateProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.xmldb.api.DatabaseManager;
-import org.xmldb.api.base.Collection;
-import org.xmldb.api.base.Database;
-import org.xmldb.api.base.XMLDBException;
+import org.xmldb.api.base.*;
 import org.xmldb.api.modules.CollectionManagementService;
 import org.xmldb.api.modules.XMLResource;
+import org.xmldb.api.modules.XQueryService;
 
 import javax.xml.transform.OutputKeys;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class ExistManager {
@@ -26,6 +29,7 @@ public class ExistManager {
 
     @Autowired
     AuthenticationManager authMgr;
+
 
     public void store(String collectionUri, String documentId, String xmlString) throws XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         openConnection();
@@ -41,6 +45,48 @@ public class ExistManager {
         } finally {
             closeConnection(collection, resource);
         }
+    }
+
+    public List<Resource> executeQuery(String collectionUri, String targetNamespace, String query) throws XMLDBException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        openConnection();
+        Collection collection = null;
+        List<Resource> resources = new ArrayList<Resource>();
+
+        try {
+            collection = DatabaseManager.getCollection(ExistDBAuthenticationUtilities.loadProperties().uri + collectionUri,
+                    ExistDBAuthenticationUtilities.loadProperties().user,
+                    ExistDBAuthenticationUtilities.loadProperties().password);
+            collection.setProperty(OutputKeys.INDENT, "yes");
+
+            XQueryService xqueryService = (XQueryService) collection.getService("XQueryService", "1.0");
+            xqueryService.setProperty("indent", "yes");
+
+            xqueryService.setNamespace("b", targetNamespace);
+
+            CompiledExpression compiledXquery = xqueryService.compile(query);
+            ResourceSet result = xqueryService.execute(compiledXquery);
+
+            ResourceIterator i = result.getIterator();
+            Resource res = null;
+
+            while(i.hasMoreResources()) {
+                try {
+                    res = i.nextResource();
+                    resources.add(res);
+
+                } finally {
+
+                    try {
+                        ((EXistResource)res).freeResources();
+                    } catch (XMLDBException xe) {
+                        xe.printStackTrace();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            closeConnection(collection, null);
+        }
+        return resources;
     }
 
     public XMLResource load(String collectionUri, String documentId) throws XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
