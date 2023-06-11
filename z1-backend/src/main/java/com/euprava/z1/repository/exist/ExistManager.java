@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.*;
-import org.xmldb.api.modules.CollectionManagementService;
-import org.xmldb.api.modules.XMLResource;
-import org.xmldb.api.modules.XPathQueryService;
-import org.xmldb.api.modules.XQueryService;
+import org.xmldb.api.modules.*;
 
 import javax.xml.transform.OutputKeys;
 import java.io.IOException;
@@ -180,5 +177,17 @@ public class ExistManager {
             }
         }
         return result;
+    }
+
+    public void update(String collectionUri, String documentId, String contextXPath, String patch) throws XMLDBException {
+        Database db = new DatabaseImpl();
+        db.setProperty("create-database", "true");
+        DatabaseManager.registerDatabase(db);
+
+        try (Collection col = DatabaseManager.getCollection(authMgr.getUri() + collectionUri, authMgr.getUser(), authMgr.getPassword())) {
+            XUpdateQueryService service = (XUpdateQueryService) col.getService("XUpdateQueryService", "1.0");
+            service.setProperty("indent", "yes");
+            service.updateResource(documentId, String.format(UPDATE, contextXPath, patch));
+        }
     }
 }

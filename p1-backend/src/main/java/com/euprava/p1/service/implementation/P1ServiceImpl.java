@@ -126,14 +126,13 @@ public class P1ServiceImpl implements P1Service {
     @Override
     public ObrazacP1SearchResponseList retrieveObrazacP1SearchResponseListByTextAndStatusOdobren(String text) throws JAXBException, XMLDBException {
         if (text.equals("")) text = "en";
-        String xPathExp = "/*[contains(., '" + text + "')]";
+//        String xPathExp = "/*[contains(., '" + text + "')]";
+        String xPathExp = "//Obrazac_P1[Popunjava_zavod/Status='Odobren' and contains(., '" + text + "')]";
         List<ObrazacP1> obrazacP1List = p1Repository.searchByText(xPathExp);
 
         List<ObrazacP1SearchResponse> searchResponses = new ArrayList<>();
         for (ObrazacP1 obrazacP1: obrazacP1List) {
-            if (obrazacP1.getPopunjavaZavod().getStatus().getValue() == TStatus.ODOBREN) {
-                searchResponses.add(new ObrazacP1SearchResponse(obrazacP1));
-            }
+            searchResponses.add(new ObrazacP1SearchResponse(obrazacP1));
         }
         return new ObrazacP1SearchResponseList(searchResponses);
     }
