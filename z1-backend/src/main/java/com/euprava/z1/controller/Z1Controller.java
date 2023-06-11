@@ -35,7 +35,7 @@ public class Z1Controller {
         return new ResponseEntity<>(documentId, HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "getAllZ1", produces = {"application/xml"})
+    @GetMapping(value = "/getAllZ1", produces = {"application/xml"})
     public ResponseEntity<Z1ResponseList> getAllZ1() throws JAXBException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, SAXException, IOException {
         Z1ResponseList response = new Z1ResponseList(z1Service.getAllZ1());
         return new ResponseEntity<>(response, HttpStatus.OK);

@@ -7,6 +7,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { HandleRequestComponent } from './handle-request/handle-request.component';
 import { MetadataDownloadComponent } from './metadata-download/metadata-download.component';
 import { ReportComponent } from './report/report.component';
+import {P1Request, TableType, Z1Request} from "../user-profile/user-profile.component";
+import {UserService} from "../user-profile/user.service";
 
 @Component({
   selector: 'euprava-employee-profile',
@@ -16,15 +18,25 @@ import { ReportComponent } from './report/report.component';
 export class EmployeeProfileComponent implements OnInit {
 
   displayedColumns: string[] = ['id','submitterName' ,'type', 'submitDate', 'status', 'pdf', 'html','metadata','handle' ];
+  displayedColumnsZ1: string[] = ['id','podnosilac' ,'punomocnik', 'status', 'pdf', 'html', 'odobrenje', 'odbijanje'];
+  displayedColumnsP1: string[] = ['brojPrijave', 'nazivPronalaska', 'podnosilac', 'priznatiDatumPodnosenja', 'pdf', 'html', 'odobrenje', 'odbijanje'];
 
   requests:RequestResponse[] = [];
+  z1Requests: Z1Request[] = [];
+  p1Requests: P1Request[] = [];
+  tableType: TableType = 'A1'
 
   loaded:boolean = false;
+  loadedZ1 : boolean = false;
+  loadedP1 : boolean = false;
 
   filter :string = '';
 
-  constructor(private employeeService : EmployeeService,public matDialog: MatDialog) {
+  constructor(private employeeService : EmployeeService,public matDialog: MatDialog, private userService: UserService) {
+  }
 
+  handleTableChange(value: TableType) {
+    this.tableType = value
   }
 
   ngOnInit(): void {
@@ -115,6 +127,33 @@ export class EmployeeProfileComponent implements OnInit {
   downloadPDF(request:RequestResponse){
     this.employeeService.downloadPDF(request.id).subscribe(data => {
       saveAs(data, 'a1_'+request.id+ '.pdf');});
+  }
+
+  downloadZ1PDF(request: Z1Request){
+    this.userService.downloadZ1PDF(request.id).subscribe(data => {
+      saveAs(data, 'z1_'+request.id+ '.pdf');});
+  }
+
+
+  downloadP1PDF(request: P1Request){
+    let documentId = request.brojPrijave.split('/').join('-');
+    this.userService.downloadP1PDF(documentId)
+      .subscribe(data => {
+        saveAs(data, 'p1_' + documentId + '.pdf');
+      });
+  }
+
+  downloadZ1HTML(request:Z1Request){
+    this.userService.downloadZ1HTML(request.id).subscribe(data => {
+      saveAs(data, 'z1_'+request.id+ '.html');});
+  }
+
+  downloadP1HTML(request: P1Request){
+    let documentId = request.brojPrijave.split('/').join('-');
+    this.userService.downloadP1HTML(documentId)
+      .subscribe(data => {
+        saveAs(data, 'p1_' + documentId + '.html');
+      });
   }
 
   handle(request:RequestResponse){

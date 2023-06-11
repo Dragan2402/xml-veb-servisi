@@ -84,7 +84,7 @@
           <td mat-cell *matCellDef="let request">{{request.podnosilac}}</td>
         </ng-container>
         <ng-container matColumnDef="punomocnik">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Podnosilac</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Punomocnik</th>
           <td mat-cell *matCellDef="let request">{{request.punomocnik}}</td>
         </ng-container>
         <ng-container matColumnDef="status">
@@ -94,19 +94,13 @@
         <ng-container matColumnDef="pdf">
           <th mat-header-cell *matHeaderCellDef>PDF</th>
           <td mat-cell *matCellDef="let request">
-            <button type="button"   mat-button   (click)="downloadPDF(request)"><mat-icon>get_app</mat-icon></button>
+            <button type="button"   mat-button   (click)="downloadZ1PDF(request)"><mat-icon>get_app</mat-icon></button>
           </td>
         </ng-container>
         <ng-container matColumnDef="html">
           <th mat-header-cell *matHeaderCellDef>HTML</th>
           <td mat-cell *matCellDef="let request">
-            <button type="button"   mat-button  (click)="downloadHTML(request)"><mat-icon>get_app</mat-icon></button>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="rjesenje">
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let request">
-            <button type="button" color="primary" style="width: 100px;"  mat-raised-button>Odobri</button>
+            <button type="button"   mat-button  (click)="downloadZ1HTML(request)"><mat-icon>get_app</mat-icon></button>
           </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumnsZ1"></tr>

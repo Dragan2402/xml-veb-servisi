@@ -90,6 +90,15 @@ export class UserService {
     return this.http.get("/api/z1/getAllZ1",{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
   }
 
+  getFilteredZ1(filter: string){
+    return this.http.post("/api/z1/search", filter,{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
+  }
+
+  getAllP1() {
+    let body = "en";
+    return this.http.post("/api/p1/search", body, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
+  }
+
   getAllOdobreniP1() {
     let body = "en";
     return this.http.post("/api/p1/search/odobren", body, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
@@ -108,12 +117,20 @@ export class UserService {
     return this.http.get(`/api/p1/${documentId}/pdf`, { responseType: 'blob' });
   }
 
+  downloadZ1PDF(documentId: string) {
+    return this.http.get(`/api/z1/${documentId}/pdf`, { responseType: 'blob' });
+  }
+
   downloadHTML(id:number){
     return this.http.get("/api/a1/downloadHTMLById?id="+id, { responseType: 'blob' });
   }
 
   downloadP1HTML(documentId: string){
     return this.http.get(`/api/p1/${documentId}/html`, { responseType: 'blob' });
+  }
+
+  downloadZ1HTML(documentId: string){
+    return this.http.get(`/api/z1/${documentId}/html`, { responseType: 'blob' });
   }
 
   getClientRequestsByParam(param:string){
