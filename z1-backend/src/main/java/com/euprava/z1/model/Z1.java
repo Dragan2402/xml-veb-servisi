@@ -10,12 +10,11 @@ package com.euprava.z1.model;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import java.util.Map;
+import javax.xml.bind.annotation.*;
+import javax.xml.namespace.QName;
 
 
 /**
@@ -129,6 +128,11 @@ public class Z1 {
     protected Z1 .Prilozi prilozi;
     @XmlElement(name = "Status", required = true)
     protected String status;
+    @XmlAnyAttribute
+    private Map<QName, String> otherAttributes = new HashMap<QName, String>();
+    public Map<QName, String> getOtherAttributes() {
+        return otherAttributes;
+    }
 
     /**
      * Gets the value of the podnosilac property.

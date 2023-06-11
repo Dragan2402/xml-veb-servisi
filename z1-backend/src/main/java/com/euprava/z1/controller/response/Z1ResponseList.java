@@ -18,7 +18,7 @@ public class Z1ResponseList {
 
     public Z1ResponseList(){responses = new ArrayList<>();}
 
-    public Z1ResponseList(List<Z1> documents){this.responses = documents;}
+    public Z1ResponseList(List<Z1> list){this.responses = list;}
 
     @XmlAnyElement
     public List<Z1> getResponses(){return this.responses;}

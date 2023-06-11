@@ -22,6 +22,10 @@ export class UserService {
 
   }
 
+  getZ1(): Observable<any> {
+    return this.http.get("/api/z1/getAllZ1",{responseType: "text" as "json"});
+  }
+
   SubmitA1Request(request: String, descriptionFile?: File, exampleFile? : File) {
     const headers = { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'};
     if(descriptionFile===undefined && exampleFile===undefined){
@@ -80,6 +84,10 @@ export class UserService {
   getClientRequests(){
     const id = localStorage.getItem("id");
     return this.http.get("/api/a1/getClientRequests?clientId="+id,{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
+  }
+
+  getAllZ1(){
+    return this.http.get("/api/z1/getAllZ1",{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
   }
 
   downloadPDF(id:number){

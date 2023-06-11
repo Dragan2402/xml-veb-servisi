@@ -42,6 +42,22 @@ export class UserProfileComponent implements OnInit {
        this.loaded = true;
       }
     })
+    this.userService.getAllZ1().subscribe({
+      next:(res) =>{
+        xml2js.parseString(res, (err, result) => {
+          const responseArray = result["z1ResponseList"]["ns2:Z1"] as Array<Object>;
+          if(responseArray === undefined){
+            this.loaded = true;
+            return;
+          }
+          responseArray.forEach((element: any) => {
+            // this.requests.push();
+            console.log(element)
+          });
+        });
+        this.loaded = true;
+      }
+    })
   }
 
   searchFilter(){
@@ -95,6 +111,22 @@ export class UserProfileComponent implements OnInit {
           });
           this.loaded = true;
        });
+      }
+    })
+    this.userService.getAllZ1().subscribe({
+      next:(res) =>{
+        xml2js.parseString(res, (err, result) => {
+          const responseArray = result["z1ResponseList"]["z1Response"] as Array<Object>;
+          if(responseArray === undefined){
+            this.loaded = true;
+            return;
+          }
+          responseArray.forEach((element: any) => {
+            // this.requests.push();
+            console.log(element)
+          });
+        });
+        this.loaded = true;
       }
     })
   }

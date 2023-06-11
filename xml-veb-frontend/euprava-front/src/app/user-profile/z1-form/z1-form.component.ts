@@ -154,9 +154,10 @@ export class Z1FormComponent implements OnInit {
   }
 
   convertToXML(data: any) {
-    let xml = '<Z1 xmlns="http://euprava.com/z1/model"';
-    xml += ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"';
-    xml += ' xsi:schemaLocation="http://euprava.com/z1/model ../schemas/z1_schema.xsd">';
+    let xml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+      '<Z1 xmlns="http://euprava.com/z1/model"\n' +
+      '    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n' +
+      '    xsi:schemaLocation="http://euprava.com/z1/model ../schemas/z1_schema.xsd">';
 
     function createXML(obj: any) {
       Object.entries(obj).forEach(([key, value]) => {
@@ -185,6 +186,7 @@ export class Z1FormComponent implements OnInit {
     const request = this.Zahtev_za_priznanje_ziga.value
     if (!this.Zahtev_za_priznanje_ziga.valid) {
       console.log('INVALID FORM')
+      console.log(this.convertToXML(request))
       console.log(request)
       return
     }
