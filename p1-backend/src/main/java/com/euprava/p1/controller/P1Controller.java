@@ -96,4 +96,10 @@ public class P1Controller {
         ObrazacP1SearchResponseList obrazacP1SearchResponseList = p1Service.retrieveObrazacP1SearchResponseListByText(queryText);
         return new ResponseEntity<>(obrazacP1SearchResponseList, HttpStatus.OK);
     }
+
+    @PostMapping(value = "/search/odobren", produces = {"application/xml"})
+    public ResponseEntity<ObrazacP1SearchResponseList> searchOdobreniByText(@RequestBody String queryText) throws XMLDBException, JAXBException {
+        ObrazacP1SearchResponseList obrazacP1SearchResponseList = p1Service.retrieveObrazacP1SearchResponseListByTextAndStatusOdobren(queryText);
+        return new ResponseEntity<>(obrazacP1SearchResponseList, HttpStatus.OK);
+    }
 }
