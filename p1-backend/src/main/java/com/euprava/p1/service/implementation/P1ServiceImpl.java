@@ -1,5 +1,7 @@
 package com.euprava.p1.service.implementation;
 
+import com.euprava.p1.controller.Responses.ObrazacP1SearchResponse;
+import com.euprava.p1.controller.Responses.ObrazacP1SearchResponseList;
 import com.euprava.p1.model.*;
 import com.euprava.p1.repository.P1Repository;
 import com.euprava.p1.repository.fuseki.FusekiReader;
@@ -24,6 +26,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -104,6 +108,18 @@ public class P1ServiceImpl implements P1Service {
     public String retrieveObrazacP1MetadataAsJSON(String documentId) throws IOException {
         String sparqlCondition = "<" + RDF_URL + "/" + documentId + "> ?d ?s .";
         return FusekiReader.readMetadataAsJSON(sparqlCondition);
+    }
+
+    @Override
+    public ObrazacP1SearchResponseList retrieveObrazacP1SearchResponseListByText(String text) throws XMLDBException, JAXBException {
+        String xPathExp = "/*[contains(., '" + text + "')]";
+        List<ObrazacP1> obrazacP1List = p1Repository.searchByText(xPathExp);
+
+        List<ObrazacP1SearchResponse> searchResponses = new ArrayList<>();
+        for (ObrazacP1 obrazacP1: obrazacP1List) {
+            searchResponses.add(new ObrazacP1SearchResponse(obrazacP1));
+        }
+        return new ObrazacP1SearchResponseList(searchResponses);
     }
 
     private String generateDocumentId() throws XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
