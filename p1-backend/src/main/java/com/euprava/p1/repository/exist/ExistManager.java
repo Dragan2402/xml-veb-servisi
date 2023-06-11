@@ -1,5 +1,6 @@
 package com.euprava.p1.repository.exist;
 
+import org.exist.xmldb.DatabaseImpl;
 import org.exist.xmldb.EXistResource;
 import org.exist.xupdate.XUpdateProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,9 +8,11 @@ import org.springframework.stereotype.Component;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.Database;
+import org.xmldb.api.base.ResourceSet;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.CollectionManagementService;
 import org.xmldb.api.modules.XMLResource;
+import org.xmldb.api.modules.XPathQueryService;
 
 import javax.xml.transform.OutputKeys;
 import java.lang.reflect.InvocationTargetException;
@@ -147,5 +150,26 @@ public class ExistManager {
         }
 
         return getOrCreateCollection(collectionUri, ++pathOffset);
+    }
+
+    public ResourceSet retrieve(String collectionUri, String xPathExp) throws XMLDBException {
+        Database db = new DatabaseImpl();
+        db.setProperty("create-database", "true");
+        DatabaseManager.registerDatabase(db);
+
+        Collection col = null;
+        ResourceSet result;
+        try {
+            col = DatabaseManager.getCollection(authMgr.getUri() + collectionUri, authMgr.getUser(), authMgr.getPassword());
+            XPathQueryService xPathService = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+            xPathService.setProperty("indent", "yes");
+            xPathService.setNamespace("", TARGET_NAMESPACE);
+            result = xPathService.query(xPathExp);
+        } finally {
+            if (col != null) {
+                col.close();
+            }
+        }
+        return result;
     }
 }
