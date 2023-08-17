@@ -1,25 +1,36 @@
 package com.euprava.z1.service.implementation;
 
+import com.euprava.z1.controller.response.NumberResponse;
 import com.euprava.z1.controller.response.Z1Response;
 import com.euprava.z1.controller.response.Z1ResponseList;
+import com.euprava.z1.model.Datum;
+import com.euprava.z1.model.Status;
 import com.euprava.z1.model.Z1;
 import com.euprava.z1.repository.Z1Repository;
+import com.euprava.z1.repository.fuseki.FusekiReader;
 import com.euprava.z1.service.Z1Service;
 import com.euprava.z1.service.transformation.PDFTransformer;
+import com.euprava.z1.util.SchemaValidationHandler;
 import lombok.RequiredArgsConstructor;
 import org.exist.http.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
+import org.xmldb.api.base.Resource;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
 
+import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 import javax.xml.transform.TransformerException;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -28,6 +39,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -39,13 +51,14 @@ public class Z1ServiceImpl implements Z1Service {
 
     private final Z1Repository z1Repository;
     private final PDFTransformer pdfTransformer;
+    private static final String RDF_URL = "http://z1.euprava.com/model/rdf";
 
     @Override
     public List<Z1Response> getAllZ1() throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException, InvocationTargetException, NoSuchMethodException {
         String queryPath = "src/main/resources/data/xquery/all.xqy";
         byte[] encoded = Files.readAllBytes(Paths.get(queryPath));
         String xqueryExpression = new String(encoded, StandardCharsets.UTF_8);
-        List<org.xmldb.api.base.Resource> resources = z1Repository.getObrazacByQuery("/db/z1", "http://euprava.euprava.com/model", xqueryExpression);
+        List<org.xmldb.api.base.Resource> resources = z1Repository.getZ1ByQuery("/db/z1", "http://euprava.euprava.com/model", xqueryExpression);
         List<Z1Response> z1List = new ArrayList<>();
         for (org.xmldb.api.base.Resource resource : resources) {
             long id = Long.parseLong(resource.getId().split("_")[0]);
@@ -60,8 +73,27 @@ public class Z1ServiceImpl implements Z1Service {
     public String createZ1(Z1 z1) throws JAXBException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, DatatypeConfigurationException, NotFoundException, IOException, TransformerException {
         int randomNum = ThreadLocalRandom.current().nextInt(1, Integer.MAX_VALUE);
         String documentId = String.valueOf(randomNum);
-        z1.getOtherAttributes().put(QName.valueOf("xmlns:xsi"), "http://www.w3.org/2001/XMLSchema-instance");
-        z1.getOtherAttributes().put(QName.valueOf("xsi:schemaLocation"), "http://euprava.com/z1/model ../schemas/z1_schema.xsd");
+        DatatypeFactory df = DatatypeFactory.newInstance();
+        XMLGregorianCalendar xmlCalendar = df.newXMLGregorianCalendar();
+        xmlCalendar.setDay(LocalDate.now().getDayOfMonth());
+        xmlCalendar.setYear(LocalDate.now().getYear());
+        xmlCalendar.setMonth(LocalDate.now().getMonthValue());
+
+        z1.setAbout(RDF_URL + "/" + documentId);
+        z1.setTypeof("pred:Z1");
+
+        z1.setStatus(new Status());
+        z1.getStatus().setValue("PODNESEN");
+        z1.getStatus().setProperty("pred:Status");
+        z1.getStatus().setDatatype("xs:string");
+
+        z1.setDatum(new Datum());
+        z1.getDatum().setValue(xmlCalendar);
+        z1.getDatum().setProperty("pred:Datum");
+        z1.getDatum().setDatatype("xs:date");
+
+        z1.getOtherAttributes().put(QName.valueOf("xmlns:pred"), RDF_URL + "/predicate");
+        z1.getOtherAttributes().put(QName.valueOf("xmlns:xs"), "http://www.w3.org/2001/XMLSchema#");
         z1Repository.save(documentId, z1);
         return documentId;
     }
@@ -95,10 +127,53 @@ public class Z1ServiceImpl implements Z1Service {
         z1Repository.updateStatus(documentId, "ODBIJEN");
     }
 
-    private Z1 unmarshallXMLResource(XMLResource resource) throws JAXBException, XMLDBException {
+    @Override
+    public NumberResponse getNumberOfRequests(String start, String end) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException, InvocationTargetException, NoSuchMethodException {
+        String queryPath = "src/main/resources/data/xquery/date.xqy";
+        byte[] encoded = Files.readAllBytes(Paths.get(queryPath));
+        String xqueryExpression = new String(encoded, StandardCharsets.UTF_8);
+        String formattedXQueryExpression = String.format(xqueryExpression, start, end);
+        List<Resource> resources = z1Repository.getZ1ByQuery("/db/z1", "http://euprava.euprava.com/model/z1", formattedXQueryExpression);
+        return getNumberResponseFromResources(resources);
+    }
+
+    private NumberResponse getNumberResponseFromResources(List<Resource> resources) throws JAXBException, XMLDBException, SAXException {
+        int podnesenih = 0;
+        int odbijenih = 0;
+        int odobrenih = 0;
+        for (Resource resource : resources) {
+            Z1 z1 = unmarshallXMLResource((XMLResource) resource);
+            if (z1.getStatus().getValue().equals("ODOBREN")) {
+                odobrenih++;
+            } else if (z1.getStatus().getValue().equals("ODBIJEN")) {
+                odbijenih++;
+            } else {
+                podnesenih++;
+            }
+        }
+        return new NumberResponse(podnesenih, odbijenih, odobrenih);
+    }
+
+    @Override
+    public String retrieveObrazacZ1MetadataAsRDF(String documentId) throws IOException {
+        String sparqlCondition = "<" + RDF_URL + "/" + documentId + "> ?d ?s .";
+        return FusekiReader.readMetadataAsRDF(sparqlCondition);
+    }
+
+    @Override
+    public String retrieveObrazacZ1MetadataAsJSON(String documentId) throws IOException {
+        String sparqlCondition = "<" + RDF_URL + "/" + documentId + "> ?d ?s .";
+        return FusekiReader.readMetadataAsJSON(sparqlCondition);
+    }
+
+    private Z1 unmarshallXMLResource(XMLResource resource) throws JAXBException, XMLDBException, SAXException {
         JAXBContext context = JAXBContext.newInstance(Z1.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
-        System.out.println(unmarshaller.unmarshal(new StringReader(resource.getContent().toString())));
+        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        File schemaFile = new File("src/main/resources/data/schemas/z1_schema.xsd");
+        Schema schema = schemaFactory.newSchema(schemaFile);
+        unmarshaller.setSchema(schema);
+        unmarshaller.setEventHandler(new SchemaValidationHandler());
         return (Z1) unmarshaller.unmarshal(new StringReader(resource.getContent().toString()));
     }
 }

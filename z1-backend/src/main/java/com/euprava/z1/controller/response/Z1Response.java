@@ -1,5 +1,7 @@
 package com.euprava.z1.controller.response;
+
 import com.euprava.z1.model.Z1;
+
 import javax.xml.bind.annotation.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -34,7 +36,7 @@ public class Z1Response {
         this.podnosilac = z1.getPodnosilac().getIme() + " " + z1.getPodnosilac().getPrezime();
         this.punomocnik = z1.getPunomocnik().getIme() + " " + z1.getPunomocnik().getPrezime();
         this.zajednickiPredstavnik = z1.getZajednickiPredstavnik().getIme() + " " + z1.getZajednickiPredstavnik().getPrezime();
-        this.status = z1.getStatus();
+        this.status = z1.getStatus().getValue();
         this.id = id;
     }
 

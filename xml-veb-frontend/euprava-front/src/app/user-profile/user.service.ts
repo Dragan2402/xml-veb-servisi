@@ -159,6 +159,14 @@ export class UserService {
     });
   }
 
+  downloadZ1RDF(documentId: string) {
+    return this.http.get(`/api/z1/metadata/${documentId}/rdf`, { responseType: 'blob' });
+  }
+
+  downloadZ1JSON(documentId: string) {
+    return this.http.get(`/api/z1/metadata/${documentId}/json`, { responseType: 'blob' });
+  }
+
   downloadP1RDF(documentId: string) {
     return this.http.get(`/api/p1/metadata/${documentId}/rdf`, { responseType: 'blob' });
   }

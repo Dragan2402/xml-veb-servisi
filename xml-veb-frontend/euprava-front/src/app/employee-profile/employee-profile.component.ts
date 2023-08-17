@@ -18,13 +18,13 @@ import {UserService} from "../user-profile/user.service";
 export class EmployeeProfileComponent implements OnInit {
 
   displayedColumns: string[] = ['id','submitterName' ,'type', 'submitDate', 'status', 'pdf', 'html','metadata','handle' ];
-  displayedColumnsZ1: string[] = ['id','podnosilac' ,'punomocnik', 'status', 'pdf', 'html', 'odobrenje', 'odbijanje'];
+  displayedColumnsZ1: string[] = ['id','podnosilac' ,'punomocnik', 'status', 'pdf', 'html', 'rdf', 'json', 'odobrenje', 'odbijanje'];
   displayedColumnsP1: string[] = ['brojPrijave', 'nazivPronalaska', 'podnosilac', 'priznatiDatumPodnosenja', 'status', 'pdf', 'html', 'rdf', 'json', 'odobrenje', 'odbijanje'];
 
   requests:RequestResponse[] = [];
   z1Requests: Z1Request[] = [];
   p1Requests: P1Request[] = [];
-  tableType: TableType = 'A1'
+  tableType: TableType = 'Z1'
 
   loaded:boolean = false;
   loadedZ1 : boolean = false;
@@ -44,7 +44,7 @@ export class EmployeeProfileComponent implements OnInit {
       next:(res) =>{
         xml2js.parseString(res, (err, result) => {
           const responseArray = result["a1ResponseList"]["a1Response"] as Array<Object>;
-          responseArray.forEach((element: any) => {
+          responseArray?.forEach((element: any) => {
             this.requests.push({'id':element["id"][0],'email':element["email"][0] ,'submitterName':element["submitterName"][0], 'status':element["status"][0],'submitDate':element["submitDate"][0],'type':element["type"][0]} as RequestResponse);
           });
           this.loaded = true;
@@ -231,7 +231,7 @@ export class EmployeeProfileComponent implements OnInit {
         this.requests =[ ];
         xml2js.parseString(res, (err, result) => {
           const responseArray = result["a1ResponseList"]["a1Response"] as Array<Object>;
-          responseArray.forEach((element: any) => {
+          responseArray?.forEach((element: any) => {
             this.requests.push({'id':element["id"][0],'email':element["email"][0], 'submitterName':element["submitterName"][0], 'status':element["status"][0],'submitDate':element["submitDate"][0],'type':element["type"][0]} as RequestResponse);
           });
           this.loaded = true;
@@ -334,6 +334,20 @@ export class EmployeeProfileComponent implements OnInit {
       saveAs(data, 'z1_'+request.id+ '.pdf');});
   }
 
+  downloadZ1RDF(request: Z1Request) {
+    this.userService.downloadZ1RDF(request.id)
+      .subscribe(data => {
+        saveAs(data, 'z1_' + request.id + '.rdf');
+      });
+  }
+
+  downloadZ1JSON(request: Z1Request) {
+    this.userService.downloadZ1JSON(request.id)
+      .subscribe(data => {
+        saveAs(data, 'z1_' + request.id + '.json');
+      });
+  }
+
 
   downloadP1PDF(request: P1Request){
     let documentId = request.brojPrijave.split('/').join('-');
@@ -397,6 +411,7 @@ export class EmployeeProfileComponent implements OnInit {
     dialogConfig.id = "report-modal";
     dialogConfig.height = "50%";
     dialogConfig.width = "30%";
+    dialogConfig.data = {tableType: this.tableType}
     // https://material.angular.io/components/dialog/overview
     const dialogRef = this.matDialog.open(ReportComponent, dialogConfig);
     dialogRef.afterClosed().subscribe({

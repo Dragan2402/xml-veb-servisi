@@ -1,6 +1,7 @@
 package com.euprava.z1.controller;
 
 
+import com.euprava.z1.controller.response.NumberResponse;
 import com.euprava.z1.controller.response.Z1ResponseList;
 import com.euprava.z1.model.Z1;
 import com.euprava.z1.service.Z1Service;
@@ -10,6 +11,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.xml.sax.SAXException;
@@ -28,6 +30,11 @@ import java.lang.reflect.InvocationTargetException;
 public class Z1Controller {
     @Autowired
     private Z1Service z1Service;
+
+    @GetMapping(value= "getNumberOfRequestsForReport",produces = {"application/xml"})
+    public ResponseEntity<NumberResponse> getNumberOfRequestsForReport(@RequestParam("start") String start, @RequestParam("end") String end) throws Exception {
+        return new ResponseEntity<>(z1Service.getNumberOfRequests(start, end), HttpStatus.OK);
+    }
 
     @PostMapping(produces = {"application/xml"})
     public ResponseEntity<String> postZ1(@RequestBody Z1 z1) throws JAXBException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, DatatypeConfigurationException, NotFoundException, IOException, TransformerException {
@@ -60,13 +67,13 @@ public class Z1Controller {
 
     @GetMapping(value = "/{documentId}/pdf")
     public ResponseEntity<Resource> getAsPDF(@PathVariable String documentId) throws Exception {
-        File obrazacP1PDFFile = z1Service.retrieveZ1AsPDF(documentId);
-        if (obrazacP1PDFFile == null) {
+        File obrazacZ1PDFFile = z1Service.retrieveZ1AsPDF(documentId);
+        if (obrazacZ1PDFFile == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         HttpHeaders headers = new HttpHeaders();
         headers.setContentDispositionFormData("attachment", "Z1_" + documentId + ".pdf");
-        return new ResponseEntity<>(new FileSystemResource(obrazacP1PDFFile), headers, HttpStatus.OK);
+        return new ResponseEntity<>(new FileSystemResource(obrazacZ1PDFFile), headers, HttpStatus.OK);
     }
 
     @PutMapping(value = "/{documentId}/odobri")
@@ -79,5 +86,21 @@ public class Z1Controller {
     public ResponseEntity<Void> declineZ1(@PathVariable String documentId) throws XMLDBException {
         z1Service.setZ1StatusAsOdbijen(documentId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/metadata/{documentId}/rdf", produces = "application/rdf+xml")
+    public ResponseEntity<String> getMetadataAsRDF(@PathVariable String documentId) throws IOException {
+        String obrazacZ1RDFMetadata = z1Service.retrieveObrazacZ1MetadataAsRDF(documentId);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDispositionFormData("attachment", "obrazac_Z-1_" + documentId + "metadata.rdf");
+        return new ResponseEntity<>(obrazacZ1RDFMetadata, headers, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/metadata/{documentId}/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getMetadataAsJSON(@PathVariable String documentId) throws IOException {
+        String obrazacZ1JSONMetadata = z1Service.retrieveObrazacZ1MetadataAsJSON(documentId);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDispositionFormData("attachment", "obrazac_Z-1_" + documentId + "metadata.json");
+        return new ResponseEntity<>(obrazacZ1JSONMetadata, headers, HttpStatus.OK);
     }
 }

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { EmployeeService } from '../employee.service';
 import * as xml2js from 'xml2js';
 import html2canvas from 'html2canvas';
@@ -13,6 +13,7 @@ import jspdf from 'jspdf';
   styleUrls: ['./report.component.css']
 })
 export class ReportComponent implements OnInit {
+
   startDate!:Date;
   endDate!:Date;
   generated:boolean = false;
@@ -22,7 +23,9 @@ export class ReportComponent implements OnInit {
   waiting:number = 0;
   total:number = 0;
 
-  constructor(public dialogRef: MatDialogRef<ReportComponent>, private employeService : EmployeeService) { }
+
+
+  constructor(public dialogRef: MatDialogRef<ReportComponent>, private employeService : EmployeeService, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
   }
@@ -33,7 +36,7 @@ export class ReportComponent implements OnInit {
     }
     const startDate = this.formatDate(this.startDate);
     const endDate = this.formatDate(this.endDate);
-    this.employeService.getCountOfRequests(startDate, endDate).subscribe({
+    this.employeService.getCountOfRequests(startDate, endDate, this.data.tableType.toLowerCase()).subscribe({
       next:(response)=>{
         xml2js.parseString(response, (err, result) => {
           this.approved = result["numberResponse"]["odobrenih"][0] as number;
@@ -42,9 +45,9 @@ export class ReportComponent implements OnInit {
           this.total = <number>this.approved*1 + <number>this.declined*1 + <number>this.waiting*1;
           this.generated = true;
           var doc = new jspdf('l');
-          doc.text(`\t\t\tIZVJESTAJ ZA RASPON: ${startDate} - ${endDate}\n\n\n\tPodnesenih: ${this.waiting} \n\n\tOdobrenih: ${this.approved} \n\n\tOdbijenih: ${this.declined} \n\n\tUkupno: ${this.total}`
-          +`\n\n\n\n\tIzvjestaj podnio: ${localStorage.getItem("firstName")} ${localStorage.getItem("lastName")}`, 20,20);
-          doc.save("izvjestaj.pdf");
+          doc.text(`\t\t\tIZVESTAJ ZA RASPON: ${startDate} - ${endDate}\n\n\n\tPodnesenih: ${this.waiting} \n\n\tOdobrenih: ${this.approved} \n\n\tOdbijenih: ${this.declined} \n\n\tUkupno: ${this.total}`
+          +`\n\n\n\n\tIzvjestaj podneo: ${localStorage.getItem("firstName")} ${localStorage.getItem("lastName")}`, 20,20);
+          doc.save("izvestaj.pdf");
         })}});
 
   }

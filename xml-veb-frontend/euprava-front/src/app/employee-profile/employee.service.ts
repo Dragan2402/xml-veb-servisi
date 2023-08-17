@@ -56,8 +56,8 @@ export class EmployeeService {
     return this.http.get("/api/a1/getRequests",{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
   }
 
-  getCountOfRequests(start:string, end:string){
-    return this.http.get(`/api/a1/getNumberOfRequestsForReport?start=${start}&&end=${end}`,{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
+  getCountOfRequests(start:string, end:string, type: string = 'z1'){
+    return this.http.get(`/api/${type}/getNumberOfRequestsForReport?start=${start}&&end=${end}`,{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
   }
 
   createRjesenje(body:string){

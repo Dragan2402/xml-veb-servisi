@@ -1,5 +1,6 @@
 package com.euprava.z1.service;
 
+import com.euprava.z1.controller.response.NumberResponse;
 import com.euprava.z1.controller.response.Z1Response;
 import com.euprava.z1.controller.response.Z1ResponseList;
 import com.euprava.z1.model.Z1;
@@ -23,6 +24,10 @@ public interface Z1Service {
     File retrieveZ1AsHTML(String documentId) throws XMLDBException, NotFoundException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, FileNotFoundException;
     String createZ1(Z1 z1) throws JAXBException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, DatatypeConfigurationException, NotFoundException, IOException, TransformerException;
     List<Z1Response> getAllZ1() throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException, InvocationTargetException, NoSuchMethodException;
+    String retrieveObrazacZ1MetadataAsRDF(String documentId) throws IOException;
+    String retrieveObrazacZ1MetadataAsJSON(String documentId) throws IOException;
     void setZ1StatusAsOdobren(String documentId) throws XMLDBException;
     void setZ1StatusAsOdbijen(String documentId) throws XMLDBException;
+    NumberResponse getNumberOfRequests(String start, String end) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException, InvocationTargetException, NoSuchMethodException;
+
 }

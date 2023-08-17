@@ -15,7 +15,7 @@
                 <xs:element name="Brojevi_klasa_robe">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="Broj_klase_robe" type="xs:int" maxOccurs="unbounded"/>
+                            <xs:element name="Broj_klase_robe" type="xs:int" minOccurs="0" maxOccurs="unbounded"/>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
@@ -43,8 +43,34 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="Status" type="xs:string"/>
+                <xs:element ref="z1:Status"/>
+                <xs:element ref="z1:Datum" minOccurs="0"/>
             </xs:sequence>
+            <xs:attribute name="about"/>
+            <xs:attribute name="typeof"/>
+            <xs:anyAttribute/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Status">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute name="property"/>
+                    <xs:attribute name="datatype"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Datum">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:date">
+                    <xs:attribute name="property"/>
+                    <xs:attribute name="datatype"/>
+                </xs:extension>
+            </xs:simpleContent>
         </xs:complexType>
     </xs:element>
 

@@ -3,6 +3,8 @@ package com.euprava.z1.repository;
 import com.euprava.z1.controller.response.Z1Response;
 import com.euprava.z1.model.Z1;
 import com.euprava.z1.repository.exist.ExistManager;
+import com.euprava.z1.repository.fuseki.FusekiWriter;
+import com.euprava.z1.repository.fuseki.MetadataExtractor;
 import lombok.RequiredArgsConstructor;
 import org.exist.http.NotFoundException;
 import org.springframework.stereotype.Repository;
@@ -35,6 +37,8 @@ public class Z1Repository {
 
     private final ExistManager existManager;
 
+    private final MetadataExtractor metadataExtractor;
+
     public void save(String documentId, Z1 z1) throws JAXBException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, NotFoundException, TransformerException, IOException {
         JAXBContext context = JAXBContext.newInstance(CONTEXT_PATH);
         Marshaller marshaller = context.createMarshaller();
@@ -42,9 +46,10 @@ public class Z1Repository {
         OutputStream os = new ByteArrayOutputStream();
         marshaller.marshal(z1, os);
         existManager.store(COLLECTION_ID, documentId, os.toString());
+        saveMetadata(documentId);
     }
 
-    public List<Resource> getObrazacByQuery(String collection, String namespace, String query) throws XMLDBException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    public List<Resource> getZ1ByQuery(String collection, String namespace, String query) throws XMLDBException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         return existManager.executeQuery(collection, namespace, query);
     }
 
@@ -61,6 +66,15 @@ public class Z1Repository {
         Schema schema = schemaFactory.newSchema(schemaFile);
         unmarshaller.setSchema(schema);
         return (Z1) unmarshaller.unmarshal(new StringReader(resource.getContent().toString()));
+    }
+
+    private void saveMetadata(String documentId) throws NotFoundException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, TransformerException, IOException {
+        XMLResource resource = existManager.load(COLLECTION_ID, documentId);
+        if (resource == null) {
+            throw new NotFoundException("Document with id [" + documentId + "] not found.");
+        }
+        byte[] out = metadataExtractor.extractMetadata(resource.getContent().toString());
+        FusekiWriter.saveRDF(new ByteArrayInputStream(out));
     }
 
     public Node findByIdAsNode(String documentId) throws XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, NotFoundException {
