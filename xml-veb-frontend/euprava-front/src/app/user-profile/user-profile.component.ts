@@ -1,9 +1,26 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { UserService } from './user.service';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {UserService} from './user.service';
 import * as xml2js from 'xml2js';
-import { RequestResponse } from '../model/a1Response';
-import { saveAs } from 'file-saver';
+import {RequestResponse} from '../model/a1Response';
+import {saveAs} from 'file-saver';
+
+export interface Z1Request {
+  id: string
+  podnosilac: string
+  punomocnik: string
+  status: string
+}
+
+export interface P1Request {
+  brojPrijave: string
+  nazivPronalaska: string
+  podnosilac: string
+  priznatiDatumPodnosenja: string
+  status: string
+}
+
+export type TableType = 'A1' | 'P1' | 'Z1'
 
 @Component({
   selector: 'euprava-user-profile',
@@ -13,10 +30,17 @@ import { saveAs } from 'file-saver';
 export class UserProfileComponent implements OnInit {
 
   displayedColumns: string[] = ['id','submitterName' ,'type', 'submitDate', 'status', 'pdf', 'html' ,'rjesenje'];
+  displayedColumnsZ1: string[] = ['id','podnosilac' ,'punomocnik', 'status', 'pdf', 'html'];
+  displayedColumnsP1: string[] = ['brojPrijave', 'nazivPronalaska', 'podnosilac', 'priznatiDatumPodnosenja', 'pdf', 'html'];
 
-  requests:RequestResponse[];
+  requests: RequestResponse[];
+  z1Requests: Z1Request[];
+  p1Requests: P1Request[];
+  tableType: TableType = 'A1'
 
   loaded : boolean = false;
+  loadedZ1 : boolean = false;
+  loadedP1 : boolean = false;
 
   id : Object = {};
 
@@ -24,6 +48,12 @@ export class UserProfileComponent implements OnInit {
 
   constructor(private route: Router, private userService: UserService) {
     this.requests = [];
+    this.z1Requests = [];
+    this.p1Requests = [];
+  }
+
+  handleTableChange(value: TableType) {
+    this.tableType = value
   }
 
   ngOnInit(): void {
@@ -42,28 +72,139 @@ export class UserProfileComponent implements OnInit {
        this.loaded = true;
       }
     })
+
+    this.userService.getAllZ1().subscribe({
+      next:(res) =>{
+        xml2js.parseString(res, (err, result) => {
+          const responseArray = result["z1ResponseList"]["z1Response"] as Array<Object>;
+          if(responseArray === undefined){
+            this.loadedZ1 = false;
+            return;
+          }
+          responseArray.forEach((element: any) => {
+            const zajednickiPredstavnik = element['zajednickiPredstavnik'][0].trim()
+            const jedanPodnosilac = element['podnosilac'][0].trim()
+            const podnosilac = jedanPodnosilac ? jedanPodnosilac : zajednickiPredstavnik
+            const newElement = { id: element['id'][0], podnosilac, punomocnik: element['punomocnik'][0], status: element['status'][0] }
+            if (newElement.status === 'ODOBREN') this.z1Requests.push(newElement)
+          });
+        });
+        this.loadedZ1 = true;
+      }
+    })
+
+    this.userService.getAllOdobreniP1().subscribe({
+      next:(res) =>{
+        xml2js.parseString(res, (err, result) => {
+          const responseArray = result["obrazacP1SearchResponseList"]["obrazacP1SearchResponse"] as Array<Object>;
+          if(responseArray === undefined){
+            this.loadedP1 = true;
+            return;
+          }
+          responseArray.forEach((element: any) => {
+            let podnosilac = "";
+
+            if (element['podnosilac'][0]['ns2:Poslovno_ime'] != undefined) {
+              podnosilac = element['podnosilac'][0]['ns2:Poslovno_ime'][0];
+
+            } else if (element['podnosilac'][0]['ns2:Ime'] != undefined && element['podnosilac'][0]['ns2:Prezime'] != undefined) {
+              podnosilac = element['podnosilac'][0]['ns2:Ime'] + " " + element['podnosilac'][0]['ns2:Prezime'];
+            }
+
+            const newElement: P1Request = {
+              brojPrijave: element['brojPrijave'][0],
+              nazivPronalaska: element['nazivPronalaska'][0]['ns2:Na_srpskom'][0]['_'],
+              podnosilac: podnosilac,
+              priznatiDatumPodnosenja: element['priznatiDatumPodnosenja'][0],
+              status: element['status'][0]['_']
+            }
+            this.p1Requests.push(newElement)
+          });
+          this.loadedP1 = true;
+        });
+      }
+    });
   }
 
   searchFilter(){
-
-    if(this.filter.length > 0 ){
-      this.loaded = false;
-      this.requests = [];
-      this.userService.getClientRequestsByParam(this.filter).subscribe({
+    if (this.tableType == 'A1') {
+      if(this.filter.length > 0 ){
+        this.loaded = false;
+        this.requests = [];
+        this.userService.getClientRequestsByParam(this.filter).subscribe({
+          next:(res) =>{
+            xml2js.parseString(res, (err, result) => {
+              const responseArray = result["a1ResponseList"]["a1Response"] as Array<Object>;
+              if(responseArray === undefined){
+                this.loaded = true;
+                return;
+              }
+              responseArray.forEach((element: any) => {
+                this.requests.push({'id':element["id"][0],'submitterName':element["submitterName"][0], 'status':element["status"][0],'submitDate':element["submitDate"][0],'type':element["type"][0]} as RequestResponse);
+              });
+              this.loaded = true;
+            });
+          }
+        });
+      }
+    } else if (this.tableType === 'Z1' && this.filter !== '') {
+      this.loadedZ1 = false;
+      this.z1Requests = [];
+      this.userService.getFilteredZ1(this.filter).subscribe({
         next:(res) =>{
           xml2js.parseString(res, (err, result) => {
-            const responseArray = result["a1ResponseList"]["a1Response"] as Array<Object>;
+            const responseArray = result["z1ResponseList"]["z1Response"] as Array<Object>;
             if(responseArray === undefined){
-              this.loaded = true;
+              this.loadedZ1 = false;
               return;
             }
             responseArray.forEach((element: any) => {
-              this.requests.push({'id':element["id"][0],'submitterName':element["submitterName"][0], 'status':element["status"][0],'submitDate':element["submitDate"][0],'type':element["type"][0]} as RequestResponse);
+              const zajednickiPredstavnik = element['zajednickiPredstavnik'][0].trim()
+              const jedanPodnosilac = element['podnosilac'][0].trim()
+              const podnosilac = jedanPodnosilac ? jedanPodnosilac : zajednickiPredstavnik
+              const newElement = { id: element['id'][0], podnosilac, punomocnik: element['punomocnik'][0], status: element['status'][0] }
+              if (newElement.status === 'ODOBREN') this.z1Requests.push(newElement)
             });
-            this.loaded = true;
-         });
+          });
+          this.loadedZ1 = true;
         }
-      });
+      })
+    }
+    else if (this.tableType == 'P1') {
+      this.loadedP1 = false;
+      this.p1Requests = [];
+      this.userService.getOdobreniP1ByText(this.filter)
+        .subscribe({
+          next:(res) => {
+            xml2js.parseString(res, (err, result) => {
+              const responseArray = result["obrazacP1SearchResponseList"]["obrazacP1SearchResponse"] as Array<Object>;
+              if(responseArray === undefined){
+                this.loadedP1 = true;
+                return;
+              }
+              responseArray.forEach((element: any) => {
+                let podnosilac = "";
+
+                if (element['podnosilac'][0]['ns2:Poslovno_ime'] != undefined) {
+                  podnosilac = element['podnosilac'][0]['ns2:Poslovno_ime'][0];
+
+                } else if (element['podnosilac'][0]['ns2:Ime'] != undefined && element['podnosilac'][0]['ns2:Prezime'] != undefined) {
+                  podnosilac = element['podnosilac'][0]['ns2:Ime'] + " " + element['podnosilac'][0]['ns2:Prezime'];
+                }
+
+                const newElement: P1Request = {
+                  brojPrijave: element['brojPrijave'][0],
+                  nazivPronalaska: element['nazivPronalaska'][0]['ns2:Na_srpskom'][0]['_'],
+                  podnosilac: podnosilac,
+                  priznatiDatumPodnosenja: element['priznatiDatumPodnosenja'][0],
+                  status: element['status'][0]['_']
+                }
+                this.p1Requests.push(newElement)
+              });
+              this.loadedP1 = true;
+            });
+          }
+        });
     }
   }
 
@@ -75,9 +216,16 @@ export class UserProfileComponent implements OnInit {
     this.route.navigate(['/p1-form']);
   }
 
+  createZ1Request() {
+    this.route.navigate(['/z1-form'])
+  }
+
   clear(){
     this.filter = '';
     this.loaded = false;
+    this.loadedZ1 = false;
+    this.loadedP1 = false;
+
     this.userService.getClientRequests().subscribe({
       next:(res) =>{
         xml2js.parseString(res, (err, result) => {
@@ -93,11 +241,79 @@ export class UserProfileComponent implements OnInit {
        });
       }
     })
+    this.userService.getAllZ1().subscribe({
+      next:(res) =>{
+        xml2js.parseString(res, (err, result) => {
+          const responseArray = result["z1ResponseList"]["z1Response"] as Array<Object>;
+          if(responseArray === undefined){
+            this.loadedZ1 = false;
+            return;
+          }
+          const temp: Z1Request[] = []
+          responseArray.forEach((element: any) => {
+            const zajednickiPredstavnik = element['zajednickiPredstavnik'][0].trim()
+            const jedanPodnosilac = element['podnosilac'][0].trim()
+            const podnosilac = jedanPodnosilac ? jedanPodnosilac : zajednickiPredstavnik
+            const newElement = { id: element['id'][0], podnosilac, punomocnik: element['punomocnik'][0], status: element['status'][0] }
+            if (newElement.status === 'ODOBREN') temp.push(newElement)
+          });
+          this.z1Requests = temp
+        });
+        this.loadedZ1 = true;
+      }
+    })
+
+    this.userService.getAllOdobreniP1().subscribe({
+      next:(res) =>{
+        xml2js.parseString(res, (err, result) => {
+          const responseArray = result["obrazacP1SearchResponseList"]["obrazacP1SearchResponse"] as Array<Object>;
+          if(responseArray === undefined){
+            this.loadedP1 = true;
+            return;
+          }
+          const temp: P1Request[] = []
+          responseArray.forEach((element: any) => {
+            let podnosilac = "";
+
+            if (element['podnosilac'][0]['ns2:Poslovno_ime'] != undefined) {
+              podnosilac = element['podnosilac'][0]['ns2:Poslovno_ime'][0];
+
+            } else if (element['podnosilac'][0]['ns2:Ime'] != undefined && element['podnosilac'][0]['ns2:Prezime'] != undefined) {
+              podnosilac = element['podnosilac'][0]['ns2:Ime'] + " " + element['podnosilac'][0]['ns2:Prezime'];
+            }
+            const newElement: P1Request = {
+              brojPrijave: element['brojPrijave'][0],
+              nazivPronalaska: element['nazivPronalaska'][0]['ns2:Na_srpskom'][0]['_'],
+              podnosilac: podnosilac,
+              priznatiDatumPodnosenja: element['priznatiDatumPodnosenja'][0],
+              status: element['status'][0]['_']
+            }
+            temp.push(newElement)
+          });
+          this.p1Requests = temp
+        });
+        this.loadedP1 = true;
+      }
+    });
   }
 
   downloadPDF(request:RequestResponse){
     this.userService.downloadPDF(request.id).subscribe(data => {
       saveAs(data, 'a1_'+request.id+ '.pdf');});
+  }
+
+  downloadZ1PDF(request: Z1Request){
+    this.userService.downloadZ1PDF(request.id).subscribe(data => {
+      saveAs(data, 'z1_'+request.id+ '.pdf');});
+  }
+
+
+  downloadP1PDF(request: P1Request){
+    let documentId = request.brojPrijave.split('/').join('-');
+    this.userService.downloadP1PDF(documentId)
+      .subscribe(data => {
+        saveAs(data, 'p1_' + documentId + '.pdf');
+      });
   }
 
   getRjesenje(request:RequestResponse){
@@ -116,4 +332,16 @@ export class UserProfileComponent implements OnInit {
       saveAs(data, 'a1_'+request.id+ '.html');});
   }
 
+  downloadZ1HTML(request:Z1Request){
+    this.userService.downloadZ1HTML(request.id).subscribe(data => {
+      saveAs(data, 'z1_'+request.id+ '.html');});
+  }
+
+  downloadP1HTML(request: P1Request){
+    let documentId = request.brojPrijave.split('/').join('-');
+    this.userService.downloadP1HTML(documentId)
+      .subscribe(data => {
+        saveAs(data, 'p1_' + documentId + '.html');
+      });
+  }
 }

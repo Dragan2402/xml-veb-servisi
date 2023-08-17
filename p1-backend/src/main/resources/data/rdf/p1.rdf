@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xml:base="http://p1.euprava.com/model/rdf#"
+>
+    <rdfs:Class rdf:ID="ObrazacP1">
+    <rdfs:Property rdf:ID="DatumPrijema">
+    <rdfs:Property rdf:ID="Naziv">
+    <rdfs:Property rdf:ID="Status">
+</rdf:RDF>

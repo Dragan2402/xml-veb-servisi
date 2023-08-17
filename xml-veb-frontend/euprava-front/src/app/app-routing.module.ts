@@ -8,6 +8,7 @@ import { P1FormComponent } from './user-profile/p1-form/p1-form.component';
 import { LoginGuard } from './guard/login.guard';
 import { RegisterComponent } from './register/register.component';
 import { EmployeeProfileComponent } from './employee-profile/employee-profile.component';
+import {Z1FormComponent} from "./user-profile/z1-form/z1-form.component";
 
 const routes: Routes = [
   {path : 'login', component : LoginComponent},
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path : 'a1-from', component: A1FormComponent ,  canActivate:[LoginGuard]},
   {path : 'user-requests', component: UserRequestsComponent,  canActivate:[LoginGuard]},
   {path : 'p1-form', component: P1FormComponent,  canActivate:[LoginGuard]},
+  {path : 'z1-form', component: Z1FormComponent,  canActivate:[LoginGuard]},
   {path : 'register', component:RegisterComponent},
   {path: '' , redirectTo : '/login', pathMatch : 'full'}
 

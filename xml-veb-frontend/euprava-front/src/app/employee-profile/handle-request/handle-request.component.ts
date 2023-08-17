@@ -45,6 +45,7 @@ export class HandleRequestComponent implements OnInit {
         next:(v) =>{
           xml2js.parseString(v, (err, result) => {
             this.employeService.approveRequest(this.request.id,result["createRjesenjeResponse"]["code"][0],result["createRjesenjeResponse"]["id"][0]).subscribe();
+            this.employeService.sendEmail(this.request.email, result["createRjesenjeResponse"]["id"][0]).subscribe();
             this.dialogRef.close();
           });
         }
@@ -59,6 +60,7 @@ export class HandleRequestComponent implements OnInit {
         next:(v)=>{
           xml2js.parseString(v, (err, result) => {
             this.employeService.declineRequest(this.request.id,result["createRjesenjeResponse"]["id"][0]).subscribe();
+            this.employeService.sendEmail(this.request.email, result["createRjesenjeResponse"]["id"][0]).subscribe();
             this.dialogRef.close();
           });
         }

@@ -17,4 +17,6 @@ public interface IRjesenjeService {
     Rjesenje findById(long id) throws Exception;
 
     ByteArrayResource getRjesenjeStringByRequestId(long requestId) throws Exception;
+
+    void sendEmail(String email, String id) throws Exception;
 }

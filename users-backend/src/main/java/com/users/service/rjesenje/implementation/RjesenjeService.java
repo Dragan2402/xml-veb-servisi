@@ -6,6 +6,7 @@ import com.users.model.rjesenje.Rjesenje;
 import com.users.repository.RjesenjeRepository;
 import com.users.service.rjesenje.IRjesenjeService;
 import com.users.transformation.XSLFOTransformer;
+import com.users.util.EmailService;
 import com.users.util.SchemaValidationHandler;
 import com.users.util.Utility;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,8 @@ public class RjesenjeService implements IRjesenjeService {
     private final RjesenjeRepository rjesenjeRepository;
 
     private final XSLFOTransformer xslfoTransformer;
+
+    private final EmailService emailService;
 
     @Override
     public CreateRjesenjeResponse create(Rjesenje rjesenje) throws Exception {
@@ -89,6 +92,18 @@ public class RjesenjeService implements IRjesenjeService {
             resourceReturn = xslfoTransformer.generatePDF(os.toString(),"src/main/resources/data/xsl_fo/rjesenje.xsl");
         }
         return resourceReturn;
+    }
+
+    @Override
+    public void sendEmail(String email, String id) throws Exception {
+        Rjesenje rjesenje = findById(Long.parseLong(id));
+        JAXBContext context = JAXBContext.newInstance("com.users.model.rjesenje");
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        OutputStream os = new ByteArrayOutputStream();
+        marshaller.marshal(rjesenje, os);
+        ByteArrayResource resourceReturn = xslfoTransformer.generatePDF(os.toString(),"src/main/resources/data/xsl_fo/rjesenje.xsl");
+        emailService.sendEmailWithAttachment(email, resourceReturn);
     }
 
     private Rjesenje unmarshallXMLResource(XMLResource resource) throws JAXBException, SAXException, XMLDBException {

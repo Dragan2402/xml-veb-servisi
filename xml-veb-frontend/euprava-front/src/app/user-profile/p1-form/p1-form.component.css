@@ -1,0 +1,77 @@
+.form-div{
+  display: flex;
+  flex-direction: column;
+  margin-left: 20%;
+  margin-top: 15px;
+  margin-right: 20%;
+}
+
+.top-margin {
+  margin-top: 15px;
+}
+
+.bottom-margin {
+  margin-bottom: 30px;
+}
+
+.right-padding {
+  margin-right: 2%;
+}
+
+.column-half {
+  width: 49%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.column-third {
+  width: 32%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.column-two-thirds {
+  width: 66%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+mat-card {
+  margin: 15px;
+  padding: 30px;
+}
+
+mat-card-title {
+  padding-bottom: 30px;
+}
+
+mat-card-subtitle {
+  font-size: 1.5em;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-checkbox, mat-radio-group {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+mat-card-actions {
+  text-align: center;
+}
+
+mat-card-actions button {
+  width: 8em;
+  height: 2.5em;
+  font-size: 1.25em;
+}
+
+.mat-radio-label {
+  white-space: normal;
+}
+
+.mat-radio-label-content {
+  white-space: normal;
+}

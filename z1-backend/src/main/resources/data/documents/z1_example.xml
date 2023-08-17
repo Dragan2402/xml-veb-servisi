@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Z1 xmlns="http://euprava.com/z1/model"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://euprava.com/z1/model ../schemas/z1_schema.xsd">
+
+    <Podnosilac>
+        <Ime>John</Ime>
+        <Prezime>Doe</Prezime>
+        <Poslovno_ime>JD Corporation</Poslovno_ime>
+        <Adresa>
+            <Ulica>Main Street</Ulica>
+            <Broj>123</Broj>
+            <Postanski_broj>10000</Postanski_broj>
+            <Mesto>City</Mesto>
+            <Drzava>Country</Drzava>
+        </Adresa>
+        <Kontakt>
+            <Broj_telefona>123456789</Broj_telefona>
+            <Broj_faksa>987654321</Broj_faksa>
+            <E_posta>john.doe@example.com</E_posta>
+        </Kontakt>
+    </Podnosilac>
+
+    <Zajednicki_predstavnik>
+        <Ime>Jane</Ime>
+        <Prezime>Smith</Prezime>
+        <Poslovno_ime>JS Corporation</Poslovno_ime>
+        <Adresa>
+            <Ulica>Second Avenue</Ulica>
+            <Broj>456</Broj>
+            <Postanski_broj>20000</Postanski_broj>
+            <Mesto>City</Mesto>
+            <Drzava>Country</Drzava>
+        </Adresa>
+        <Kontakt>
+            <Broj_telefona>987654321</Broj_telefona>
+            <Broj_faksa>123456789</Broj_faksa>
+            <E_posta>jane.smith@example.com</E_posta>
+        </Kontakt>
+    </Zajednicki_predstavnik>
+
+    <Punomocnik>
+        <Ime>Robert</Ime>
+        <Prezime>Johnson</Prezime>
+        <Poslovno_ime>RJ Legal Services</Poslovno_ime>
+        <Adresa>
+            <Ulica>Third Street</Ulica>
+            <Broj>789</Broj>
+            <Postanski_broj>30000</Postanski_broj>
+            <Mesto>City</Mesto>
+            <Drzava>Country</Drzava>
+        </Adresa>
+        <Kontakt>
+            <Broj_telefona>555555555</Broj_telefona>
+            <Broj_faksa>666666666</Broj_faksa>
+            <E_posta>robert.johnson@example.com</E_posta>
+        </Kontakt>
+    </Punomocnik>
+
+    <Tip_ziga>Trademark Type</Tip_ziga>
+    <Tip_znaka>Sign Type</Tip_znaka>
+    <Naznacenje_boje>Color Indication</Naznacenje_boje>
+    <Opis_znaka>Sign Description</Opis_znaka>
+
+    <Brojevi_klasa_robe>
+        <Broj_klase_robe>1</Broj_klase_robe>
+        <Broj_klase_robe>2</Broj_klase_robe>
+        <Broj_klase_robe>3</Broj_klase_robe>
+    </Brojevi_klasa_robe>
+
+    <Pravo_prvenstva>Priority Right</Pravo_prvenstva>
+
+    <Placene_takse>
+        <Osnovna_taksa>100.50</Osnovna_taksa>
+        <Graficko_resenje>50.25</Graficko_resenje>
+        <Ukupno>150.75</Ukupno>
+    </Placene_takse>
+
+    <Prilozi>
+        <Primerak_znaka>Trademark Copy</Primerak_znaka>
+        <Spisak_robe_i_usluga>List of Goods and Services</Spisak_robe_i_usluga>
+        <Punomocje>Power of Attorney</Punomocje>
+        <Generalno_punomocje>General Power of Attorney</Generalno_punomocje>
+        <Punomocje_naknadno_dostavljeno>Subsequently Delivered Power of Attorney</Punomocje_naknadno_dostavljeno>
+        <Opsti_akt_o_kolektivnom_zigu>General Act on Collective Trademark</Opsti_akt_o_kolektivnom_zigu>
+        <Dokaz_o_pravu_prvenstva>Proof of Priority Right</Dokaz_o_pravu_prvenstva>
+        <Dokaz_o_uplati_takse>Proof of Fee Payment</Dokaz_o_uplati_takse>
+    </Prilozi>
+    <Status>PODNESEN</Status>
+
+</Z1>

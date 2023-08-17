@@ -1,47 +1,110 @@
 package com.euprava.p1.repository;
 
 import com.euprava.p1.model.ObrazacP1;
-import com.euprava.p1.repository.database.xml.ExistManager;
-import jakarta.xml.bind.*;
+import com.euprava.p1.repository.exist.ExistManager;
+import com.euprava.p1.repository.fuseki.FusekiWriter;
+import com.euprava.p1.repository.fuseki.MetadataExtractor;
+import lombok.RequiredArgsConstructor;
+import org.exist.Resource;
 import org.exist.http.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
+import org.xmldb.api.base.ResourceIterator;
+import org.xmldb.api.base.ResourceSet;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
 
+import javax.xml.XMLConstants;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.TransformerException;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
+@RequiredArgsConstructor
 public class P1Repository {
-    @Autowired
-    private ExistManager existManager;
-
     private static final String COLLECTION_ID = "db/p1";
     private static final String CONTEXT_PATH = "com.euprava.p1.model";
 
-    public ObrazacP1 findById(String documentId) throws XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, NotFoundException, JAXBException, SAXException {
-        XMLResource resource = existManager.load(COLLECTION_ID, documentId);
-        if(resource == null){
-            return null;
-        }
+    private final ExistManager existManager;
+    private final MetadataExtractor metadataExtractor;
 
-        JAXBContext context = JAXBContext.newInstance(CONTEXT_PATH);
-
-        Unmarshaller unmarshaller = context.createUnmarshaller();
-
-        String resourceString = resource.getContent().toString();
-        return (ObrazacP1) unmarshaller.unmarshal(new StringReader(resourceString));
-    }
-
-    public void saveObrazacP1(String documentId, ObrazacP1 obrazacP1) throws JAXBException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+    public void save(String documentId, ObrazacP1 obrazacP1) throws JAXBException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, NotFoundException, TransformerException, IOException {
         JAXBContext context = JAXBContext.newInstance(CONTEXT_PATH);
         Marshaller marshaller = context.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
         OutputStream os = new ByteArrayOutputStream();
 
         marshaller.marshal(obrazacP1, os);
-        existManager.storeFromText(COLLECTION_ID, documentId, os.toString());
+        existManager.store(COLLECTION_ID, documentId, os.toString());
+        saveMetadata(documentId);
+    }
+
+    private void saveMetadata(String documentId) throws NotFoundException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, TransformerException, IOException {
+        XMLResource resource = existManager.load(COLLECTION_ID, documentId);
+        if (resource == null) {
+            throw new NotFoundException("Document with id [" + documentId + "] not found.");
+        }
+
+        byte[] out = metadataExtractor.extractMetadata(resource.getContent().toString());
+        FusekiWriter.saveRDF(new ByteArrayInputStream(out));
+    }
+
+    public ObrazacP1 findById(String documentId) throws XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, NotFoundException, JAXBException, SAXException {
+        XMLResource resource = existManager.load(COLLECTION_ID, documentId);
+        if (resource == null) {
+            throw new NotFoundException("Document with id [" + documentId + "] not found.");
+        }
+
+        JAXBContext context = JAXBContext.newInstance(CONTEXT_PATH);
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        File schemaFile = new File("src/main/resources/data/schemas/p1_schema.xsd");
+        Schema schema = schemaFactory.newSchema(schemaFile);
+
+        unmarshaller.setSchema(schema);
+        return (ObrazacP1) unmarshaller.unmarshal(new StringReader(resource.getContent().toString()));
+    }
+
+    public Node findByIdAsNode(String documentId) throws XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, NotFoundException {
+        XMLResource resource = existManager.load(COLLECTION_ID, documentId);
+        if (resource == null) {
+            throw new NotFoundException("Document with id [" + documentId + "] not found.");
+        }
+
+        return resource.getContentAsDOM();
+    }
+
+    public String getLastId() throws XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+        return existManager.getLastId(COLLECTION_ID);
+    }
+
+    public List<ObrazacP1> searchByText(String xPathExp) throws XMLDBException, JAXBException {
+        ResourceSet result = existManager.retrieve(COLLECTION_ID, xPathExp);
+
+        List<ObrazacP1> obrasci = new ArrayList<>();
+        ResourceIterator iter = result.getIterator();
+        while (iter.hasMoreResources()) {
+            XMLResource resource = (XMLResource) iter.nextResource();
+            JAXBContext context = JAXBContext.newInstance(ObrazacP1.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            obrasci.add((ObrazacP1) unmarshaller.unmarshal(resource.getContentAsDOM()));
+        }
+
+        return obrasci;
+    }
+
+    public void updateStatus(String documentId, String newStatus) throws XMLDBException {
+        String contextXPath = "/Obrazac_P1/Popunjava_zavod/Status";
+        existManager.update(COLLECTION_ID, documentId, contextXPath, newStatus);
     }
 }
