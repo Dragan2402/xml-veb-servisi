@@ -191,7 +191,6 @@ export class Z1FormComponent implements OnInit {
     delete request['Vise_podnosilaca']
     if (!request['Podnosilac']) request['Podnosilac'] = structuredClone(EMPTY_PERSON)
     if (!request['Zajednicki_predstavnik']) request['Zajednicki_predstavnik'] = structuredClone(EMPTY_PERSON)
-    request['Status'] = 'PODNESEN'
     this.userService.submitZ1Request(this.convertToXML(request))
     console.log(this.convertToXML(request))
     console.log(request)

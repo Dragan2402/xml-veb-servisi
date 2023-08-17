@@ -44,7 +44,7 @@
                     </xs:complexType>
                 </xs:element>
                 <xs:element ref="z1:Status"/>
-                <xs:element ref="z1:Datum" minOccurs="0"/>
+                <xs:element ref="z1:Datum"/>
             </xs:sequence>
             <xs:attribute name="about"/>
             <xs:attribute name="typeof"/>
