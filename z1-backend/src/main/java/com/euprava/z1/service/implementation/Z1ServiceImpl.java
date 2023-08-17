@@ -80,7 +80,6 @@ public class Z1ServiceImpl implements Z1Service {
 
     @Override
     public Z1ResponseList retrieveZ1ResponseListByText(String text) throws XMLDBException, JAXBException {
-        if (text.equals("")) text = "en";
         String xPathExp = "/*[contains(., '" + text + "')]";
         List<Z1Response> list = z1Repository.searchByText(xPathExp);
         return new Z1ResponseList(list);

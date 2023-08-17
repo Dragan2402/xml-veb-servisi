@@ -37,36 +37,34 @@ export class Z1FormComponent implements OnInit {
       Vise_podnosilaca: false,
 
       Podnosilac: this.formBuilder.group({
-        Ime: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž]+$/) ] ],
-        Prezime: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž]+$/) ] ],
-        Poslovno_ime: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž]+$/) ] ],
+        Ime: ['Djuro', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž]+$/) ] ],
+        Prezime: ['Pucar', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž]+$/) ] ],
+        Poslovno_ime: ['Stari', [ Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]*$/) ] ],
         Adresa: this.formBuilder.group({
-          Ulica: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ],
-          Broj: ['', [ Validators.required, Validators.pattern(/^[1-9][0-9]*$/) ] ],
-          Postanski_broj: ['', [ Validators.required, Validators.pattern(/^[1-9][0-9]*$/), this.rangeValidator ] ],
-          Mesto: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ],
-          Drzava: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ]
+          Ulica: ['Partizanskih baza', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ],
+          Broj: ['88', [ Validators.required, Validators.pattern(/^[1-9][0-9]*$/) ] ],
+          Postanski_broj: ['14880', [ Validators.required, Validators.pattern(/^[1-9][0-9]*$/), this.rangeValidator ] ],
+          Mesto: ['Subotica', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ],
+          Drzava: ['Srbija', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ]
 
         }),
         Kontakt: this.formBuilder.group({
-          Broj_telefona: ['', [ Validators.required ] ],
-          Broj_faksa: ['', [ Validators.required ] ],
-          E_posta: ['', [ Validators.required, Validators.email ] ]
-
+          Broj_telefona: ['065848984', [ Validators.required ] ],
+          Broj_faksa: ['551225654', [ Validators.required ] ],
+          E_posta: ['djuropucar@maildrop.cc', [ Validators.required, Validators.email ] ]
         })
       }),
 
       Zajednicki_predstavnik: this.formBuilder.group({
         Ime: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž]+$/) ] ],
         Prezime: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž]+$/) ] ],
-        Poslovno_ime: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž]+$/) ] ],
+        Poslovno_ime: ['', [ Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]*$/) ] ],
         Adresa: this.formBuilder.group({
           Ulica: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ],
           Broj: ['', [ Validators.required, Validators.pattern(/^[1-9][0-9]*$/) ] ],
           Postanski_broj: ['', [ Validators.required, Validators.pattern(/^[1-9][0-9]*$/), this.rangeValidator ] ],
           Mesto: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ],
           Drzava: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ]
-
         }),
         Kontakt: this.formBuilder.group({
           Broj_telefona: ['', [ Validators.required ] ],
@@ -76,37 +74,37 @@ export class Z1FormComponent implements OnInit {
       }),
 
       Punomocnik: this.formBuilder.group({
-        Ime: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž]+$/) ] ],
-        Prezime: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž]+$/) ] ],
-        Poslovno_ime: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž]+$/) ] ],
+        Ime: ['Miro', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž]+$/) ] ],
+        Prezime: ['Semberac', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž]+$/) ] ],
+        Poslovno_ime: ['Lepi Momcilo', [ Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]*$/) ] ],
         Adresa: this.formBuilder.group({
-          Ulica: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ],
-          Broj: ['', [ Validators.required, Validators.pattern(/^[1-9][0-9]*$/) ] ],
-          Postanski_broj: ['', [ Validators.required, Validators.pattern(/^[1-9][0-9]*$/), this.rangeValidator ] ],
-          Mesto: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ],
-          Drzava: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ]
+          Ulica: ['Semberske brigade', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ],
+          Broj: ['92', [ Validators.required, Validators.pattern(/^[1-9][0-9]*$/) ] ],
+          Postanski_broj: ['19926', [ Validators.required, Validators.pattern(/^[1-9][0-9]*$/), this.rangeValidator ] ],
+          Mesto: ['Bijeljina', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ],
+          Drzava: ['Bosna', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ]
 
         }),
         Kontakt: this.formBuilder.group({
-          Broj_telefona: ['', [ Validators.required ] ],
-          Broj_faksa: ['', [ Validators.required ] ],
-          E_posta: ['', [ Validators.required, Validators.email ] ]
+          Broj_telefona: ['065111589', [ Validators.required ] ],
+          Broj_faksa: ['484899849', [ Validators.required ] ],
+          E_posta: ['miro@maildrop.cc', [ Validators.required, Validators.email ] ]
         })
       }),
 
       Tip_ziga: 'INDIVIDUALNI',
       Tip_znaka: 'VERBALNI',
 
-      Naznacenje_boje: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ],
-      Opis_znaka: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ],
+      Naznacenje_boje: ['Crvena i zuta', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ],
+      Opis_znaka: ['Znak je poprilicno ruzan', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ],
       Brojevi_klasa_robe: this.formBuilder.group({
         Broj_klase_robe: [[]]
       }),
-      Pravo_prvenstva: ['', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ],
+      Pravo_prvenstva: ['Zatrazeno prvenstvo', [ Validators.required, Validators.pattern(/^[A-Za-zŠĐČĆŽšđčćž ]+$/) ] ],
       Placene_takse: this.formBuilder.group({
-        Osnovna_taksa: ['', [Validators.required, Validators.pattern(/^[1-9]+$/)]],
-        Graficko_resenje: ['', [Validators.required, Validators.pattern(/^[1-9]+$/)]],
-        Ukupno: ['', [Validators.required, Validators.pattern(/^[1-9]+$/)]]
+        Osnovna_taksa: ['55', [Validators.required, Validators.pattern(/^[1-9][0-9]*$/)]],
+        Graficko_resenje: ['45', [Validators.required, Validators.pattern(/^[1-9][0-9]*$/)]],
+        Ukupno: ['100', [Validators.required, Validators.pattern(/^[1-9][0-9]*$/)]]
       }),
 
       Prilozi: this.formBuilder.group({
