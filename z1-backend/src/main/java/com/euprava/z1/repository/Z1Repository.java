@@ -5,6 +5,7 @@ import com.euprava.z1.model.Z1;
 import com.euprava.z1.repository.exist.ExistManager;
 import com.euprava.z1.repository.fuseki.FusekiWriter;
 import com.euprava.z1.repository.fuseki.MetadataExtractor;
+import com.euprava.z1.util.SchemaValidationHandler;
 import lombok.RequiredArgsConstructor;
 import org.exist.http.NotFoundException;
 import org.springframework.stereotype.Repository;
@@ -58,13 +59,13 @@ public class Z1Repository {
         if (resource == null) {
             throw new NotFoundException("Document with id [" + documentId + "] not found.");
         }
-
-        JAXBContext context = JAXBContext.newInstance(CONTEXT_PATH);
+        JAXBContext context = JAXBContext.newInstance(Z1.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         File schemaFile = new File("src/main/resources/data/schemas/z1_schema.xsd");
         Schema schema = schemaFactory.newSchema(schemaFile);
         unmarshaller.setSchema(schema);
+        unmarshaller.setEventHandler(new SchemaValidationHandler());
         return (Z1) unmarshaller.unmarshal(new StringReader(resource.getContent().toString()));
     }
 

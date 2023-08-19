@@ -93,6 +93,10 @@ export class UserService {
     return this.http.post("/api/z1/search", filter,{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
   }
 
+  getFilteredZ1Metadata(query: string){
+    return this.http.post("/api/z1/searchMetadata",query, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}})
+  }
+
   getAllP1() {
     let body = "en";
     return this.http.post("/api/p1/search", body, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});

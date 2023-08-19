@@ -1,5 +1,5 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -35,11 +35,6 @@ export class EmployeeService {
   getRequestsByParam(param:string){
     const body = "<searchRequest><param>"+param+"</param></searchRequest>";
     return this.http.post("/api/a1/searchEmployeeByParam",body, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}})
-  }
-
-  getRequestsByMeta(param:string){
-    const body = "<searchRequest><param>"+param+"</param></searchRequest>";
-    return this.http.post("/api/a1/searchMetadataByLogicalParams",body, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}})
   }
 
   getRequestsByReference(param:string){

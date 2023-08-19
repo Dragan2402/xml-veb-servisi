@@ -12,6 +12,9 @@ import com.euprava.z1.service.Z1Service;
 import com.euprava.z1.service.transformation.PDFTransformer;
 import com.euprava.z1.util.SchemaValidationHandler;
 import lombok.RequiredArgsConstructor;
+import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.ResultSet;
+import org.apache.jena.rdf.model.RDFNode;
 import org.exist.http.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Node;
@@ -70,6 +73,88 @@ public class Z1ServiceImpl implements Z1Service {
     }
 
     @Override
+    public Z1 getZ1ById(String id) throws Exception {
+        return z1Repository.findById(id);
+    }
+
+    @Override
+    public List<Z1Response> searchMetadata(String search) throws Exception {
+        String query = generateLogicalQuery(search);
+        List<RDFNode> nodes = new ArrayList<>();
+        List<Z1Response> responseList = new ArrayList<>();
+        ResultSet resultSet = FusekiReader.readRDFWithQuery(query);
+        List<String> columnNames = resultSet.getResultVars();
+        while (resultSet.hasNext()) {
+            QuerySolution row = resultSet.nextSolution();
+            String columnName = columnNames.get(0);
+            nodes.add(row.get(columnName));
+        }
+
+        for (RDFNode node : nodes) {
+            String[] parts = node.toString().split("/");
+            long id = Long.parseLong(parts[parts.length - 1]);
+            Z1 z1 = getZ1ById(parts[parts.length - 1]);
+            Z1Response response = new Z1Response(z1, id);
+            responseList.add(response);
+        }
+        return responseList;
+    }
+
+    private String generateLogicalQuery(String search) {
+        if (search.contains("AND")) {
+            return generateANDQuery(search);
+        } else if (search.contains("OR")) {
+            return generateORQuery(search);
+        } else if (search.contains("NOT")) {
+            return generateNOTQuery(search);
+        }
+        return "?document ?d \"" + search + "\" .";
+    }
+
+    private String generateANDQuery(String search) {
+        String[] parts = search.split("AND");
+        if (parts.length == 1) {
+            return "?document ?d \"" + parts[0] + "\" .";
+        }
+        String query = "";
+
+        for (int i = 0; i < parts.length; i++) {
+            query = query + "\n ?document ?" + i + " \"" + parts[i] + "\" . ";
+        }
+        return query;
+    }
+
+    private String generateORQuery(String search) {
+        String[] parts = search.split("OR");
+        if (parts.length == 1) {
+            return "?document ?d \"" + parts[0] + "\" .";
+        }
+        StringBuilder value = new StringBuilder();
+        for (int i = 0; i < parts.length - 1; i++) {
+            value.append(parts[i]).append("|");
+        }
+        value.append(parts[parts.length - 1]);
+        return "?document ?p ?o . FILTER (REGEX(?o,\"" + value + "\"))";
+    }
+
+    private String generateNOTQuery(String search) {
+        String[] parts = search.split("NOT");
+        if (parts.length == 1) {
+            return "?document ?d \"" + parts[0] + "\" .";
+        }
+        String query = "";
+
+        for (int i = 0; i < parts.length; i++) {
+            if (i == 0) {
+                query += "\n ?document ?" + i + " \"" + parts[i] + "\" . ";
+            } else {
+                query += "\n FILTER NOT EXISTS { ?document ?" + i + " \"" + parts[i] + "\" . }";
+            }
+        }
+        return query;
+    }
+
+    @Override
     public String createZ1(Z1 z1) throws JAXBException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, DatatypeConfigurationException, NotFoundException, IOException, TransformerException {
         int randomNum = ThreadLocalRandom.current().nextInt(1, Integer.MAX_VALUE);
         String documentId = String.valueOf(randomNum);
@@ -82,6 +167,9 @@ public class Z1ServiceImpl implements Z1Service {
         z1.setAbout(RDF_URL + "/" + documentId);
         z1.setTypeof("pred:Z1");
 
+        z1.getPodnosilac().getKontakt().getEPosta().setProperty("pred:EmailPodnosioca");
+        z1.getPodnosilac().getKontakt().getEPosta().setDatatype("xs:string");
+
         z1.setStatus(new Status());
         z1.getStatus().setValue("PODNESEN");
         z1.getStatus().setProperty("pred:Status");
@@ -90,9 +178,9 @@ public class Z1ServiceImpl implements Z1Service {
         z1.setDatum(new Datum());
         z1.getDatum().setValue(xmlCalendar);
         z1.getDatum().setProperty("pred:Datum");
-        z1.getDatum().setDatatype("xs:date");
+        z1.getDatum().setDatatype("xs:string");
 
-        z1.getOtherAttributes().put(QName.valueOf("xmlns:pred"), RDF_URL + "/predicate");
+        z1.getOtherAttributes().put(QName.valueOf("xmlns:pred"), RDF_URL + "/predicate/");
         z1.getOtherAttributes().put(QName.valueOf("xmlns:xs"), "http://www.w3.org/2001/XMLSchema#");
         z1Repository.save(documentId, z1);
         return documentId;

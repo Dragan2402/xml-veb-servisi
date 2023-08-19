@@ -98,7 +98,16 @@
         <xs:sequence>
             <xs:element name="Broj_telefona" type="xs:string"/>
             <xs:element name="Broj_faksa" type="xs:string"/>
-            <xs:element name="E_posta" type="xs:string"/>
+            <xs:element name="E_posta">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                            <xs:attribute name="property"/>
+                            <xs:attribute name="datatype"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
         </xs:sequence>
     </xs:complexType>
 

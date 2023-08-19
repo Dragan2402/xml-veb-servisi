@@ -22,39 +22,14 @@ public class FusekiReader {
 
     }
 
-    public static ArrayList<String> executeQuery(Map<String, String> params) throws IOException {
+    public static ResultSet readRDFWithQuery(String sparqlQueryCondition) throws IOException {
         FusekiAuthenticationUtilities.ConnectionProperties conn = FusekiAuthenticationUtilities.loadProperties();
-        String sparqlQueryTemplate = readFile(QUERY_FILE, StandardCharsets.UTF_8);
-//        String sparqlQuery = StringSubstitutor.replace(sparqlQueryTemplate, params, "{{", "}}");
-        String sparqlQuery = "";
+        System.out.println("[INFO] Selecting the triples from the named graph \"" + GRAPH_URI + "\".");
+        String sparqlQuery;
+        sparqlQuery = SparqlUtil.selectData(conn.dataEndpoint +"/"+ GRAPH_URI, sparqlQueryCondition);
+        System.out.println(sparqlQuery);
         QueryExecution query = QueryExecutionFactory.sparqlService(conn.queryEndpoint, sparqlQuery);
-        ResultSet results = query.execSelect();
-
-        String varName;
-        RDFNode varValue;
-        ArrayList<String> found = new ArrayList<>();
-        while (results.hasNext()) {
-            QuerySolution querySolution = results.next();
-            Iterator<String> variableBindings = querySolution.varNames();
-
-            while (variableBindings.hasNext()) {
-                varName = variableBindings.next();
-                varValue = querySolution.get(varName);
-
-                if (varName.contains("naziv")) {
-                    String value = varValue.toString();
-                    found.add(value);
-                }
-            }
-        }
-        ResultSetFormatter.outputAsXML(System.out, results);
-        query.close();
-        return found;
-    }
-
-    public static String readFile(String path, Charset encoding) throws IOException {
-        byte[] encoded = Files.readAllBytes(Paths.get(path));
-        return new String(encoded, encoding);
+        return query.execSelect();
     }
 
     public static String readMetadataAsRDF(String sparqlCondition) throws IOException {
