@@ -107,10 +107,8 @@ public class Z1Repository {
         return list;
     }
 
-    public void zavod(String documentId, Z1ZavodRequest z1ZavodRequest, String idResenja, String newStatus) throws XMLDBException {
-
-
-        existManager.create(COLLECTION_ID, documentId,"/Z1/Datum", "<Id_Resenja>"+idResenja+"</Id_Resenja>");
+    public void zavod(String documentId, Z1ZavodRequest z1ZavodRequest, String patch, String newStatus) throws XMLDBException {
+        existManager.create(COLLECTION_ID, documentId,"/Z1/Datum", patch);
         existManager.update(COLLECTION_ID, documentId, "/Z1/Status", newStatus);
         existManager.update(COLLECTION_ID, documentId, "/Z1/Prilozi/Primerak_znaka", z1ZavodRequest.getPrimerakZnaka());
         existManager.update(COLLECTION_ID, documentId, "/Z1/Prilozi/Spisak_robe_i_usluga", z1ZavodRequest.getSpisakRobe());

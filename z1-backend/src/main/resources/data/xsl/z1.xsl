@@ -74,7 +74,7 @@
                 <h3 style="margin-top: 20px">ZAHTEV ZA PRIZNANJE ZIGA</h3>
                 <h4>Zavod za intelektualnu svojinu, Kneginje Ljubice 5, 11000 Beograd</h4>
 
-                <div style="border-top: 1px solid black; border-right: 1px solid black; border-left: 1px solid black; width: 90%; margin: auto">
+                <div style="border-top: 1px solid black; border-right: 1px solid black; border-left: 1px solid black; width: 100%; margin: auto">
                     <div class="border-bot">
                         <p class="border-bot padded">
                             <strong>
@@ -240,23 +240,20 @@
                     <table style="width: 100%">
                         <tbody>
                             <tr>
-                                <td width="50%">
+                                <td>
                                     <strong>
                                         4. Prijava se podnosi za:
                                     </strong>
                                 </td>
-                                <td style="padding-left: 20px" rowspan="4">
-                                    <strong>c) Izgled znaka:</strong>
+                            </tr>
+                            <tr>
+                                <td style="padding-left: 20px">
+                                    <strong>a)</strong>&nbsp;<xsl:value-of select="//z1:Tip_ziga"/> ZIG
                                 </td>
                             </tr>
                             <tr>
                                 <td style="padding-left: 20px">
-                                    <strong>a)</strong>&nbsp;<xsl:value-of select="//z1:Tip_ziga"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="padding-left: 20px">
-                                    <strong>b)</strong>&nbsp;<xsl:value-of select="//z1:Tip_znaka"/>
+                                    <strong>b)</strong>&nbsp;<xsl:value-of select="//z1:Tip_znaka"/> ZIG
                                 </td>
                             </tr>
                             <tr>
@@ -348,7 +345,11 @@
                                 <strong>Prilozi uz zahtev</strong>
                             </td>
                             <td rowspan="9">
-                                <div style="text-align: center; margin: 5px">
+                                <div style="displat: flex; justify-content: center; align-items: center; text-align: center;">
+                                    <div>Broj prijave ziga:</div>
+                                    <div><xsl:value-of select="//z1:Broj_prijave"/></div>
+                                    <div><strong>Datum podnosenja:</strong></div>
+                                    <div><strong><xsl:value-of select="//z1:Datum"/></strong></div>
                                 </div>
                             </td>
                         </tr>

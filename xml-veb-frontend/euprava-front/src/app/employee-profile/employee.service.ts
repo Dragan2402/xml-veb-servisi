@@ -8,20 +8,12 @@ export class EmployeeService {
 
   constructor(private http:HttpClient) { }
 
-  odobriZ1(documentId: string, z1ZavodRequest: any, idResenja: string) {
-    return this.http.put(`/api/z1/${documentId}/odobri?idResenja=${idResenja}`, z1ZavodRequest, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
+  odobriZ1(documentId: string, z1ZavodRequest: any, idResenja: string, brojPrijave: string) {
+    return this.http.put(`/api/z1/${documentId}/odobri?idResenja=${idResenja}&brojPrijave=${brojPrijave}`, z1ZavodRequest, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
   }
 
   odbijZ1(documentId: string, z1ZavodRequest: any, idResenja: string) {
     return this.http.put(`/api/z1/${documentId}/odbij?idResenja=${idResenja}`, z1ZavodRequest, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
-  }
-
-  approveRequest(id:number, code:number,rjesenjeId:number){
-    return this.http.get("/api/a1/approveRequest?id="+id+"&code="+code+"&idRjesenja="+rjesenjeId,{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
-  }
-
-  declineRequest(id:number,rjesenjeId:number){
-    return this.http.get("/api/a1/declineRequest?id="+id+"&idRjesenja="+rjesenjeId,{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
   }
 
   odobriP1(documentId: string) {

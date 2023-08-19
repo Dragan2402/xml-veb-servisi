@@ -1,6 +1,7 @@
 package com.euprava.z1.controller;
 
 
+import com.euprava.z1.controller.request.SearchRequest;
 import com.euprava.z1.controller.request.Z1ZavodRequest;
 import com.euprava.z1.controller.response.NumberResponse;
 import com.euprava.z1.controller.response.Z1ResponseList;
@@ -50,19 +51,19 @@ public class Z1Controller {
     }
 
     @PostMapping(value = "/search", produces = {"application/xml"})
-    public ResponseEntity<Z1ResponseList> searchByText(@RequestBody String queryText) throws XMLDBException, JAXBException {
-        Z1ResponseList z1ResponseList = z1Service.retrieveZ1ResponseListByText(queryText);
+    public ResponseEntity<Z1ResponseList> searchByText(@RequestBody SearchRequest searchRequest) throws XMLDBException, JAXBException {
+        Z1ResponseList z1ResponseList = z1Service.retrieveZ1ResponseListByText(searchRequest.getParam());
         return new ResponseEntity<>(z1ResponseList, HttpStatus.OK);
     }
 
     @PostMapping(value = "/searchMetadata", produces = {"application/xml"})
-    public ResponseEntity<Z1ResponseList> searchMetadata(@RequestBody String queryText) throws Exception {
-        return new ResponseEntity<>(new Z1ResponseList(z1Service.searchMetadata(queryText)), HttpStatus.OK);
+    public ResponseEntity<Z1ResponseList> searchMetadata(@RequestBody SearchRequest searchRequest) throws Exception {
+        return new ResponseEntity<>(new Z1ResponseList(z1Service.searchMetadata(searchRequest.getParam())), HttpStatus.OK);
     }
 
     @PostMapping(value = "searchByReference", produces = {"application/xml"})
-    public ResponseEntity<Z1ResponseList> searchEmployeeByReference( @RequestBody String queryText) throws Exception{
-        return new ResponseEntity<>(new Z1ResponseList(z1Service.searchByReference(queryText)), HttpStatus.OK);
+    public ResponseEntity<Z1ResponseList> searchEmployeeByReference(@RequestBody SearchRequest searchRequest) throws Exception{
+        return new ResponseEntity<>(new Z1ResponseList(z1Service.searchByReference(searchRequest.getParam())), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{documentId}/html")
@@ -88,8 +89,8 @@ public class Z1Controller {
     }
 
     @PutMapping(value = "/{documentId}/odobri")
-    public ResponseEntity<Void> approveZ1(@PathVariable String documentId, @RequestBody Z1ZavodRequest z1ZavodRequest, @RequestParam String idResenja) throws XMLDBException {
-        z1Service.setZ1StatusAsOdobren(documentId, z1ZavodRequest, idResenja);
+    public ResponseEntity<Void> approveZ1(@PathVariable String documentId, @RequestBody Z1ZavodRequest z1ZavodRequest, @RequestParam String idResenja, @RequestParam String brojPrijave) throws XMLDBException {
+        z1Service.setZ1StatusAsOdobren(documentId, z1ZavodRequest, idResenja, brojPrijave);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

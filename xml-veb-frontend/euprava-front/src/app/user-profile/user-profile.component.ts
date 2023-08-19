@@ -30,13 +30,13 @@ export type TableType = 'A1' | 'P1' | 'Z1'
 export class UserProfileComponent implements OnInit {
 
   displayedColumns: string[] = ['id','submitterName' ,'type', 'submitDate', 'status', 'pdf', 'html' ,'rjesenje'];
-  displayedColumnsZ1: string[] = ['id','podnosilac' ,'punomocnik', 'status', 'pdf', 'html'];
+  displayedColumnsZ1: string[] = ['id','podnosilac' ,'punomocnik', 'status', 'pdf', 'html', 'resenje'];
   displayedColumnsP1: string[] = ['brojPrijave', 'nazivPronalaska', 'podnosilac', 'priznatiDatumPodnosenja', 'pdf', 'html'];
 
   requests: RequestResponse[];
   z1Requests: Z1Request[];
   p1Requests: P1Request[];
-  tableType: TableType = 'A1'
+  tableType: TableType = 'Z1'
 
   loaded : boolean = false;
   loadedZ1 : boolean = false;
@@ -316,12 +316,12 @@ export class UserProfileComponent implements OnInit {
       });
   }
 
-  getRjesenje(request:RequestResponse){
-    this.userService.downloadRjesenjeByRequestId(request.id).subscribe((response:any) => {
+  getResenje(request:Z1Request){
+    this.userService.downloadResenjeByRequestId(+request.id).subscribe((response:any) => {
       const url = window.URL.createObjectURL(response);
       const link = document.createElement('a');
       link.href = url;
-      link.download = "rjesenje.pdf";
+      link.download = "resenje.pdf";
       link.click();
   });
   }

@@ -85,7 +85,7 @@ export class HandleRequestComponent implements OnInit {
       this.employeService.createResenje(requestBody).subscribe({
         next:(v) =>{
           xml2js.parseString(v, (err, result) => {
-            this.employeService.odobriZ1(this.request.id, this.convertToXML(this.zavod),result["createRjesenjeResponse"]["id"][0]).subscribe();
+            this.employeService.odobriZ1(this.request.id, this.convertToXML(this.zavod),result["createRjesenjeResponse"]["id"][0], this.code).subscribe();
             this.dialogRef.close();
           });
         }

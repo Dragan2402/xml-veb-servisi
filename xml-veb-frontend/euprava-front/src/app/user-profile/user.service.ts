@@ -89,15 +89,18 @@ export class UserService {
   }
 
   getFilteredZ1(filter: string){
-    return this.http.post("/api/z1/search", filter,{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
+    const body = "<searchRequest><param>"+filter+"</param></searchRequest>";
+    return this.http.post("/api/z1/search", body,{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
   }
 
   getFilteredZ1Metadata(filter: string){
-    return this.http.post("/api/z1/searchMetadata",filter, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}})
+    const body = "<searchRequest><param>"+filter+"</param></searchRequest>";
+    return this.http.post("/api/z1/searchMetadata",body, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}})
   }
 
   getFilteredZ1ByReference(filter: string){
-    return this.http.post("/api/z1/searchByReference",filter, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}})
+    const body = "<searchRequest><param>"+filter+"</param></searchRequest>";
+    return this.http.post("/api/z1/searchByReference",body, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}})
   }
 
   getAllP1() {
@@ -150,7 +153,7 @@ export class UserService {
     return this.http.post("/api/a1/searchClientByParam?clientId="+id,body, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}})
   }
 
-  downloadRjesenjeByRequestId(id:number){
+  downloadResenjeByRequestId(id:number){
     const options = {
         headers: new HttpHeaders().append('Content-Type', 'application/pdf'),
         responseType: 'blob' as 'json'

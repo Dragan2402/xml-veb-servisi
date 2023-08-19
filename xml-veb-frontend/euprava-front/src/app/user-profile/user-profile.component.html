@@ -2,9 +2,9 @@
   <div class="profile-info-div">
     <div>
       <mat-radio-group style="display: flex; gap: 24px; margin: 20px;">
-        <mat-radio-button class="column-half" [value]="'A1'" [checked]="tableType==='A1'" (change)="handleTableChange('A1')">A1</mat-radio-button>
+        <mat-radio-button class="column-half" [value]="'A1'" (change)="handleTableChange('A1')">A1</mat-radio-button>
         <mat-radio-button class="column-half" [value]="'P1'" (change)="handleTableChange('P1')">P1</mat-radio-button>
-        <mat-radio-button class="column-half" [value]="'Z1'" (change)="handleTableChange('Z1')">Z1</mat-radio-button>
+        <mat-radio-button class="column-half" [value]="'Z1'" [checked]="tableType==='Z1'" (change)="handleTableChange('Z1')">Z1</mat-radio-button>
       </mat-radio-group>
     </div>
     <div style="display: flex;flex-direction: row; width: 80%;align-items: center;">
@@ -65,7 +65,7 @@
         <ng-container matColumnDef="rjesenje">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let request">
-            <button *ngIf="request.status !== 'PODNESEN'" type="button" color="primary" style="width: 100px;"  mat-raised-button  (click)="getRjesenje(request)">Rjesenje</button>
+            <button *ngIf="request.status !== 'PODNESEN'" type="button" color="primary" style="width: 100px;"  mat-raised-button  (click)="getResenje(request)">Rjesenje</button>
           </td>
         </ng-container>
 
@@ -101,6 +101,12 @@
           <th mat-header-cell *matHeaderCellDef>HTML</th>
           <td mat-cell *matCellDef="let request">
             <button type="button"   mat-button  (click)="downloadZ1HTML(request)"><mat-icon>get_app</mat-icon></button>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="resenje">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let request">
+            <button *ngIf="request.status !== 'PODNESEN'" type="button" color="primary" style="width: 100px;"  mat-raised-button  (click)="getResenje(request)">Resenje</button>
           </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumnsZ1"></tr>

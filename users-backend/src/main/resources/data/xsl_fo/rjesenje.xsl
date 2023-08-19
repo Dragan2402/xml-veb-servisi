@@ -15,12 +15,10 @@
                     <fo:block-container border="1pt solid black" padding="2%">
                         <fo:block-container border-bottom="1pt solid black">
                             <fo:block text-align="center" text-decoration="underline" margin-top="1%">
-                                <fo:inline>
-                                    Resenje <xsl:value-of select="b:rjesenje/b:id"/>
-                                </fo:inline>
+                                Resenje <xsl:value-of select="b:rjesenje/b:id"/>
                             </fo:block>
                             <fo:block margin-top="1%">
-                                <fo:inline>Sluzbenik: </fo:inline> <fo:inline margin-right="1%"><xsl:value-of select="b:rjesenje/b:ime_sluzbenika"/>  </fo:inline>  <fo:inline><xsl:value-of select="b:rjesenje/b:prezime_sluzbenika"/></fo:inline>
+                                Sluzbenik: <xsl:value-of select="b:rjesenje/b:ime_sluzbenika"/> <xsl:text> </xsl:text> <xsl:value-of select="b:rjesenje/b:prezime_sluzbenika"/>
                             </fo:block>
                             <fo:block margin-top="1%" >
                                 Tip zahtjeva: <xsl:value-of select="b:rjesenje/b:tip_zahtjeva"/>
@@ -42,7 +40,6 @@
                                 Referenca zahteva: <xsl:value-of select="b:rjesenje/b:id_zahtjeva"/>
                             </fo:block>
                         </fo:block-container>
-
                     </fo:block-container>
                 </fo:flow>
             </fo:page-sequence>

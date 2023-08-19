@@ -22,12 +22,16 @@
     <mat-form-field appearance="fill" style="width: 100%;">
       <input matInput placeholder="Punomocje" [(ngModel)]="zavod.punomocje" required>
     </mat-form-field>
-    <mat-form-field appearance="fill" style="width: 100%;">
-      <input matInput placeholder="Punomocje dostavljeno ranije" [(ngModel)]="zavod.punomocjeRanije" required>
-    </mat-form-field>
-    <mat-form-field appearance="fill" style="width: 100%;">
-      <input matInput placeholder="Punomocje dostavljeno naknadno" [(ngModel)]="zavod.punomocjeNaknadno" required>
-    </mat-form-field>
+    <label>Punomocje dostavljeno ranije:</label>
+    <mat-radio-group style="display: flex; gap: 24px; margin: 20px;" [(ngModel)]="zavod.punomocjeRanije">
+      <mat-radio-button class="column-half" [value]="'DA'">DA</mat-radio-button>
+      <mat-radio-button class="column-half" [value]="'NE'">NE</mat-radio-button>
+    </mat-radio-group>
+    <label>Punomocje ce biti dostavljeno naknadno:</label>
+    <mat-radio-group style="display: flex; gap: 24px; margin: 20px;" [(ngModel)]="zavod.punomocjeNaknadno">
+      <mat-radio-button class="column-half" [value]="'DA'">DA</mat-radio-button>
+      <mat-radio-button class="column-half" [value]="'NE'">NE</mat-radio-button>
+    </mat-radio-group>
     <mat-form-field appearance="fill" style="width: 100%;">
       <input matInput placeholder="Opsti akt o kolektivnom zigu" [(ngModel)]="zavod.opstiAkt" required>
     </mat-form-field>

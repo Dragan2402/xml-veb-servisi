@@ -221,13 +221,13 @@ public class Z1ServiceImpl implements Z1Service {
     }
 
     @Override
-    public void setZ1StatusAsOdobren(String documentId, Z1ZavodRequest z1ZavodRequest, String idResenja) throws XMLDBException {
-        z1Repository.zavod(documentId, z1ZavodRequest, idResenja,"ODOBREN");
+    public void setZ1StatusAsOdobren(String documentId, Z1ZavodRequest z1ZavodRequest, String idResenja, String brojPrijave) throws XMLDBException {
+        z1Repository.zavod(documentId, z1ZavodRequest, "<Id_Resenja>"+idResenja+"</Id_Resenja><Broj_prijave>"+brojPrijave+"</Broj_prijave>","ODOBREN");
     }
 
     @Override
     public void setZ1StatusAsOdbijen(String documentId, Z1ZavodRequest z1ZavodRequest, String idResenja) throws XMLDBException {
-        z1Repository.zavod(documentId, z1ZavodRequest, idResenja,"ODBIJEN");
+        z1Repository.zavod(documentId, z1ZavodRequest, "<Id_Resenja>"+idResenja+"</Id_Resenja>","ODBIJEN");
     }
 
     @Override
