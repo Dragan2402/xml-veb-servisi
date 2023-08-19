@@ -1,6 +1,7 @@
 package com.euprava.z1.controller;
 
 
+import com.euprava.z1.controller.request.Z1ZavodRequest;
 import com.euprava.z1.controller.response.NumberResponse;
 import com.euprava.z1.controller.response.Z1ResponseList;
 import com.euprava.z1.model.Z1;
@@ -87,14 +88,14 @@ public class Z1Controller {
     }
 
     @PutMapping(value = "/{documentId}/odobri")
-    public ResponseEntity<Void> approveZ1(@PathVariable String documentId) throws XMLDBException {
-        z1Service.setZ1StatusAsOdobren(documentId);
+    public ResponseEntity<Void> approveZ1(@PathVariable String documentId, @RequestBody Z1ZavodRequest z1ZavodRequest, @RequestParam String idResenja) throws XMLDBException {
+        z1Service.setZ1StatusAsOdobren(documentId, z1ZavodRequest, idResenja);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping(value = "/{documentId}/odbij")
-    public ResponseEntity<Void> declineZ1(@PathVariable String documentId) throws XMLDBException {
-        z1Service.setZ1StatusAsOdbijen(documentId);
+    public ResponseEntity<Void> declineZ1(@PathVariable String documentId, @RequestBody Z1ZavodRequest z1ZavodRequest, @RequestParam String idResenja) throws XMLDBException {
+        z1Service.setZ1StatusAsOdbijen(documentId, z1ZavodRequest, idResenja);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

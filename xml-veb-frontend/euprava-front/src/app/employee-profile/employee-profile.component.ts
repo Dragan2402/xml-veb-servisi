@@ -18,7 +18,7 @@ import {UserService} from "../user-profile/user.service";
 export class EmployeeProfileComponent implements OnInit {
 
   displayedColumns: string[] = ['id','submitterName' ,'type', 'submitDate', 'status', 'pdf', 'html','metadata','handle' ];
-  displayedColumnsZ1: string[] = ['id','podnosilac' ,'punomocnik', 'status', 'pdf', 'html', 'rdf', 'json', 'odobrenje', 'odbijanje'];
+  displayedColumnsZ1: string[] = ['id','podnosilac' ,'punomocnik', 'status', 'pdf', 'html', 'rdf', 'json', 'resenje'];
   displayedColumnsP1: string[] = ['brojPrijave', 'nazivPronalaska', 'podnosilac', 'priznatiDatumPodnosenja', 'status', 'pdf', 'html', 'rdf', 'json', 'odobrenje', 'odbijanje'];
 
   requests:RequestResponse[] = [];
@@ -203,7 +203,10 @@ export class EmployeeProfileComponent implements OnInit {
               this.loadedZ1 = false;
               return;
             }
-            responseArray.forEach((element: any) => {
+            const arr: any[] = []
+            const uniqueIds = [...new Set(responseArray.map((element: any) => element.id[0]))]
+            uniqueIds.forEach(id => arr.push(responseArray.find((el: any) => el.id[0] === id)))
+            arr.forEach((element: any) => {
               const zajednickiPredstavnik = element['zajednickiPredstavnik'][0].trim()
               const jedanPodnosilac = element['podnosilac'][0].trim()
               const podnosilac = jedanPodnosilac ? jedanPodnosilac : zajednickiPredstavnik
@@ -217,12 +220,12 @@ export class EmployeeProfileComponent implements OnInit {
     }
   }
 
-  getRjesenje(request:RequestResponse){
-    this.employeeService.downloadRjesenjeByRequestId(request.id).subscribe((response:any) => {
+  getResenje(request:Z1Request){
+    this.employeeService.downloadResenjeByRequestId(+request.id).subscribe((response:any) => {
       const url = window.URL.createObjectURL(response);
       const link = document.createElement('a');
       link.href = url;
-      link.download = "rjesenje.pdf";
+      link.download = "resenje.pdf";
       link.click();
   });
   }
@@ -298,20 +301,6 @@ export class EmployeeProfileComponent implements OnInit {
       }
     });
 
-  }
-
-  handleOdobriZ1(documentId: string) {
-    this.employeeService.odobriZ1(documentId).subscribe({
-      next:(res) =>{
-        this.clear()
-      }})
-  }
-
-  handleOdbijZ1(documentId: string) {
-    this.employeeService.odbijZ1(documentId).subscribe({
-      next:(res) =>{
-        this.clear()
-      }})
   }
 
   handleOdobriP1(documentId: string) {
@@ -390,14 +379,14 @@ export class EmployeeProfileComponent implements OnInit {
       });
   }
 
-  handle(request:RequestResponse){
+  obrada(request: Z1Request){
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.disableClose = false;
     dialogConfig.id = "handle-modal";
     dialogConfig.data = {request};
-    dialogConfig.height = "60%";
-    dialogConfig.width = "30%";
+    dialogConfig.height = "90%";
+    dialogConfig.width = "40%";
     // https://material.angular.io/components/dialog/overview
     const dialogRef = this.matDialog.open(HandleRequestComponent, dialogConfig);
     dialogRef.afterClosed().subscribe({

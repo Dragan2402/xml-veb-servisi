@@ -1,5 +1,6 @@
 package com.euprava.z1.service.implementation;
 
+import com.euprava.z1.controller.request.Z1ZavodRequest;
 import com.euprava.z1.controller.response.NumberResponse;
 import com.euprava.z1.controller.response.Z1Response;
 import com.euprava.z1.controller.response.Z1ResponseList;
@@ -126,7 +127,7 @@ public class Z1ServiceImpl implements Z1Service {
     }
 
     private String generateANDQuery(String search) {
-        String[] parts = search.split("AND");
+        String[] parts = search.split(" AND ");
         if (parts.length == 1) {
             return "?document ?d \"" + parts[0] + "\" .";
         }
@@ -139,7 +140,7 @@ public class Z1ServiceImpl implements Z1Service {
     }
 
     private String generateORQuery(String search) {
-        String[] parts = search.split("OR");
+        String[] parts = search.split(" OR ");
         if (parts.length == 1) {
             return "?document ?d \"" + parts[0] + "\" .";
         }
@@ -152,7 +153,7 @@ public class Z1ServiceImpl implements Z1Service {
     }
 
     private String generateNOTQuery(String search) {
-        String[] parts = search.split("NOT");
+        String[] parts = search.split(" NOT ");
         if (parts.length == 1) {
             return "?document ?d \"" + parts[0] + "\" .";
         }
@@ -220,13 +221,13 @@ public class Z1ServiceImpl implements Z1Service {
     }
 
     @Override
-    public void setZ1StatusAsOdobren(String documentId) throws XMLDBException {
-        z1Repository.updateStatus(documentId, "ODOBREN");
+    public void setZ1StatusAsOdobren(String documentId, Z1ZavodRequest z1ZavodRequest, String idResenja) throws XMLDBException {
+        z1Repository.zavod(documentId, z1ZavodRequest, idResenja,"ODOBREN");
     }
 
     @Override
-    public void setZ1StatusAsOdbijen(String documentId) throws XMLDBException {
-        z1Repository.updateStatus(documentId, "ODBIJEN");
+    public void setZ1StatusAsOdbijen(String documentId, Z1ZavodRequest z1ZavodRequest, String idResenja) throws XMLDBException {
+        z1Repository.zavod(documentId, z1ZavodRequest, idResenja,"ODBIJEN");
     }
 
     @Override

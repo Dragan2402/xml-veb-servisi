@@ -1,5 +1,6 @@
 package com.euprava.z1.service;
 
+import com.euprava.z1.controller.request.Z1ZavodRequest;
 import com.euprava.z1.controller.response.NumberResponse;
 import com.euprava.z1.controller.response.Z1Response;
 import com.euprava.z1.controller.response.Z1ResponseList;
@@ -29,8 +30,8 @@ public interface Z1Service {
     Z1 getZ1ById(String id) throws Exception;
     String retrieveObrazacZ1MetadataAsRDF(String documentId) throws IOException;
     String retrieveObrazacZ1MetadataAsJSON(String documentId) throws IOException;
-    void setZ1StatusAsOdobren(String documentId) throws XMLDBException;
-    void setZ1StatusAsOdbijen(String documentId) throws XMLDBException;
+    void setZ1StatusAsOdobren(String documentId, Z1ZavodRequest z1ZavodRequest, String idResenja) throws XMLDBException;
+    void setZ1StatusAsOdbijen(String documentId, Z1ZavodRequest z1ZavodRequest, String idResenja) throws XMLDBException;
     NumberResponse getNumberOfRequests(String start, String end) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException, InvocationTargetException, NoSuchMethodException;
 
 }

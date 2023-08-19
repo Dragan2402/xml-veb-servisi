@@ -1,34 +1,39 @@
 package com.euprava.z1.repository;
 
+import com.euprava.z1.controller.request.Z1ZavodRequest;
 import com.euprava.z1.controller.response.Z1Response;
 import com.euprava.z1.model.Z1;
 import com.euprava.z1.repository.exist.ExistManager;
 import com.euprava.z1.repository.fuseki.FusekiWriter;
 import com.euprava.z1.repository.fuseki.MetadataExtractor;
+import com.euprava.z1.util.ExistDBAuthenticationUtilities;
 import com.euprava.z1.util.SchemaValidationHandler;
+import com.euprava.z1.util.XUpdateTemplate;
 import lombok.RequiredArgsConstructor;
 import org.exist.http.NotFoundException;
 import org.springframework.stereotype.Repository;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
-import org.xmldb.api.base.Resource;
-import org.xmldb.api.base.ResourceIterator;
-import org.xmldb.api.base.ResourceSet;
-import org.xmldb.api.base.XMLDBException;
+import org.xmldb.api.DatabaseManager;
+import org.xmldb.api.base.*;
 import org.xmldb.api.modules.XMLResource;
+import org.xmldb.api.modules.XUpdateQueryService;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.TransformerException;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
@@ -102,8 +107,18 @@ public class Z1Repository {
         return list;
     }
 
-    public void updateStatus(String documentId, String newStatus) throws XMLDBException {
-        String contextXPath = "/Z1/Status";
-        existManager.update(COLLECTION_ID, documentId, contextXPath, newStatus);
+    public void zavod(String documentId, Z1ZavodRequest z1ZavodRequest, String idResenja, String newStatus) throws XMLDBException {
+
+
+        existManager.create(COLLECTION_ID, documentId,"/Z1/Datum", "<Id_Resenja>"+idResenja+"</Id_Resenja>");
+        existManager.update(COLLECTION_ID, documentId, "/Z1/Status", newStatus);
+        existManager.update(COLLECTION_ID, documentId, "/Z1/Prilozi/Primerak_znaka", z1ZavodRequest.getPrimerakZnaka());
+        existManager.update(COLLECTION_ID, documentId, "/Z1/Prilozi/Spisak_robe_i_usluga", z1ZavodRequest.getSpisakRobe());
+        existManager.update(COLLECTION_ID, documentId, "/Z1/Prilozi/Punomocje", z1ZavodRequest.getPunomocje());
+        existManager.update(COLLECTION_ID, documentId, "/Z1/Prilozi/Generalno_punomocje", z1ZavodRequest.getPunomocjeRanije());
+        existManager.update(COLLECTION_ID, documentId, "/Z1/Prilozi/Punomocje_naknadno_dostavljeno", z1ZavodRequest.getPunomocjeNaknadno());
+        existManager.update(COLLECTION_ID, documentId, "/Z1/Prilozi/Opsti_akt_o_kolektivnom_zigu", z1ZavodRequest.getOpstiAkt());
+        existManager.update(COLLECTION_ID, documentId, "/Z1/Prilozi/Dokaz_o_pravu_prvenstva", z1ZavodRequest.getPravoPrvenstva());
+        existManager.update(COLLECTION_ID, documentId, "/Z1/Prilozi/Dokaz_o_uplati_takse", z1ZavodRequest.getUplataTakse());
     }
 }

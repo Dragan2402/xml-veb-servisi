@@ -79,7 +79,7 @@ public class RjesenjeService implements IRjesenjeService {
         String formattedXQueryExpression = String.format(xqueryExpression, requestId);
         System.out.println(formattedXQueryExpression);
 
-        List<Resource> resources = rjesenjeRepository.getObrazacByQuery("/db/a1", "http://euprava.euprava.com/model/a1Sertifikat", formattedXQueryExpression);
+        List<Resource> resources = rjesenjeRepository.getObrazacByQuery("/db/z1", "http://z1.euprava.com/model", formattedXQueryExpression);
 
         ByteArrayResource resourceReturn = null;
         for (Resource resource : resources) {

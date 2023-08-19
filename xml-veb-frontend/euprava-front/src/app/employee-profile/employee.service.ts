@@ -8,12 +8,20 @@ export class EmployeeService {
 
   constructor(private http:HttpClient) { }
 
-  odobriZ1(documentId: string) {
-    return this.http.put(`/api/z1/${documentId}/odobri`, {});
+  odobriZ1(documentId: string, z1ZavodRequest: any, idResenja: string) {
+    return this.http.put(`/api/z1/${documentId}/odobri?idResenja=${idResenja}`, z1ZavodRequest, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
   }
 
-  odbijZ1(documentId: string) {
-    return this.http.put(`/api/z1/${documentId}/odbij`, {});
+  odbijZ1(documentId: string, z1ZavodRequest: any, idResenja: string) {
+    return this.http.put(`/api/z1/${documentId}/odbij?idResenja=${idResenja}`, z1ZavodRequest, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
+  }
+
+  approveRequest(id:number, code:number,rjesenjeId:number){
+    return this.http.get("/api/a1/approveRequest?id="+id+"&code="+code+"&idRjesenja="+rjesenjeId,{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
+  }
+
+  declineRequest(id:number,rjesenjeId:number){
+    return this.http.get("/api/a1/declineRequest?id="+id+"&idRjesenja="+rjesenjeId,{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
   }
 
   odobriP1(documentId: string) {
@@ -50,16 +58,8 @@ export class EmployeeService {
     return this.http.get(`/api/${type}/getNumberOfRequestsForReport?start=${start}&&end=${end}`,{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
   }
 
-  createRjesenje(body:string){
+  createResenje(body:string){
     return this.http.post("/rjesenje",body, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}})
-  }
-
-  approveRequest(id:number, code:number,rjesenjeId:number){
-    return this.http.get("/api/a1/approveRequest?id="+id+"&code="+code+"&idRjesenja="+rjesenjeId,{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
-  }
-
-  declineRequest(id:number,rjesenjeId:number){
-    return this.http.get("/api/a1/declineRequest?id="+id+"&idRjesenja="+rjesenjeId,{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
   }
 
   getRdf(id: number) {
@@ -70,7 +70,7 @@ export class EmployeeService {
     return this.http.get(`/api/a1/getRdfMetadata?id=`+id, options);
   }
 
-  downloadRjesenjeByRequestId(id:number){
+  downloadResenjeByRequestId(id:number){
     const options = {
         headers: new HttpHeaders().append('Content-Type', 'application/pdf'),
         responseType: 'blob' as 'json'

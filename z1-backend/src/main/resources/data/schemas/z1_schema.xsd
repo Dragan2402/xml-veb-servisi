@@ -45,6 +45,7 @@
                 </xs:element>
                 <xs:element ref="z1:Status"/>
                 <xs:element ref="z1:Datum"/>
+                <xs:element minOccurs="0" name="Id_Resenja" type="xs:string"/>
             </xs:sequence>
             <xs:attribute name="about"/>
             <xs:attribute name="typeof"/>

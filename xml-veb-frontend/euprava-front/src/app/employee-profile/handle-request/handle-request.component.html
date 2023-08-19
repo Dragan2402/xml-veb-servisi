@@ -11,7 +11,31 @@
       <input matInput placeholder="Unesite sifru dokumenta" [(ngModel)]="code" required>
     </mat-form-field>
     <mat-form-field appearance="fill" style="width: 100%;" *ngIf="!approve">
-      <textarea height="300px" matInput placeholder="Unesite razlog odbijanja" [(ngModel)]="reason" required></textarea>
+      <input height="300px" matInput placeholder="Unesite razlog odbijanja" [(ngModel)]="reason" required/>
+    </mat-form-field>
+    <mat-form-field appearance="fill" style="width: 100%;">
+      <input matInput placeholder="Primerak znaka" [(ngModel)]="zavod.primerakZnaka" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" style="width: 100%;">
+      <input matInput placeholder="Spisak robe i usluga" [(ngModel)]="zavod.spisakRobe" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" style="width: 100%;">
+      <input matInput placeholder="Punomocje" [(ngModel)]="zavod.punomocje" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" style="width: 100%;">
+      <input matInput placeholder="Punomocje dostavljeno ranije" [(ngModel)]="zavod.punomocjeRanije" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" style="width: 100%;">
+      <input matInput placeholder="Punomocje dostavljeno naknadno" [(ngModel)]="zavod.punomocjeNaknadno" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" style="width: 100%;">
+      <input matInput placeholder="Opsti akt o kolektivnom zigu" [(ngModel)]="zavod.opstiAkt" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" style="width: 100%;">
+      <input matInput placeholder="Dokaz o pravu prvenstva" [(ngModel)]="zavod.pravoPrvenstva" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" style="width: 100%;">
+      <input matInput placeholder="Dokaz o uplati takse" [(ngModel)]="zavod.uplataTakse" required>
     </mat-form-field>
   </div>
 

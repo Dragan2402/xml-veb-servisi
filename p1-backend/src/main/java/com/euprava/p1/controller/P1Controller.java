@@ -24,6 +24,7 @@ import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -93,13 +94,15 @@ public class P1Controller {
 
     @PostMapping(value = "/search", produces = {"application/xml"})
     public ResponseEntity<ObrazacP1SearchResponseList> searchByText(@RequestBody String queryText) throws XMLDBException, JAXBException {
-        ObrazacP1SearchResponseList obrazacP1SearchResponseList = p1Service.retrieveObrazacP1SearchResponseListByText(queryText);
+//        ObrazacP1SearchResponseList obrazacP1SearchResponseList = p1Service.retrieveObrazacP1SearchResponseListByText(queryText);
+        ObrazacP1SearchResponseList obrazacP1SearchResponseList = new ObrazacP1SearchResponseList();
         return new ResponseEntity<>(obrazacP1SearchResponseList, HttpStatus.OK);
     }
 
     @PostMapping(value = "/search/odobren", produces = {"application/xml"})
     public ResponseEntity<ObrazacP1SearchResponseList> searchOdobreniByText(@RequestBody String queryText) throws XMLDBException, JAXBException {
-        ObrazacP1SearchResponseList obrazacP1SearchResponseList = p1Service.retrieveObrazacP1SearchResponseListByTextAndStatusOdobren(queryText);
+//        ObrazacP1SearchResponseList obrazacP1SearchResponseList = p1Service.retrieveObrazacP1SearchResponseListByTextAndStatusOdobren(queryText);
+        ObrazacP1SearchResponseList obrazacP1SearchResponseList = new ObrazacP1SearchResponseList();
         return new ResponseEntity<>(obrazacP1SearchResponseList, HttpStatus.OK);
     }
 

@@ -16,7 +16,7 @@
                         <fo:block-container border-bottom="1pt solid black">
                             <fo:block text-align="center" text-decoration="underline" margin-top="1%">
                                 <fo:inline>
-                                    Rjesenje <xsl:value-of select="b:rjesenje/b:id"/>
+                                    Resenje <xsl:value-of select="b:rjesenje/b:id"/>
                                 </fo:inline>
                             </fo:block>
                             <fo:block margin-top="1%">
@@ -38,6 +38,9 @@
                                     Obrazlozenje: <xsl:value-of select="b:rjesenje/b:obrazlozenje"/>
                                 </fo:block>
                             </xsl:if>
+                            <fo:block margin-top="1%" >
+                                Referenca zahteva: <xsl:value-of select="b:rjesenje/b:id_zahtjeva"/>
+                            </fo:block>
                         </fo:block-container>
 
                     </fo:block-container>

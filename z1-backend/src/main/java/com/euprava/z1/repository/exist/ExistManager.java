@@ -1,6 +1,7 @@
 package com.euprava.z1.repository.exist;
 
 import com.euprava.z1.util.ExistDBAuthenticationUtilities;
+import com.euprava.z1.util.XUpdateTemplate;
 import org.exist.xmldb.DatabaseImpl;
 import org.exist.xmldb.EXistResource;
 import org.exist.xupdate.XUpdateProcessor;
@@ -188,6 +189,18 @@ public class ExistManager {
             XUpdateQueryService service = (XUpdateQueryService) col.getService("XUpdateQueryService", "1.0");
             service.setProperty("indent", "yes");
             service.updateResource(documentId, String.format(UPDATE, contextXPath, patch));
+        }
+    }
+
+    public void create(String collectionUri, String documentId, String contextXPath, String patch) throws XMLDBException {
+        Database db = new DatabaseImpl();
+        db.setProperty("create-database", "true");
+        DatabaseManager.registerDatabase(db);
+
+        try (Collection col = DatabaseManager.getCollection(authMgr.getUri() + collectionUri, authMgr.getUser(), authMgr.getPassword())) {
+            XUpdateQueryService service = (XUpdateQueryService) col.getService("XUpdateQueryService", "1.0");
+            service.setProperty("indent", "yes");
+            service.updateResource(documentId, String.format(XUpdateTemplate.getInsertAfterExpresson("http://euprava.com/z1/model"), contextXPath, patch));
         }
     }
 }
