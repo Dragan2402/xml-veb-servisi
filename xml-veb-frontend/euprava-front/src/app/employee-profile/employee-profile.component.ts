@@ -452,23 +452,27 @@ export class EmployeeProfileComponent implements OnInit {
 
   searchReference(){
     if(this.filter.length>0){
-      this.loaded = false;
-      this.requests = [];
-      this.employeeService.getRequestsByReference(this.filter).subscribe({
+      this.loadedZ1 = false;
+      this.z1Requests = [];
+      this.userService.getFilteredZ1ByReference(this.filter).subscribe({
         next:(res) =>{
           xml2js.parseString(res, (err, result) => {
-            const responseArray = result["a1ResponseList"]["a1Response"] as Array<Object>;
+            const responseArray = result["z1ResponseList"]["z1Response"] as Array<Object>;
             if(responseArray === undefined){
-              this.loaded = true;
+              this.loadedZ1 = false;
               return;
             }
             responseArray.forEach((element: any) => {
-              this.requests.push({'id':element["id"][0],'email':element["email"][0], 'submitterName':element["submitterName"][0], 'status':element["status"][0],'submitDate':element["submitDate"][0],'type':element["type"][0]} as RequestResponse);
+              const zajednickiPredstavnik = element['zajednickiPredstavnik'][0].trim()
+              const jedanPodnosilac = element['podnosilac'][0].trim()
+              const podnosilac = jedanPodnosilac ? jedanPodnosilac : zajednickiPredstavnik
+              const newElement = { id: element['id'][0], podnosilac, punomocnik: element['punomocnik'][0], status: element['status'][0] }
+              this.z1Requests.push(newElement)
             });
-            this.loaded = true;
-         });
+          });
+          this.loadedZ1 = true;
         }
-      });
+      })
     }
   }
 }

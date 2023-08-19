@@ -1,9 +1,8 @@
-import { HttpClient, HttpHeaders,  } from '@angular/common/http';
-import { Injectable , Inject} from '@angular/core';
-import { map, Observable, throwError } from 'rxjs';
+import {HttpClient, HttpHeaders,} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
 import axios from 'axios';
-import { Entity } from '../model/p1Request/Entity';
-import {  Router } from '@angular/router';
+import {Router} from '@angular/router';
 
 
 @Injectable({
@@ -93,8 +92,12 @@ export class UserService {
     return this.http.post("/api/z1/search", filter,{observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}});
   }
 
-  getFilteredZ1Metadata(query: string){
-    return this.http.post("/api/z1/searchMetadata",query, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}})
+  getFilteredZ1Metadata(filter: string){
+    return this.http.post("/api/z1/searchMetadata",filter, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}})
+  }
+
+  getFilteredZ1ByReference(filter: string){
+    return this.http.post("/api/z1/searchByReference",filter, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}})
   }
 
   getAllP1() {

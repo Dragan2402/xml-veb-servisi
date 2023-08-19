@@ -37,11 +37,6 @@ export class EmployeeService {
     return this.http.post("/api/a1/searchEmployeeByParam",body, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}})
   }
 
-  getRequestsByReference(param:string){
-    const body = "<searchRequest><param>"+param+"</param></searchRequest>";
-    return this.http.post("/api/a1/searchEmployeeByReference",body, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}})
-  }
-
   sendEmail(email:string, rjesenjeId:string){
     const body = `<emailRequest><email>${email}</email><id>${rjesenjeId}</id></emailRequest>`;
     return this.http.put("/rjesenje/sendEmail", body, {observe: "body", responseType: "text", headers: { 'Content-Type': 'application/xml' , 'Accept': 'application/xml'}})

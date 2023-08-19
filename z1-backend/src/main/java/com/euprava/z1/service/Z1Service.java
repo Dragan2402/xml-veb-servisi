@@ -25,6 +25,7 @@ public interface Z1Service {
     String createZ1(Z1 z1) throws JAXBException, XMLDBException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, DatatypeConfigurationException, NotFoundException, IOException, TransformerException;
     List<Z1Response> getAllZ1() throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException, InvocationTargetException, NoSuchMethodException;
     List<Z1Response> searchMetadata(String search) throws Exception;
+    List<Z1Response> searchByReference(String param) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException, InvocationTargetException, NoSuchMethodException;
     Z1 getZ1ById(String id) throws Exception;
     String retrieveObrazacZ1MetadataAsRDF(String documentId) throws IOException;
     String retrieveObrazacZ1MetadataAsJSON(String documentId) throws IOException;

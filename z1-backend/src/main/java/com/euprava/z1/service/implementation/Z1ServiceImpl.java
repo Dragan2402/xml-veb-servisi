@@ -61,15 +61,29 @@ public class Z1ServiceImpl implements Z1Service {
         String queryPath = "src/main/resources/data/xquery/all.xqy";
         byte[] encoded = Files.readAllBytes(Paths.get(queryPath));
         String xqueryExpression = new String(encoded, StandardCharsets.UTF_8);
-        List<org.xmldb.api.base.Resource> resources = z1Repository.getZ1ByQuery("/db/z1", "http://euprava.euprava.com/model", xqueryExpression);
+        List<Resource> resources = z1Repository.getZ1ByQuery("/db/z1", "http://z1.euprava.com/model", xqueryExpression);
+        return getResponseListFromResource(resources);
+
+    }
+
+    @Override
+    public List<Z1Response> searchByReference(String param) throws IOException, XMLDBException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, SAXException, InvocationTargetException, NoSuchMethodException {
+        String queryPath = "src/main/resources/data/xquery/reference.xqy";
+        byte[] encoded = Files.readAllBytes(Paths.get(queryPath));
+        String xqueryExpression = new String(encoded, StandardCharsets.UTF_8);
+        String formattedXQueryExpression = String.format(xqueryExpression, param);
+        List<Resource> resources = z1Repository.getZ1ByQuery("/db/z1", "http://z1.euprava.com/model", formattedXQueryExpression);
+        return getResponseListFromResource(resources);
+    }
+
+    private List<Z1Response> getResponseListFromResource(List<Resource> resources) throws JAXBException, XMLDBException, SAXException {
         List<Z1Response> z1List = new ArrayList<>();
-        for (org.xmldb.api.base.Resource resource : resources) {
+        for (Resource resource : resources) {
             long id = Long.parseLong(resource.getId().split("_")[0]);
             Z1 z1 = unmarshallXMLResource((XMLResource) resource);
             z1List.add(new Z1Response(z1, id));
         }
         return z1List;
-
     }
 
     @Override
@@ -221,7 +235,7 @@ public class Z1ServiceImpl implements Z1Service {
         byte[] encoded = Files.readAllBytes(Paths.get(queryPath));
         String xqueryExpression = new String(encoded, StandardCharsets.UTF_8);
         String formattedXQueryExpression = String.format(xqueryExpression, start, end);
-        List<Resource> resources = z1Repository.getZ1ByQuery("/db/z1", "http://euprava.euprava.com/model/z1", formattedXQueryExpression);
+        List<Resource> resources = z1Repository.getZ1ByQuery("/db/z1", "z1.euprava.com/model", formattedXQueryExpression);
         return getNumberResponseFromResources(resources);
     }
 

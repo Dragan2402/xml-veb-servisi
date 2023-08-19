@@ -59,6 +59,11 @@ public class Z1Controller {
         return new ResponseEntity<>(new Z1ResponseList(z1Service.searchMetadata(queryText)), HttpStatus.OK);
     }
 
+    @PostMapping(value = "searchByReference", produces = {"application/xml"})
+    public ResponseEntity<Z1ResponseList> searchEmployeeByReference( @RequestBody String queryText) throws Exception{
+        return new ResponseEntity<>(new Z1ResponseList(z1Service.searchByReference(queryText)), HttpStatus.OK);
+    }
+
     @GetMapping(value = "/{documentId}/html")
     public ResponseEntity<Resource> getAsHTML(@PathVariable String documentId) throws IOException, XMLDBException, NotFoundException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         File Z1HTMLFile = z1Service.retrieveZ1AsHTML(documentId);
