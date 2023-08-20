@@ -46,6 +46,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -182,8 +183,21 @@ public class Z1ServiceImpl implements Z1Service {
         z1.setAbout(RDF_URL + "/" + documentId);
         z1.setTypeof("pred:Z1");
 
-        z1.getPodnosilac().getKontakt().getEPosta().setProperty("pred:EmailPodnosioca");
-        z1.getPodnosilac().getKontakt().getEPosta().setDatatype("xs:string");
+        String emailPodnosioca = z1.getPodnosilac().getKontakt().getEPosta().getValue();
+        String emailPredstavnika = z1.getZajednickiPredstavnik().getKontakt().getEPosta().getValue();
+
+        if (!Objects.equals(emailPodnosioca, "")) {
+            z1.getPodnosilac().getKontakt().getEPosta().setProperty("pred:EmailPodnosioca");
+            z1.getPodnosilac().getKontakt().getEPosta().setDatatype("xs:string");
+        }
+
+        if (!Objects.equals(emailPredstavnika, "")) {
+            z1.getZajednickiPredstavnik().getKontakt().getEPosta().setProperty("pred:EmailPredstavnika");
+            z1.getZajednickiPredstavnik().getKontakt().getEPosta().setDatatype("xs:string");
+        }
+
+        z1.getPunomocnik().getKontakt().getEPosta().setProperty("pred:EmailPunomocnika");
+        z1.getPunomocnik().getKontakt().getEPosta().setDatatype("xs:string");
 
         z1.setStatus(new Status());
         z1.getStatus().setValue("PODNESEN");

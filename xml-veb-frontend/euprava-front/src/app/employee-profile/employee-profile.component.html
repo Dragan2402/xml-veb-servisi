@@ -2,9 +2,9 @@
   <div style="display: flex;flex-direction: row; width: 100%;justify-content: space-evenly;align-items: center;">
     <div>
       <mat-radio-group style="display: flex; gap: 24px; margin: 20px;">
-        <mat-radio-button class="column-half" [value]="'A1'" (change)="handleTableChange('A1')">A1</mat-radio-button>
+        <mat-radio-button class="column-half" [value]="'A1'" [checked]="tableType==='A1'" (change)="handleTableChange('A1')">A1</mat-radio-button>
         <mat-radio-button class="column-half" [value]="'P1'" (change)="handleTableChange('P1')">P1</mat-radio-button>
-        <mat-radio-button class="column-half" [value]="'Z1'" [checked]="tableType==='Z1'" (change)="handleTableChange('Z1')">Z1</mat-radio-button>
+        <mat-radio-button class="column-half" [value]="'Z1'"  (change)="handleTableChange('Z1')">Z1</mat-radio-button>
       </mat-radio-group>
     </div>
     <mat-form-field  appearance="fill" style="width: 50%;padding-top: 1%;">

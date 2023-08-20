@@ -283,6 +283,20 @@
                     <div class="padded border-bot">
                         <p>
                             <strong>
+                                9. Brojevi klasa robe:
+                            </strong>
+                        </p>
+                        <p class="padded">
+                            <xsl:for-each select="//z1:Brojevi_klasa_robe/z1:Broj_klase_robe">
+                                <xsl:if test="position() > 1">, </xsl:if>
+                                <xsl:value-of select="." />
+                            </xsl:for-each>
+                        </p>
+                    </div>
+
+                    <div class="padded border-bot">
+                        <p>
+                            <strong>
                                 10. Zatrazeno pravo prvenstva i osnov:
                             </strong>
                         </p>

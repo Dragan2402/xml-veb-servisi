@@ -36,7 +36,7 @@ export class UserProfileComponent implements OnInit {
   requests: RequestResponse[];
   z1Requests: Z1Request[];
   p1Requests: P1Request[];
-  tableType: TableType = 'Z1'
+  tableType: TableType = 'A1'
 
   loaded : boolean = false;
   loadedZ1 : boolean = false;

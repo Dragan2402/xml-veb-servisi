@@ -46,7 +46,7 @@ export class ReportComponent implements OnInit {
           this.generated = true;
           var doc = new jspdf('l');
           doc.text(`\t\t\tIZVESTAJ ZA RASPON: ${startDate} - ${endDate}\n\n\n\tPodnesenih: ${this.waiting} \n\n\tOdobrenih: ${this.approved} \n\n\tOdbijenih: ${this.declined} \n\n\tUkupno: ${this.total}`
-          +`\n\n\n\n\tIzvjestaj podneo: ${localStorage.getItem("firstName")} ${localStorage.getItem("lastName")}`, 20,20);
+          +`\n\n\n\n\tIzvestaj podneo: ${localStorage.getItem("firstName")} ${localStorage.getItem("lastName")}`, 20,20);
           doc.save("izvestaj.pdf");
         })}});
 
