@@ -360,8 +360,10 @@
                             </td>
                             <td rowspan="9">
                                 <div style="displat: flex; justify-content: center; align-items: center; text-align: center;">
-                                    <div>Broj prijave ziga:</div>
-                                    <div><xsl:value-of select="//z1:Broj_prijave"/></div>
+                                    <xsl:if test="//z1:Broj_prijave">
+                                        <div>Broj prijave ziga:</div>
+                                        <div><xsl:value-of select="//z1:Broj_prijave"/></div>
+                                    </xsl:if>
                                     <div><strong>Datum podnosenja:</strong></div>
                                     <div><strong><xsl:value-of select="//z1:Datum"/></strong></div>
                                 </div>
