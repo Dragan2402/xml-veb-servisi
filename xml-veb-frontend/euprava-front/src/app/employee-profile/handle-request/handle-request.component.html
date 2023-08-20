@@ -10,20 +10,20 @@
   </div>
 
   <div style="margin-top: 5%;width: 100%;">
-    <mat-form-field appearance="fill" style="width: 100%;" *ngIf="forma.value['approve']">
+    <mat-form-field style="width: 100%;" *ngIf="forma.value['approve']">
       <input matInput placeholder="Unesite sifru dokumenta" formControlName="code" required>
     </mat-form-field>
-    <mat-form-field appearance="fill" style="width: 100%;" *ngIf="!forma.value['approve']">
+    <mat-form-field style="width: 100%;" *ngIf="!forma.value['approve']">
       <input height="300px" matInput placeholder="Unesite razlog odbijanja" formControlName="reason" required/>
     </mat-form-field>
     <div formGroupName="zavod">
-    <mat-form-field appearance="fill" style="width: 100%;">
+    <mat-form-field style="width: 100%;">
       <input matInput placeholder="Primerak znaka" formControlName="primerakZnaka" required>
     </mat-form-field>
-    <mat-form-field appearance="fill" style="width: 100%;">
+    <mat-form-field style="width: 100%;">
       <input matInput placeholder="Spisak robe i usluga" formControlName="spisakRobe" required>
     </mat-form-field>
-    <mat-form-field appearance="fill" style="width: 100%;">
+    <mat-form-field style="width: 100%;">
       <input matInput placeholder="Punomocje" formControlName="punomocje" required>
     </mat-form-field>
     <label>Punomocje dostavljeno ranije:</label>
@@ -36,13 +36,13 @@
       <mat-radio-button class="column-half" [value]="'DA'">DA</mat-radio-button>
       <mat-radio-button class="column-half" [value]="'NE'">NE</mat-radio-button>
     </mat-radio-group>
-    <mat-form-field appearance="fill" style="width: 100%;">
+    <mat-form-field style="width: 100%;">
       <input matInput placeholder="Opsti akt o kolektivnom zigu" formControlName="opstiAkt" required>
     </mat-form-field>
-    <mat-form-field appearance="fill" style="width: 100%;">
+    <mat-form-field style="width: 100%;">
       <input matInput placeholder="Dokaz o pravu prvenstva" formControlName="pravoPrvenstva" required>
     </mat-form-field>
-    <mat-form-field appearance="fill" style="width: 100%;">
+    <mat-form-field style="width: 100%;">
       <input matInput placeholder="Dokaz o uplati takse" formControlName="uplataTakse" required>
     </mat-form-field>
   </div>
