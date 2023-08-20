@@ -6,5 +6,8 @@
 >
     <rdfs:Class rdf:ID="Z1">
     <rdfs:Property rdf:ID="Datum">
+    <rdfs:Property rdf:ID="EmailPodnosioca">
+    <rdfs:Property rdf:ID="EmailPredstavnika">
+    <rdfs:Property rdf:ID="EmailPunomocnika">
     <rdfs:Property rdf:ID="Status">
 </rdf:RDF>
